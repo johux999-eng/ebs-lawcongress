@@ -9,7 +9,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="EBS Law">
-    <link rel="apple-touch-icon" href="icon-192.svg">
+    <link rel="apple-touch-icon" href="icon-192.png">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
@@ -341,11 +341,21 @@ function SPV({lang:ln,t}){const[sel,setSel]=useState(null);return(<div className
 <button onClick={()=>setSel(null)} className="mt-4 w-full py-3 rounded-xl bg-slate-100 text-slate-600 font-semibold text-sm hover:bg-slate-200 transition-colors">{t.gen.close}</button>
 </div></div></div>}</div>);}
 
-function SPOV({t}){return(<div className="pb-24">
+function SPOV({t}){const[sel,setSel]=useState(null);return(<div className="pb-24">
 <h1 className="font-display text-2xl font-bold text-slate-900 mb-1 px-1">{t.spo.title}</h1><p className="text-xs text-slate-400 mb-5 px-1">12. EBS Law Congress</p>
-<div className="space-y-2.5">{spo.map((s,i)=><a key={i} href={s.u} target="_blank" rel="noopener noreferrer" className="bg-white rounded-xl border border-slate-200 p-3.5 flex items-center justify-between hover:shadow-md transition-all block">
+<div className="space-y-2.5">{spo.map((s,i)=><div key={i} onClick={()=>setSel(s)} className="bg-white rounded-xl border border-slate-200 p-3.5 flex items-center justify-between hover:shadow-md transition-all cursor-pointer">
 <div className="flex items-center gap-3"><div style={{width:48,height:48,borderRadius:10,backgroundColor:'white',border:'1px solid #f1f5f9',display:'flex',alignItems:'center',justifyContent:'center',padding:6,flexShrink:0}}><img src={s.l} alt={s.n} style={{maxWidth:'100%',maxHeight:'100%',objectFit:'contain'}}/></div>
-<span className="font-semibold text-slate-800 text-sm">{s.n}</span></div><I.EL size={16} className="text-slate-300 flex-shrink-0"/></a>)}</div></div>);}
+<span className="font-semibold text-slate-800 text-sm">{s.n}</span></div><I.EL size={16} className="text-slate-300 flex-shrink-0"/></div>)}</div>
+{sel&&<div className="fixed inset-0 z-50 bg-black/40 flex items-end sm:items-center justify-center" style={{backdropFilter:'blur(4px)'}} onClick={()=>setSel(null)}>
+<div className="animate-slideUp bg-white w-full sm:max-w-md sm:rounded-2xl rounded-t-2xl shadow-2xl" onClick={e=>e.stopPropagation()}>
+<div className="h-2 sm:rounded-t-2xl rounded-t-2xl" style={{backgroundColor:'#081c74'}}/>
+<div className="p-6 text-center">
+<div style={{width:80,height:80,borderRadius:16,backgroundColor:'white',border:'1px solid #e2e8f0',display:'flex',alignItems:'center',justifyContent:'center',padding:12,margin:'0 auto 16px',boxShadow:'0 2px 8px rgba(0,0,0,0.06)'}}><img src={sel.l} alt={sel.n} style={{maxWidth:'100%',maxHeight:'100%',objectFit:'contain'}}/></div>
+<h2 className="font-display text-xl font-bold text-slate-900 mb-4">{sel.n}</h2>
+<a href={sel.u} target="_blank" rel="noopener noreferrer" style={{display:'inline-flex',alignItems:'center',gap:8,padding:'12px 24px',borderRadius:12,backgroundColor:'#081c74',color:'white',fontSize:14,fontWeight:600,textDecoration:'none'}}><I.EL size={16}/>Website besuchen</a>
+<button onClick={()=>setSel(null)} className="mt-4 w-full py-3 rounded-xl bg-slate-100 text-slate-600 font-semibold text-sm hover:bg-slate-200 transition-colors">{t.gen.close}</button>
+</div></div></div>}
+</div>);}
 
 function App(){const[ln,setLn]=useState("de");const[vw,setVw]=useState("schedule");const[si,setSi]=useState(new Set());const t=TT[ln];
 useEffect(()=>{try{const s=localStorage.getItem('lc_sv3');if(s)setSi(new Set(JSON.parse(s)));}catch(e){}},[]);
@@ -353,6 +363,7 @@ const ts=useCallback(id=>{setSi(p=>{const n=new Set(p);if(n.has(id))n.delete(id)
 const nv=[{id:"schedule",lb:t.nav.schedule,ic:I.Cal},{id:"mySchedule",lb:t.nav.mySchedule,ic:I.Bm},{id:"roomPlan",lb:t.nav.roomPlan,ic:I.Map},{id:"speakers",lb:t.nav.speakers,ic:I.U1},{id:"sponsors",lb:t.nav.sponsors,ic:I.Aw}];
 return(<LC.Provider value={t}><div style={{minHeight:'100vh',backgroundColor:'#f8fafc'}}>
 <header className="sticky top-0 z-40 border-b border-slate-200" style={{backgroundColor:'rgba(255,255,255,0.85)',backdropFilter:'blur(16px)'}}>
+<div style={{height:'env(safe-area-inset-top,0px)',backgroundColor:'rgba(255,255,255,0.85)'}}/>
 <div style={{maxWidth:'100%',width:'100%',margin:'0 auto',boxSizing:'border-box',padding:'0 16px',height:56,display:'flex',alignItems:'center',justifyContent:'space-between'}}>
 <div style={{display:'flex',alignItems:'center',gap:10}}><img src={LOGO} alt="LC" style={{height:32,objectFit:'contain'}}/><div><h1 style={{fontSize:14,fontWeight:700,color:'#0f172a',lineHeight:1.2,margin:0}}>EBS Law Congress</h1></div></div>
 <div style={{display:'flex',alignItems:'center',gap:8}}>
