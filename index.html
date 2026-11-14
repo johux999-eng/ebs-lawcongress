@@ -18,21 +18,25 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
 <script src="https://cdn.tailwindcss.com"></script>
 <script>
-// Farben und Schriften wie auf www.ebs-lawcongress.com
+// Farbwelt von www.ebs-lawcongress.com
 tailwind.config={theme:{extend:{colors:{primary:'#081c74',accent:'#1e69c4',cream:'#f8f5f2',ink:'#202020',ink2:'#363636',ink3:'#4a4a4a'}}}};
 </script>
 <style>
-:root{--primary:#081c74;--accent:#1e69c4;--cream:#f8f5f2}
 *{-webkit-tap-highlight-color:transparent}
-html,body{margin:0;background:#f8f5f2;color:#202020;font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased}
+html,body{margin:0;background:#f8f5f2;color:#202020;font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased;overscroll-behavior-y:none}
 .font-serif{font-family:ui-serif,Georgia,Cambria,"Times New Roman",Times,serif}
-.scrollbar-hide::-webkit-scrollbar{display:none}.scrollbar-hide{-ms-overflow-style:none;scrollbar-width:none}
-@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-.animate-fadeUp{animation:fadeUp .3s ease-out both}
-@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
-.animate-slideUp{animation:slideUp .25s ease-out}
-.pt-safe{padding-top:env(safe-area-inset-top,0px)}
-.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px)}
+.no-scrollbar::-webkit-scrollbar{display:none}.no-scrollbar{scrollbar-width:none}
+@keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.animate-fadeUp{animation:fadeUp .25s ease-out both}
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:none}}
+.animate-slideUp{animation:slideUp .25s cubic-bezier(.2,.8,.2,1)}
+@keyframes pulseDot{0%,100%{opacity:1}50%{opacity:.35}}
+.live-dot{animation:pulseDot 1.6s ease-in-out infinite}
+/* Header: Abstand zur Statusleiste (iPhone mit Notch/Dynamic Island) */
+.safe-top{padding-top:calc(env(safe-area-inset-top,0px) + 6px)}
+.safe-bottom{padding-bottom:env(safe-area-inset-bottom,0px)}
+.sticky-sub{top:calc(env(safe-area-inset-top,0px) + 62px)}
+.line-clamp-3{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
 #boot{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:#081c74}
 #boot img{width:72px;height:72px;object-fit:contain;opacity:.9}
 </style>
@@ -42,28 +46,24 @@ html,body{margin:0;background:#f8f5f2;color:#202020;font-family:ui-sans-serif,sy
 <div id="root"></div>
 
 <script>
-// Service Worker
 if('serviceWorker' in navigator){
   window.addEventListener('load',function(){
     navigator.serviceWorker.register('./sw.js').catch(function(err){console.warn('[PWA] SW registration failed:',err);});
   });
 }
-// Installations-Prompt (Chrome/Android/Desktop) früh abfangen, damit React ihn später nutzen kann
 window.__installPrompt=null;
-window.addEventListener('beforeinstallprompt',function(e){
-  e.preventDefault();window.__installPrompt=e;window.dispatchEvent(new Event('installprompt-ready'));
-});
+window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();window.__installPrompt=e;window.dispatchEvent(new Event('installprompt-ready'));});
 window.addEventListener('appinstalled',function(){window.__installPrompt=null;window.dispatchEvent(new Event('app-installed'));});
 </script>
 
 <script type="text/babel">
-const{useState,useEffect,useCallback,useMemo}=React;
+const{useState,useEffect,useCallback,useMemo,useRef}=React;
 
-// ---------- Icons (Lucide-Stil, wie auf der Website) ----------
-const Icon=({children,size=20,className="",strokeWidth=2,style})=>(<svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" className={className} style={style} aria-hidden="true">{children}</svg>);
+// ---------- Icons ----------
+const Icon=({children,size=20,className="",strokeWidth=2})=>(<svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" className={className} aria-hidden="true">{children}</svg>);
 const I={
 Cal:p=><Icon {...p}><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></Icon>,
-Clk:p=><Icon {...p}><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></Icon>,
+CalPlus:p=><Icon {...p}><path d="M21 13V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h8"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="19" y1="16" x2="19" y2="22"/><line x1="16" y1="19" x2="22" y2="19"/></Icon>,
 Pin:p=><Icon {...p}><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></Icon>,
 Usr:p=><Icon {...p}><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></Icon>,
 Users:p=><Icon {...p}><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></Icon>,
@@ -80,51 +80,72 @@ More:p=><Icon {...p}><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"
 Dl:p=><Icon {...p}><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></Icon>,
 Check:p=><Icon {...p}><polyline points="20 6 9 17 4 12"/></Icon>,
 Arrow:p=><Icon {...p}><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></Icon>,
+Chev:p=><Icon {...p}><polyline points="9 18 15 12 9 6"/></Icon>,
 Wifi:p=><Icon {...p}><path d="M12 20h.01"/><path d="M8.5 16.43a5 5 0 0 1 7 0"/><path d="M5 12.86a10 10 0 0 1 14 0"/><path d="M2 8.82a15 15 0 0 1 20 0"/></Icon>,
+Refresh:p=><Icon {...p}><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 16h5v5"/></Icon>,
+Search:p=><Icon {...p}><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></Icon>,
+Alert:p=><Icon {...p}><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></Icon>,
+Coffee:p=><Icon {...p}><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></Icon>,
+Zoom:p=><Icon {...p}><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></Icon>,
+Bell:p=><Icon {...p}><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></Icon>,
 };
 const LinkedIn=({size=18,className=""})=>(<svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" className={className} aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>);
 
 // ---------- Texte ----------
 const TT={
-de:{nav:{schedule:"Zeitplan",my:"Mein Plan",room:"Raumplan",speakers:"Speaker",partners:"Partner"},
- schedule:{title:"Zeitplan",all:"Alle",talks:"Vorträge",ws:"Workshops",none:"Keine Programmpunkte in dieser Kategorie.",saved:"Gemerkt",save:"Merken"},
- my:{label:"Persönlich",title:"Mein Plan",empty:"Du hast noch keine Programmpunkte gemerkt.",hint:"Tippe im Zeitplan auf das Lesezeichen, um Programmpunkte hier zu sammeln.",count:n=>n===1?"1 Programmpunkt":`${n} Programmpunkte`},
- room:{label:"Orientierung",title:"Raumplan",desc:"Finden Sie sich auf dem Campus zurecht und verpassen Sie keinen Programmpunkt.",open:"Plan in voller Größe öffnen",d:{mainStage:"Eröffnung, Vorträge und Podiumsdiskussion",max:"Workshops",audi:"Workshops",weinkeller:"",catering:""}},
- speakers:{label:"Referenten",title:"Speaker"},
- partners:{label:"Partner",title:"Unsere Sponsoren",visit:"Website besuchen"},
- gen:{close:"Schließen",tickets:"Tickets Sichern",program:"Zum Programm",website:"Zur Website",updated:"Stand",offline:"Offline: zuletzt gespeicherte Daten",loading:"Aktuelle Daten werden geladen …",loadErr:"Die Daten konnten nicht geladen werden. Bitte prüfe deine Internetverbindung.",retry:"Erneut versuchen"},
+de:{nav:{schedule:"Programm",my:"Mein Plan",room:"Raumplan",speakers:"Speaker",partners:"Partner"},
+ schedule:{all:"Alle",talks:"Vorträge",ws:"Workshops",none:"Keine Programmpunkte in dieser Kategorie.",saved:"Gemerkt",save:"Merken",now:"Läuft gerade",next:"Als Nächstes",today:"Heute",until:d=>d===1?"Noch 1 Tag":`Noch ${d} Tage`,tomorrow:"Morgen geht's los",over:"Danke für zwei großartige Tage!"},
+ my:{title:"Mein Plan",empty:"Noch nichts gemerkt",hint:"Tippe im Programm auf das Lesezeichen, um dir deinen persönlichen Zeitplan zusammenzustellen.",toProgram:"Zum Programm",count:n=>n===1?"1 Programmpunkt":`${n} Programmpunkte`,conflict:"Überschneidung",ics:"In Kalender übernehmen",icsOne:"In Kalender"},
+ room:{title:"Raumplan",hint:"Zum Vergrößern tippen",sessions:n=>n===1?"1 Programmpunkt":`${n} Programmpunkte`,d:{mainStage:"Eröffnung, Vorträge, Podium",max:"Workshops",audi:"Workshops",weinkeller:"",catering:""}},
+ speakers:{title:"Speaker",search:"Speaker oder Organisation suchen",none:"Keine Treffer.",sessions:"Programmpunkte"},
+ partners:{title:"Partner & Sponsoren",visit:"Website"},
+ gen:{close:"Schließen",tickets:"Tickets",website:"Website",updated:"Aktualisiert",offline:"Offline – gespeicherte Daten",loading:"Lade aktuelle Daten …",loadErr:"Die Daten konnten nicht geladen werden. Bitte prüfe deine Internetverbindung.",retry:"Erneut versuchen",day:"Tag"},
  types:{reception:"Empfang",keynote:"Keynote",lecture:"Vortrag",panel:"Podium",workshop:"Workshop",interview:"Interview",break:"Pause",other:"Programm"},
- inst:{badge:"Offizielle App",lead:"Programm, persönlicher Zeitplan, Speaker und Raumplan – immer aktuell und auch offline verfügbar.",label:"Installation",title:"App installieren",intro:"Füge die App zu deinem Startbildschirm hinzu. Eine Installation über den App Store ist nicht nötig.",ios:"iPhone & iPad",android:"Android & Chrome",
-  iosSteps:[["Share","Tippe in Safari unten auf das Teilen-Symbol."],["PlusSq","Wähle „Zum Home-Bildschirm“."],["Check","Bestätige oben rechts mit „Hinzufügen“."]],
-  andSteps:[["More","Tippe in Chrome oben rechts auf das Menü (⋮)."],["Dl","Wähle „App installieren“ bzw. „Zum Startbildschirm hinzufügen“."],["Check","Bestätige mit „Installieren“."]],
-  iosHint:"Wichtig: Auf dem iPhone funktioniert die Installation nur in Safari.",
-  btn:"App jetzt installieren",cont:"Im Browser fortfahren",feat:[["Cal","Zeitplan"],["Bm","Mein Plan"],["Wifi","Offline"]]}},
-en:{nav:{schedule:"Schedule",my:"My Plan",room:"Room Plan",speakers:"Speakers",partners:"Partners"},
- schedule:{title:"Schedule",all:"All",talks:"Lectures",ws:"Workshops",none:"No items in this category.",saved:"Saved",save:"Save"},
- my:{label:"Personal",title:"My Plan",empty:"You have not saved any items yet.",hint:"Tap the bookmark in the schedule to collect items here.",count:n=>n===1?"1 item":`${n} items`},
- room:{label:"Orientation",title:"Room Plan",desc:"Find your way around campus and don't miss a single session.",open:"Open full-size plan",d:{mainStage:"Opening, lectures and panel discussion",max:"Workshops",audi:"Workshops",weinkeller:"",catering:""}},
- speakers:{label:"Speakers",title:"Speakers"},
- partners:{label:"Partners",title:"Our Sponsors",visit:"Visit website"},
- gen:{close:"Close",tickets:"Get Tickets",program:"View Schedule",website:"Website",updated:"Updated",offline:"Offline: showing saved data",loading:"Loading current data …",loadErr:"The data could not be loaded. Please check your internet connection.",retry:"Try again"},
+ inst:{badge:"Die offizielle App",title:"Dein Kongress in der Hosentasche",feat:[["Bm","Persönlicher Zeitplan","Merke dir Vorträge und Workshops – Überschneidungen werden markiert."],["Bell","Jetzt & als Nächstes","Während des Kongresses siehst du sofort, was gerade läuft."],["Refresh","Immer aktuell","Programmänderungen kommen automatisch von der Website."],["Wifi","Auch offline","Programm, Speaker und Raumplan funktionieren ohne Netz."]],
+  how:"So installierst du die App",ios:"iPhone",android:"Android",
+  iosSteps:[["Share","Tippe in Safari auf „Teilen“"],["PlusSq","Wähle „Zum Home-Bildschirm“"],["Check","Bestätige mit „Hinzufügen“"]],
+  andSteps:[["More","Öffne in Chrome das Menü ⋮"],["Dl","Wähle „App installieren“"],["Check","Bestätige mit „Installieren“"]],
+  iosHint:"Auf dem iPhone klappt die Installation nur in Safari.",btn:"App installieren",cont:"Ohne Installation fortfahren"}},
+en:{nav:{schedule:"Schedule",my:"My Plan",room:"Rooms",speakers:"Speakers",partners:"Partners"},
+ schedule:{all:"All",talks:"Lectures",ws:"Workshops",none:"No items in this category.",saved:"Saved",save:"Save",now:"Happening now",next:"Up next",today:"Today",until:d=>d===1?"1 day to go":`${d} days to go`,tomorrow:"Starts tomorrow",over:"Thanks for two great days!"},
+ my:{title:"My Plan",empty:"Nothing saved yet",hint:"Tap the bookmark in the schedule to build your personal plan.",toProgram:"Open schedule",count:n=>n===1?"1 item":`${n} items`,conflict:"Overlap",ics:"Add to calendar",icsOne:"Add to calendar"},
+ room:{title:"Room Plan",hint:"Tap to enlarge",sessions:n=>n===1?"1 session":`${n} sessions`,d:{mainStage:"Opening, lectures, panel",max:"Workshops",audi:"Workshops",weinkeller:"",catering:""}},
+ speakers:{title:"Speakers",search:"Search speaker or organisation",none:"No results.",sessions:"Sessions"},
+ partners:{title:"Partners & Sponsors",visit:"Website"},
+ gen:{close:"Close",tickets:"Tickets",website:"Website",updated:"Updated",offline:"Offline – saved data",loading:"Loading current data …",loadErr:"The data could not be loaded. Please check your internet connection.",retry:"Try again",day:"Day"},
  types:{reception:"Reception",keynote:"Keynote",lecture:"Lecture",panel:"Panel",workshop:"Workshop",interview:"Interview",break:"Break",other:"Programme"},
- inst:{badge:"Official app",lead:"Schedule, personal plan, speakers and room plan – always up to date and available offline.",label:"Installation",title:"Install the app",intro:"Add the app to your home screen. No app store needed.",ios:"iPhone & iPad",android:"Android & Chrome",
-  iosSteps:[["Share","In Safari, tap the share icon at the bottom."],["PlusSq","Choose “Add to Home Screen”."],["Check","Confirm with “Add” in the top right."]],
-  andSteps:[["More","In Chrome, tap the menu (⋮) in the top right."],["Dl","Choose “Install app” or “Add to Home screen”."],["Check","Confirm with “Install”."]],
-  iosHint:"Note: on iPhone, installing only works in Safari.",
-  btn:"Install app now",cont:"Continue in browser",feat:[["Cal","Schedule"],["Bm","My plan"],["Wifi","Offline"]]}}};
+ inst:{badge:"The official app",title:"Your congress in your pocket",feat:[["Bm","Personal schedule","Save lectures and workshops – overlaps are flagged."],["Bell","Now & next","During the congress you see at a glance what's on."],["Refresh","Always up to date","Programme changes arrive automatically from the website."],["Wifi","Works offline","Schedule, speakers and room plan work without a connection."]],
+  how:"How to install",ios:"iPhone",android:"Android",
+  iosSteps:[["Share","In Safari, tap “Share”"],["PlusSq","Choose “Add to Home Screen”"],["Check","Confirm with “Add”"]],
+  andSteps:[["More","In Chrome, open the menu ⋮"],["Dl","Choose “Install app”"],["Check","Confirm with “Install”"]],
+  iosHint:"On iPhone, installing only works in Safari.",btn:"Install app",cont:"Continue without installing"}}};
 
-// ---------- Daten ----------
+// ---------- Daten & Hilfsfunktionen ----------
 const DATA_URL="data.json",DATA_KEY="lc_data13",SAVED_KEY="lc_sv13",LANG_KEY="lc_lang",SKIP_KEY="lc_install_skip";
 const FALLBACK_IMG={logo:"https://app.trickle.so/storage/public/images/usr_1a6da71af0000001/e5c2fd38-03c9-40e8-a275-becc52e0e3c8.png",hero:"https://app.trickle.so/storage/public/images/usr_1a6da71af0000001/70bdd53e-03b3-459e-8237-801da1b3aff3.avif",roomPlan:""};
 const validData=d=>!!(d&&d.schedule&&Array.isArray(d.schedule.de)&&Array.isArray(d.schedule.en)&&Array.isArray(d.speakers)&&Array.isArray(d.sponsors)&&d.event);
 const store={get(k){try{return localStorage.getItem(k);}catch(e){return null;}},set(k,v){try{localStorage.setItem(k,v);}catch(e){}}};
-function loadCachedData(){try{const d=JSON.parse(store.get(DATA_KEY));return validData(d)?d:null;}catch(e){return null;}}
+const loadCachedData=()=>{try{const d=JSON.parse(store.get(DATA_KEY));return validData(d)?d:null;}catch(e){return null;}};
 const img=(d,k)=>(d&&d.images&&d.images[k])||FALLBACK_IMG[k];
 const isTalk=t=>t==="lecture"||t==="keynote"||t==="panel";
-function fmtTs(iso,ln){try{return new Date(iso).toLocaleString(ln==="de"?"de-DE":"en-GB",{day:"2-digit",month:"2-digit",year:"numeric",hour:"2-digit",minute:"2-digit"});}catch(e){return"";}}
+const isMinor=t=>t==="break"||t==="reception";
+const fmtTs=(iso,ln)=>{try{return new Date(iso).toLocaleString(ln==="de"?"de-DE":"en-GB",{day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"});}catch(e){return"";}};
 const matchSpeakers=(e,spk)=>e.speaker?spk.filter(s=>e.speaker.includes(s.n)):[];
 const isStandalone=()=>window.matchMedia('(display-mode: standalone)').matches||window.navigator.standalone===true;
-const platform=()=>{const ua=navigator.userAgent||"";if(/iPad|iPhone|iPod/.test(ua)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1))return"ios";return"android";};
+const platform=()=>{const ua=navigator.userAgent||"";return(/iPad|iPhone|iPod/.test(ua)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1))?"ios":"android";};
+const TYPE_COLOR={keynote:"#081c74",lecture:"#081c74",panel:"#081c74",workshop:"#1e69c4",interview:"#7dd3fc"};
+
+// Zeiten: "11:15 – 12:15" bzw. "11:15" (Ende = Start + 45 min)
+function parseTime(s){const m=(s||"").match(/(\d{1,2}):(\d{2})(?:\s*[–-]\s*(\d{1,2}):(\d{2}))?/);if(!m)return null;const a=+m[1]*60+ +m[2];const b=m[3]?+m[3]*60+ +m[4]:a+45;return{start:a,end:b,hasEnd:!!m[3]};}
+// Europe/Berlin-Uhrzeit -> Date (UTC)
+function berlinDate(iso,minutes){const[y,mo,d]=iso.split("-").map(Number);const guess=Date.UTC(y,mo-1,d,Math.floor(minutes/60),minutes%60);
+ const parts=new Intl.DateTimeFormat("en-US",{timeZone:"Europe/Berlin",hourCycle:"h23",year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit"}).formatToParts(new Date(guess));
+ const g=k=>+parts.find(p=>p.type===k).value;const asBerlin=Date.UTC(g("year"),g("month")-1,g("day"),g("hour"),g("minute"));return new Date(guess-(asBerlin-guess));}
+// Programmpunkte mit absoluten Zeiten anreichern
+function timeline(d,ln){const days=d.schedule[ln]||d.schedule.de;const iso=d.event.days||[];
+ return days.flatMap((dy,di)=>dy.events.map(e=>{const t=parseTime(e.time);const day=iso[di];return{...e,di,dayLabel:dy.day,t,startAt:t&&day?berlinDate(day,t.start):null,endAt:t&&day?berlinDate(day,t.end):null};}));}
+
+function useNow(ms=30000){const[n,setN]=useState(()=>new Date());useEffect(()=>{const i=setInterval(()=>setN(new Date()),ms);return()=>clearInterval(i);},[ms]);return n;}
 
 function useCongressData(){const[data,setData]=useState(loadCachedData);const[status,setStatus]=useState("loading");
 const sync=useCallback(async()=>{try{const r=await fetch(DATA_URL,{cache:"no-store"});if(!r.ok)throw new Error("HTTP "+r.status);const d=await r.json();if(!validData(d))throw new Error("invalid");
@@ -133,20 +154,22 @@ useEffect(()=>{sync();const iv=setInterval(sync,10*60*1000);const vis=()=>{if(do
 return()=>{clearInterval(iv);document.removeEventListener("visibilitychange",vis);window.removeEventListener("online",sync);};},[sync]);
 return{data,status,sync};}
 
-// ---------- Bausteine im Stil der Website ----------
-function SectionHead({label,title,desc,dark}){return(<div className="text-center mb-8">
-{label&&<p className="text-accent font-bold tracking-wider text-sm uppercase mb-2">{label}</p>}
-<h2 className={`font-serif text-3xl font-bold mb-4 ${dark?"text-white":"text-primary"}`}>{title}</h2>
-<div className="w-24 h-1 bg-accent mx-auto"/>
-{desc&&<p className="text-ink2 text-sm mt-5 max-w-md mx-auto leading-relaxed">{desc}</p>}</div>);}
+// Kalender-Export (.ics)
+function icsFor(events,d){const pad=n=>String(n).padStart(2,"0");const f=dt=>`${dt.getUTCFullYear()}${pad(dt.getUTCMonth()+1)}${pad(dt.getUTCDate())}T${pad(dt.getUTCHours())}${pad(dt.getUTCMinutes())}00Z`;
+ const esc=s=>(s||"").replace(/\\/g,"\\\\").replace(/\n/g,"\\n").replace(/,/g,"\\,").replace(/;/g,"\\;");const loc=(d.event.location&&d.event.location.de)||"";
+ const lines=["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//EBS Law Congress//App//DE","CALSCALE:GREGORIAN"];
+ events.filter(e=>e.startAt).forEach(e=>{lines.push("BEGIN:VEVENT",`UID:${e.id}@ebs-lawcongress.com`,`DTSTAMP:${f(new Date())}`,`DTSTART:${f(e.startAt)}`,`DTEND:${f(e.endAt)}`,`SUMMARY:${esc(e.title)}`,`LOCATION:${esc([e.location,loc].filter(Boolean).join(", "))}`,`DESCRIPTION:${esc([e.speaker,e.description].filter(Boolean).join("\n\n"))}`,"END:VEVENT");});
+ lines.push("END:VCALENDAR");return lines.join("\r\n");}
+function downloadIcs(events,d,name){const blob=new Blob([icsFor(events,d)],{type:"text/calendar;charset=utf-8"});const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),4000);}
 
-function Pills({ev,ln}){return(<div className="flex flex-col items-center gap-2 mb-5">
-{ev.date&&ev.date[ln]&&<span className="bg-accent text-white px-4 py-1.5 rounded-full text-xs font-semibold tracking-wide shadow-sm">{ev.date[ln]}</span>}
-{ev.location&&ev.location[ln]&&<span className="bg-white/20 backdrop-blur-sm border border-white/30 text-white px-4 py-1.5 rounded-full text-xs font-semibold tracking-wide text-center">{ev.location[ln]}</span>}</div>);}
-
+// ---------- UI-Bausteine ----------
+function Title({children,sub,right}){return(<div className="flex items-end justify-between gap-3 mb-4"><div><h1 className="font-serif text-[28px] leading-tight font-bold text-primary">{children}</h1><div className="w-12 h-[3px] bg-accent mt-2"/>{sub&&<p className="text-xs text-ink3 mt-2">{sub}</p>}</div>{right}</div>);}
+function Segmented({items,value,onChange}){return(<div className="flex bg-white rounded-lg p-1 border border-ink3/15 shadow-sm">{items.map(([id,lb])=><button key={id} onClick={()=>onChange(id)} className={`flex-1 py-2 rounded-md text-sm font-semibold transition-all ${value===id?"bg-primary text-white shadow":"text-ink3"}`}>{lb}</button>)}</div>);}
+function Chips({items,value,onChange}){return(<div className="flex gap-2 overflow-x-auto no-scrollbar">{items.map(([id,lb])=><button key={id} onClick={()=>onChange(id)} className={`px-3.5 py-1.5 rounded-full text-xs font-semibold border whitespace-nowrap transition-colors ${value===id?"bg-accent border-accent text-white":"bg-white border-ink3/15 text-ink3"}`}>{lb}</button>)}</div>);}
 function Sheet({onClose,children,label}){useEffect(()=>{const k=e=>{if(e.key==="Escape")onClose();};document.addEventListener("keydown",k);const o=document.body.style.overflow;document.body.style.overflow="hidden";return()=>{document.removeEventListener("keydown",k);document.body.style.overflow=o;};},[onClose]);
 return(<div className="fixed inset-0 z-[60] bg-black/50 flex items-end sm:items-center justify-center" onClick={onClose} role="dialog" aria-modal="true" aria-label={label}>
-<div className="animate-slideUp bg-white w-full sm:max-w-lg rounded-t-lg sm:rounded-lg max-h-[88vh] overflow-y-auto shadow-2xl pb-safe" onClick={e=>e.stopPropagation()}>{children}</div></div>);}
+<div className="animate-slideUp bg-white w-full sm:max-w-lg rounded-t-2xl sm:rounded-2xl max-h-[90vh] overflow-y-auto shadow-2xl safe-bottom" onClick={e=>e.stopPropagation()}>
+<div className="sticky top-0 z-10 flex justify-center pt-2 pb-1 bg-transparent pointer-events-none"><span className="w-10 h-1 rounded-full bg-ink3/25"/></div>{children}</div></div>);}
 
 // ---------- Installationsseite ----------
 function InstallPage({data:d,ln,setLn,t,onContinue}){const ev=(d&&d.event)||{name:"EBS Law Congress"};const[pf,setPf]=useState(platform);const[canPrompt,setCanPrompt]=useState(!!window.__installPrompt);
@@ -154,202 +177,210 @@ useEffect(()=>{const on=()=>setCanPrompt(!!window.__installPrompt);window.addEve
 const install=async()=>{const p=window.__installPrompt;if(!p)return;p.prompt();try{const r=await p.userChoice;if(r&&r.outcome==="accepted")onContinue();}catch(e){}window.__installPrompt=null;setCanPrompt(false);};
 const steps=pf==="ios"?t.inst.iosSteps:t.inst.andSteps;
 return(<div className="min-h-screen bg-cream">
-<header className="bg-primary text-white pt-safe">
-<div className="flex justify-between items-center h-16 px-4">
-<img src={img(d,"logo")} alt="EBS Law Congress" className="h-10 object-contain"/>
-<button onClick={()=>setLn(ln==="de"?"en":"de")} className="text-xs font-bold border border-white px-3 py-1 rounded-sm">{ln==="de"?"EN":"DE"}</button></div></header>
+<div className="relative bg-primary text-white overflow-hidden safe-top">
+<img src={img(d,"hero")} alt="" className="absolute inset-0 w-full h-full object-cover opacity-25"/>
+<div className="absolute inset-0 bg-gradient-to-b from-primary/60 via-primary/80 to-primary"/>
+<div className="relative z-10 px-5 pb-10">
+<div className="flex justify-end h-12 items-center"><button onClick={()=>setLn(ln==="de"?"en":"de")} className="text-xs font-bold border border-white/70 px-3 py-1 rounded-sm">{ln==="de"?"EN":"DE"}</button></div>
+<div className="flex flex-col items-center text-center pt-2">
+<div className="w-24 h-24 rounded-[22px] bg-white shadow-2xl flex items-center justify-center mb-5 ring-1 ring-white/20"><img src="icon-192.png" alt="" className="w-[72px] h-[72px] object-contain"/></div>
+<p className="text-sky-300 font-bold tracking-wider text-[11px] uppercase mb-2">{t.inst.badge}</p>
+<h1 className="font-serif text-[30px] font-bold leading-tight">{ev.name}</h1>
+{ev.date&&ev.date[ln]&&<span className="mt-4 bg-accent text-white px-4 py-1.5 rounded-full text-xs font-semibold shadow-sm">{ev.date[ln]}</span>}
+</div></div></div>
 
-<section className="relative overflow-hidden">
-<img src={img(d,"hero")} alt="" className="absolute inset-0 w-full h-full object-cover"/>
-<div className="absolute inset-0 bg-black/60"/>
-<div className="relative z-10 text-center text-white px-5 pt-12 pb-14">
-<p className="text-sky-300 font-bold tracking-wider text-xs uppercase mb-4">{t.inst.badge}</p>
-<h1 className="font-serif text-4xl font-bold leading-tight mb-5">{ev.name}</h1>
-<Pills ev={ev} ln={ln}/>
-{ev.motto&&ev.motto[ln]&&<p className="font-serif text-lg leading-snug text-white/90 max-w-md mx-auto mb-4">„{ev.motto[ln]}“</p>}
-<p className="text-sm text-white/80 max-w-sm mx-auto leading-relaxed">{t.inst.lead}</p>
-</div></section>
+<div className="px-5 -mt-5 relative z-10 max-w-md mx-auto">
+<div className="bg-white rounded-2xl shadow-lg border border-ink3/10 p-5">
+<h2 className="font-serif text-xl font-bold text-primary mb-4">{t.inst.title}</h2>
+<div className="space-y-4">{t.inst.feat.map(([ic,h,tx])=>{const Ic=I[ic];return(<div key={h} className="flex gap-3.5"><div className="w-10 h-10 rounded-xl bg-cream text-primary flex items-center justify-center flex-shrink-0"><Ic size={19}/></div><div><p className="font-semibold text-ink text-[15px] leading-tight">{h}</p><p className="text-[13px] text-ink3 leading-snug mt-0.5">{tx}</p></div></div>);})}</div></div>
 
-<section className="px-4 py-12">
-<SectionHead label={t.inst.label} title={t.inst.title} desc={t.inst.intro}/>
-<div className="max-w-md mx-auto">
-{canPrompt&&<button onClick={install} className="w-full bg-accent text-white px-6 py-3.5 rounded-sm font-medium flex items-center justify-center gap-2 shadow-sm mb-6"><I.Dl size={18}/>{t.inst.btn}</button>}
-<div className="flex justify-center mb-6"><div className="inline-flex bg-white rounded-lg p-1 shadow-sm border border-ink3/20">
-{[["ios",t.inst.ios],["android",t.inst.android]].map(([id,lb])=><button key={id} onClick={()=>setPf(id)} className={`px-4 py-2.5 rounded-md text-sm font-semibold transition-all ${pf===id?"bg-primary text-white shadow-md":"text-ink3"}`}>{lb}</button>)}</div></div>
-<div className="bg-white rounded-lg shadow-sm border border-ink3/10 divide-y divide-ink3/10">
-{steps.map(([ic,tx],i)=>{const Ic=I[ic];return(<div key={i} className="flex items-center gap-4 p-5">
-<div className="w-10 h-10 rounded-sm bg-primary text-white flex items-center justify-center font-serif font-bold text-lg flex-shrink-0">{i+1}</div>
-<p className="text-ink2 text-[15px] leading-snug flex-1">{tx}</p><Ic size={22} className="text-accent flex-shrink-0"/></div>);})}</div>
-{pf==="ios"&&<p className="text-xs text-ink3 mt-4 text-center">{t.inst.iosHint}</p>}
-<div className="grid grid-cols-3 gap-3 mt-10">{t.inst.feat.map(([ic,lb])=>{const Ic=I[ic];return(<div key={lb} className="text-center"><div className="w-12 h-12 mx-auto rounded-full bg-white border border-ink3/10 shadow-sm flex items-center justify-center text-primary mb-2"><Ic size={20}/></div><p className="text-xs font-semibold text-ink2">{lb}</p></div>);})}</div>
-<button onClick={onContinue} className="w-full mt-10 border border-primary text-primary px-6 py-3 rounded-sm font-medium flex items-center justify-center gap-2">{t.inst.cont}<I.Arrow size={16}/></button>
-</div></section>
-
-<footer className="bg-primary text-[#f8f5f2]/70 text-center text-xs py-8 px-4 pb-safe">
-<img src={img(d,"logo")} alt="" className="h-9 mx-auto mb-3 object-contain"/>
-<a href={(ev&&ev.website)||"https://www.ebs-lawcongress.com/"} target="_blank" rel="noopener noreferrer" className="hover:text-white">www.ebs-lawcongress.com</a></footer>
-</div>);}
-
-// ---------- Zeitplan ----------
-function TypeBadge({type,t}){return <span className="inline-block text-xs text-ink3 font-medium bg-cream px-2 py-0.5 rounded">{t.types[type]||t.types.other}</span>;}
-function SubEvents({items}){if(!items||!items.length)return null;return(<div className="mt-3 pl-3 border-l-2 border-accent/40 space-y-1">{items.map((s,i)=><p key={i} className="text-sm text-ink2"><span className="font-semibold text-primary mr-2">{s.time}</span>– {s.title}</p>)}</div>);}
-
-function EventCard({e,saved,onToggle,onOpen,t}){return(
-<div className="animate-fadeUp bg-white p-5 rounded-lg shadow-sm border border-ink3/10 cursor-pointer active:bg-cream/50" onClick={()=>onOpen(e)}>
-<div className="flex items-start justify-between gap-3">
-<div className="min-w-0 flex-1">
-<p className="text-xl font-bold text-primary">{e.time}</p>
-<div className="mt-1 mb-3"><TypeBadge type={e.type} t={t}/></div>
-<h3 className="text-[17px] font-bold text-primary leading-snug">{e.title}</h3>
-{e.speaker&&<p className="flex items-center text-ink2 text-sm mt-1.5"><I.Usr size={15} className="mr-2 flex-shrink-0 text-ink3"/>{e.speaker}</p>}
-{e.location&&<p className="flex items-center text-ink3 text-sm mt-1.5"><I.Pin size={15} className="mr-2 flex-shrink-0 text-accent"/>{e.location}</p>}
-<SubEvents items={e.subEvents}/></div>
-<button onClick={ev=>{ev.stopPropagation();onToggle(e.id);}} aria-label={saved?t.schedule.saved:t.schedule.save} aria-pressed={saved} className={`flex-shrink-0 -mr-1 -mt-1 p-2 rounded-sm transition-colors ${saved?"text-accent":"text-ink3/40"}`}>{saved?<I.BmF size={22}/>:<I.Bm size={22}/>}</button>
+<div className="mt-6">
+<p className="text-accent font-bold tracking-wider text-[11px] uppercase mb-3 text-center">{t.inst.how}</p>
+{canPrompt?<button onClick={install} className="w-full bg-accent text-white py-3.5 rounded-xl font-semibold flex items-center justify-center gap-2 shadow-md"><I.Dl size={18}/>{t.inst.btn}</button>:<>
+<Segmented items={[["ios",t.inst.ios],["android",t.inst.android]]} value={pf} onChange={setPf}/>
+<div className="mt-3 bg-white rounded-2xl border border-ink3/10 shadow-sm">
+{steps.map(([ic,tx],i)=>{const Ic=I[ic];return(<div key={i} className={`flex items-center gap-3.5 px-4 py-3.5 ${i?"border-t border-ink3/10":""}`}>
+<span className="w-7 h-7 rounded-full bg-primary text-white text-sm font-bold flex items-center justify-center flex-shrink-0">{i+1}</span>
+<p className="text-ink2 text-[15px] flex-1">{tx}</p><Ic size={20} className="text-accent flex-shrink-0"/></div>);})}</div>
+{pf==="ios"&&<p className="text-xs text-ink3 mt-3 text-center">{t.inst.iosHint}</p>}</>}
+</div>
+<button onClick={onContinue} className="w-full mt-6 mb-10 text-primary font-semibold py-3 flex items-center justify-center gap-1.5">{t.inst.cont}<I.Arrow size={16}/></button>
 </div></div>);}
 
-function EventDetail({e,saved,onToggle,onClose,t,ln,speakers}){const ms=matchSpeakers(e,speakers);return(
-<Sheet onClose={onClose} label={e.title}>
-<div className="bg-primary text-white px-6 pt-5 pb-6 relative">
-<button onClick={onClose} aria-label={t.gen.close} className="absolute right-3 top-3 p-2 text-white/70"><I.X size={20}/></button>
-<p className="text-2xl font-bold">{e.time}</p>
-<span className="inline-block text-xs font-medium bg-white/15 px-2 py-0.5 rounded mt-1">{t.types[e.type]||t.types.other}</span>
-<h2 className="font-serif text-2xl font-bold leading-tight mt-3 pr-6">{e.title}</h2></div>
-<div className="p-6">
-{((e.speaker&&!ms.length)||e.location)&&<div className="space-y-2 mb-4">
-{e.speaker&&!ms.length&&<p className="flex items-center text-ink2 text-sm"><I.Usr size={16} className="mr-2 text-ink3"/>{e.speaker}</p>}
-{e.location&&<p className="flex items-center text-ink2 text-sm"><I.Pin size={16} className="mr-2 text-accent"/>{e.location}</p>}</div>}
-<SubEvents items={e.subEvents}/>
-{e.description&&<p className="text-[15px] text-ink2 leading-relaxed my-4">{e.description}</p>}
-{ms.length>0&&<div className="space-y-2 my-5">{ms.map(p=><div key={p.id} className="flex items-center gap-3 bg-cream rounded-lg p-3">
-<img src={p.img} alt={p.n} className="w-12 h-12 rounded-full object-cover object-[center_20%] flex-shrink-0" onError={ev=>{ev.target.style.visibility='hidden'}}/>
-<div className="min-w-0"><p className="font-serif font-bold text-primary">{p.n}</p><p className="text-xs text-ink3">{ln==="de"?p.r:p.re}{(ln==="de"?p.c:p.ce)?` · ${ln==="de"?p.c:p.ce}`:""}</p></div></div>)}</div>}
-<button onClick={()=>onToggle(e.id)} className={`w-full mt-2 px-6 py-3 rounded-sm font-medium flex items-center justify-center gap-2 transition-colors ${saved?"border border-accent text-accent bg-white":"bg-accent text-white"}`}>{saved?<><I.BmF size={18}/>{t.schedule.saved}</>:<><I.Bm size={18}/>{t.schedule.save}</>}</button>
+// ---------- Programm ----------
+function TypeLabel({type,t}){return <span className="text-[11px] font-semibold uppercase tracking-wide" style={{color:type==="workshop"?"#1e69c4":type==="interview"?"#0369a1":"#4a4a4a"}}>{t.types[type]||t.types.other}</span>;}
+
+function EventRow({e,saved,onToggle,onOpen,t,live,conflict}){
+ if(isMinor(e.type))return(<div className="flex items-center gap-3 py-2 px-1 animate-fadeUp"><span className="w-[52px] text-right text-xs font-semibold text-ink3 flex-shrink-0">{e.time.split(/\s*[–-]\s*/)[0]}</span><div className="flex-1 flex items-center gap-2 text-sm text-ink3 border-t border-dashed border-ink3/25 pt-2"><I.Coffee size={14}/>{e.title}</div></div>);
+ const[a,b]=e.time.split(/\s*[–-]\s*/);
+ return(<div className="flex gap-3 animate-fadeUp">
+ <div className="w-[52px] text-right flex-shrink-0 pt-3"><p className="text-[15px] font-bold text-primary leading-none">{a}</p>{b&&<p className="text-[11px] text-ink3 mt-1">{b}</p>}</div>
+ <div onClick={()=>onOpen(e)} className={`flex-1 min-w-0 bg-white rounded-xl border shadow-sm cursor-pointer active:scale-[.99] transition-transform overflow-hidden ${live?"border-accent ring-1 ring-accent":"border-ink3/10"}`}>
+ <div className="flex"><div className="w-[3px] flex-shrink-0" style={{backgroundColor:TYPE_COLOR[e.type]||"#cbd5e1"}}/>
+ <div className="flex-1 min-w-0 p-3.5 pr-1">
+ <div className="flex items-center gap-2 mb-1"><TypeLabel type={e.type} t={t}/>{live&&<span className="flex items-center gap-1 text-[10px] font-bold text-accent uppercase"><span className="w-1.5 h-1.5 rounded-full bg-accent live-dot"/>Live</span>}{conflict&&<span className="flex items-center gap-1 text-[10px] font-bold text-amber-700 uppercase"><I.Alert size={11}/>{t.my.conflict}</span>}</div>
+ <h3 className="text-[15px] font-semibold text-ink leading-snug">{e.title}</h3>
+ {(e.speaker||e.location)&&<div className="flex flex-wrap gap-x-3 gap-y-0.5 mt-1.5 text-[13px] text-ink3">{e.speaker&&<span className="flex items-center gap-1 min-w-0"><I.Usr size={13} className="flex-shrink-0"/><span className="truncate">{e.speaker}</span></span>}{e.location&&<span className="flex items-center gap-1"><I.Pin size={13} className="text-accent"/>{e.location}</span>}</div>}
+ {e.subEvents&&e.subEvents.map((s,i)=><p key={i} className="text-xs text-ink3 mt-1"><span className="font-semibold text-primary">{s.time}</span> – {s.title}</p>)}
+ </div>
+ <button onClick={ev=>{ev.stopPropagation();onToggle(e.id);}} aria-label={saved?t.schedule.saved:t.schedule.save} aria-pressed={saved} className={`px-3 self-stretch flex items-start pt-3.5 ${saved?"text-accent":"text-ink3/35"}`}>{saved?<I.BmF size={20}/>:<I.Bm size={20}/>}</button></div></div></div>);}
+
+function EventDetail({e,saved,onToggle,onClose,t,ln,d,openSpeaker}){const ms=matchSpeakers(e,d.speakers);const tl=useMemo(()=>timeline(d,ln),[d,ln]);const full=tl.find(x=>x.id===e.id)||e;
+return(<Sheet onClose={onClose} label={e.title}>
+<div className="px-6 pb-6">
+<div className="flex items-center justify-between mb-2"><TypeLabel type={e.type} t={t}/><button onClick={onClose} aria-label={t.gen.close} className="p-1.5 -mr-1.5 rounded-full bg-cream text-ink3"><I.X size={18}/></button></div>
+<h2 className="font-serif text-[24px] font-bold text-primary leading-tight">{e.title}</h2>
+<div className="mt-4 rounded-xl bg-cream divide-y divide-ink3/10">
+<div className="flex items-center gap-3 px-4 py-3 text-sm text-ink2"><I.Cal size={17} className="text-accent"/>{full.dayLabel?`${full.dayLabel} · `:""}{e.time}</div>
+{e.location&&<div className="flex items-center gap-3 px-4 py-3 text-sm text-ink2"><I.Pin size={17} className="text-accent"/>{e.location}</div>}
+{e.speaker&&!ms.length&&<div className="flex items-center gap-3 px-4 py-3 text-sm text-ink2"><I.Usr size={17} className="text-accent"/>{e.speaker}</div>}</div>
+{e.subEvents&&e.subEvents.map((s,i)=><p key={i} className="text-sm text-ink2 mt-3"><span className="font-semibold text-primary">{s.time}</span> – {s.title}</p>)}
+{e.description&&<p className="text-[15px] text-ink2 leading-relaxed mt-4">{e.description}</p>}
+{ms.length>0&&<div className="mt-5 space-y-2">{ms.map(p=><button key={p.id} onClick={()=>openSpeaker(p)} className="w-full flex items-center gap-3 rounded-xl border border-ink3/10 p-3 text-left active:bg-cream">
+<img src={p.img} alt="" className="w-12 h-12 rounded-full object-cover object-[center_20%] flex-shrink-0 bg-cream"/>
+<div className="min-w-0 flex-1"><p className="font-serif font-bold text-primary leading-tight">{p.n}</p><p className="text-xs text-ink3 mt-0.5 truncate">{ln==="de"?p.r:p.re}{(ln==="de"?p.c:p.ce)?` · ${ln==="de"?p.c:p.ce}`:""}</p></div><I.Chev size={18} className="text-ink3/50"/></button>)}</div>}
+<div className="grid grid-cols-2 gap-3 mt-6">
+<button onClick={()=>onToggle(e.id)} className={`py-3 rounded-xl font-semibold text-sm flex items-center justify-center gap-2 ${saved?"bg-cream text-accent":"bg-accent text-white"}`}>{saved?<><I.BmF size={17}/>{t.schedule.saved}</>:<><I.Bm size={17}/>{t.schedule.save}</>}</button>
+<button disabled={!full.startAt} onClick={()=>downloadIcs([full],d,`${e.id}.ics`)} className="py-3 rounded-xl font-semibold text-sm flex items-center justify-center gap-2 border border-ink3/20 text-primary disabled:opacity-40"><I.CalPlus size={17}/>{t.my.icsOne}</button></div>
 </div></Sheet>);}
 
-function Hero({d,ln,t,status,onProgram}){const ev=d.event;return(
-<section className="relative overflow-hidden -mx-4 -mt-6 mb-0">
-<img src={img(d,"hero")} alt="" className="absolute inset-0 w-full h-full object-cover"/>
-<div className="absolute inset-0 bg-black/60"/>
-<div className="relative z-10 text-center text-white px-5 pt-10 pb-10">
-<Pills ev={ev} ln={ln}/>
-{ev.motto&&ev.motto[ln]&&<h1 className="font-serif text-[26px] font-bold leading-tight mb-6 max-w-xl mx-auto">{ev.motto[ln]}</h1>}
-<div className="flex flex-col gap-3 max-w-xs mx-auto">
-<button onClick={onProgram} className="bg-accent text-white px-6 py-3 rounded-sm font-medium">{t.gen.program}</button>
-{ev.ticketUrl&&<a href={ev.ticketUrl} target="_blank" rel="noopener noreferrer" className="border border-white text-white px-6 py-3 rounded-sm font-medium">{t.gen.tickets}</a>}</div>
-<p className="text-[11px] text-white/60 mt-6">{status==="offline"?t.gen.offline:`${t.gen.updated}: ${fmtTs(d.updatedAt,ln)}`}</p>
-</div></section>);}
+function NowCard({d,ln,t,now,onOpen}){const tl=useMemo(()=>timeline(d,ln).filter(e=>e.startAt&&!isMinor(e.type)),[d,ln]);const ev=d.event;
+ const days=(ev.days||[]).map(x=>berlinDate(x,0));if(!days.length)return null;
+ const first=days[0],lastEnd=new Date(days[days.length-1].getTime()+24*3600e3);
+ if(now<first){const diff=Math.ceil((first-now)/(24*3600e3));return(<div className="mt-3 flex items-center gap-2 text-sm text-white/90"><I.Cal size={15}/>{diff<=1?t.schedule.tomorrow:t.schedule.until(diff)}</div>);}
+ if(now>=lastEnd)return(<p className="mt-3 text-sm text-white/80">{t.schedule.over}</p>);
+ const live=tl.filter(e=>e.startAt<=now&&now<e.endAt);const next=tl.filter(e=>e.startAt>now).sort((a,b)=>a.startAt-b.startAt);const nxt=next.length?next.filter(e=>+e.startAt===+next[0].startAt):[];
+ const Item=({e})=>(<button onClick={()=>onOpen(e)} className="w-full text-left bg-white/10 rounded-lg px-3 py-2 mt-1.5 active:bg-white/20"><p className="text-sm font-semibold leading-snug line-clamp-3">{e.title}</p><p className="text-[11px] text-white/70 mt-0.5">{e.time}{e.location?` · ${e.location}`:""}</p></button>);
+ return(<div className="mt-4 space-y-3">
+ {live.length>0&&<div><p className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-sky-300"><span className="w-1.5 h-1.5 rounded-full bg-sky-300 live-dot"/>{t.schedule.now}</p>{live.slice(0,3).map(e=><Item key={e.id} e={e}/>)}</div>}
+ {nxt.length>0&&<div><p className="text-[11px] font-bold uppercase tracking-wider text-white/70">{t.schedule.next}</p>{nxt.slice(0,2).map(e=><Item key={e.id} e={e}/>)}</div>}</div>);}
 
-function ScheduleView({d,ln,t,saved,onToggle,status}){const[ad,setAd]=useState(0);const[fi,setFi]=useState("all");const[sel,setSel]=useState(null);const days=d.schedule[ln]||d.schedule.de;const di=Math.min(ad,Math.max(days.length-1,0));
-const list=useMemo(()=>{const ev=days[di]?.events||[];if(fi==="talks")return ev.filter(e=>isTalk(e.type));if(fi==="ws")return ev.filter(e=>e.type==="workshop"||e.type==="interview");return ev;},[days,di,fi]);
-const toProgram=()=>{const el=document.getElementById("zeitplan");if(el)el.scrollIntoView({behavior:"smooth",block:"start"});};
-return(<div>
-<Hero d={d} ln={ln} t={t} status={status} onProgram={toProgram}/>
-<section id="zeitplan" className="pt-12 scroll-mt-20">
-<SectionHead title={t.schedule.title}/>
-<div className="flex justify-center mb-5"><div className="inline-flex bg-white rounded-lg p-1 shadow-sm border border-ink3/20">
-{days.map((dy,i)=><button key={i} onClick={()=>setAd(i)} className={`px-6 py-2.5 rounded-md text-sm font-semibold transition-all ${di===i?"bg-primary text-white shadow-md":"text-ink3"}`}>{dy.day}</button>)}</div></div>
-<div className="flex justify-center gap-2 mb-6">{[["all",t.schedule.all],["talks",t.schedule.talks],["ws",t.schedule.ws]].map(([id,lb])=><button key={id} onClick={()=>setFi(id)} className={`px-3 py-1.5 rounded-sm text-xs font-semibold border transition-colors ${fi===id?"bg-primary border-primary text-white":"bg-white border-ink3/20 text-ink3"}`}>{lb}</button>)}</div>
-<div className="space-y-4">{list.length===0?<p className="text-center text-ink3 py-12 text-sm">{t.schedule.none}</p>:list.map(e=><EventCard key={e.id} e={e} saved={saved.has(e.id)} onToggle={onToggle} onOpen={setSel} t={t}/>)}</div>
-</section>
-{sel&&<EventDetail e={sel} saved={saved.has(sel.id)} onToggle={onToggle} onClose={()=>setSel(null)} t={t} ln={ln} speakers={d.speakers}/>}
-</div>);}
+function ScheduleView({d,ln,t,saved,onToggle,status,openEvent,now}){
+ const tlAll=useMemo(()=>timeline(d,ln),[d,ln]);const days=d.schedule[ln]||d.schedule.de;
+ const todayIdx=(d.event.days||[]).findIndex(x=>{const s=berlinDate(x,0);return now>=s&&now<new Date(s.getTime()+24*3600e3);});
+ const[ad,setAd]=useState(todayIdx>=0?todayIdx:0);const[fi,setFi]=useState("all");const di=Math.min(ad,Math.max(days.length-1,0));
+ const list=useMemo(()=>{const ev=tlAll.filter(e=>e.di===di);if(fi==="talks")return ev.filter(e=>isTalk(e.type));if(fi==="ws")return ev.filter(e=>e.type==="workshop"||e.type==="interview");if(fi==="saved")return ev.filter(e=>saved.has(e.id));return ev;},[tlAll,di,fi,saved]);
+ const ev=d.event;
+ return(<div>
+ <div className="relative rounded-2xl overflow-hidden bg-primary text-white shadow-md">
+ <img src={img(d,"hero")} alt="" className="absolute inset-0 w-full h-full object-cover opacity-35"/>
+ <div className="absolute inset-0 bg-gradient-to-br from-primary/70 via-primary/85 to-primary"/>
+ <div className="relative p-5">
+ <div className="flex flex-wrap gap-2 mb-3">{ev.date&&ev.date[ln]&&<span className="bg-accent px-3 py-1 rounded-full text-[11px] font-semibold">{ev.date[ln]}</span>}<span className="bg-white/15 border border-white/25 px-3 py-1 rounded-full text-[11px] font-semibold">Oestrich-Winkel</span></div>
+ {ev.motto&&ev.motto[ln]&&<h2 className="font-serif text-[21px] font-bold leading-snug line-clamp-3">{ev.motto[ln]}</h2>}
+ <NowCard d={d} ln={ln} t={t} now={now} onOpen={openEvent}/>
+ <div className="flex gap-2 mt-4">{ev.ticketUrl&&<a href={ev.ticketUrl} target="_blank" rel="noopener noreferrer" className="flex-1 bg-white text-primary text-sm font-semibold py-2.5 rounded-lg flex items-center justify-center gap-1.5"><I.Ticket size={16}/>{t.gen.tickets}</a>}{ev.website&&<a href={ev.website} target="_blank" rel="noopener noreferrer" className="flex-1 border border-white/50 text-white text-sm font-semibold py-2.5 rounded-lg flex items-center justify-center gap-1.5"><I.EL size={15}/>{t.gen.website}</a>}</div>
+ </div></div>
+ <div className="sticky sticky-sub z-30 -mx-4 px-4 pt-4 pb-3 bg-cream/95 backdrop-blur space-y-3">
+ <Segmented items={days.map((dy,i)=>[i,dy.day+(todayIdx===i?` · ${t.schedule.today}`:"")])} value={di} onChange={setAd}/>
+ <Chips items={[["all",t.schedule.all],["talks",t.schedule.talks],["ws",t.schedule.ws],["saved",`★ ${t.nav.my}`]]} value={fi} onChange={setFi}/></div>
+ <div className="space-y-2.5 mt-1">{list.length===0?<p className="text-center text-ink3 py-12 text-sm">{t.schedule.none}</p>:list.map(e=><EventRow key={e.id} e={e} saved={saved.has(e.id)} onToggle={onToggle} onOpen={openEvent} t={t} live={e.startAt&&e.startAt<=now&&now<e.endAt}/>)}</div>
+ <p className="text-center text-[11px] text-ink3/70 mt-8">{status==="offline"?t.gen.offline:`${t.gen.updated} ${fmtTs(d.updatedAt,ln)}`}</p>
+ </div>);}
 
-function MyPlanView({d,ln,t,saved,onToggle}){const[sel,setSel]=useState(null);const days=d.schedule[ln]||d.schedule.de;
-const groups=useMemo(()=>days.map(dy=>({day:dy.day,events:dy.events.filter(e=>saved.has(e.id))})).filter(g=>g.events.length),[days,saved]);
-const n=groups.reduce((a,g)=>a+g.events.length,0);
-return(<div className="pt-6">
-<SectionHead label={t.my.label} title={t.my.title} desc={n?t.my.count(n):null}/>
-{n===0?<div className="bg-white rounded-lg border border-ink3/10 shadow-sm text-center px-6 py-12"><I.Bm size={40} className="text-accent/40 mx-auto mb-4"/><p className="font-serif text-lg font-bold text-primary mb-2">{t.my.empty}</p><p className="text-ink3 text-sm">{t.my.hint}</p></div>
-:groups.map(g=><div key={g.day} className="mb-8"><h3 className="font-serif text-xl font-bold text-primary mb-3 flex items-center gap-3"><span className="w-1 h-6 bg-accent inline-block"/>{g.day}</h3><div className="space-y-4">{g.events.map(e=><EventCard key={e.id} e={e} saved={true} onToggle={onToggle} onOpen={setSel} t={t}/>)}</div></div>)}
-{sel&&<EventDetail e={sel} saved={saved.has(sel.id)} onToggle={onToggle} onClose={()=>setSel(null)} t={t} ln={ln} speakers={d.speakers}/>}
-</div>);}
+// ---------- Mein Plan ----------
+function MyPlanView({d,ln,t,saved,onToggle,openEvent,go,now}){const tl=useMemo(()=>timeline(d,ln),[d,ln]);const mine=tl.filter(e=>saved.has(e.id));
+ const conflicts=useMemo(()=>{const s=new Set();mine.forEach(a=>mine.forEach(b=>{if(a.id!==b.id&&a.di===b.di&&a.t&&b.t&&a.t.start<b.t.end&&b.t.start<a.t.end){s.add(a.id);s.add(b.id);}}));return s;},[mine]);
+ const groups=[...new Set(mine.map(e=>e.di))].map(di=>({di,label:mine.find(e=>e.di===di).dayLabel,events:mine.filter(e=>e.di===di)}));
+ return(<div>
+ <Title sub={mine.length?t.my.count(mine.length):null} right={mine.length>0&&<button onClick={()=>downloadIcs(mine,d,"ebs-law-congress.ics")} className="flex items-center gap-1.5 text-sm font-semibold text-accent bg-white border border-ink3/15 rounded-lg px-3 py-2 shadow-sm"><I.CalPlus size={16}/>{t.my.ics}</button>}>{t.my.title}</Title>
+ {mine.length===0?<div className="bg-white rounded-2xl border border-ink3/10 shadow-sm text-center px-6 py-12 mt-6"><div className="w-14 h-14 rounded-full bg-cream text-accent flex items-center justify-center mx-auto mb-4"><I.Bm size={26}/></div><p className="font-serif text-xl font-bold text-primary mb-2">{t.my.empty}</p><p className="text-ink3 text-sm leading-relaxed mb-6">{t.my.hint}</p><button onClick={()=>go("schedule")} className="bg-accent text-white px-6 py-3 rounded-lg font-semibold text-sm">{t.my.toProgram}</button></div>
+ :groups.map(g=><div key={g.di} className="mb-6"><p className="text-accent font-bold tracking-wider text-[11px] uppercase mb-2 pl-[64px]">{g.label}</p><div className="space-y-2.5">{g.events.map(e=><EventRow key={e.id} e={e} saved={true} onToggle={onToggle} onOpen={openEvent} t={t} conflict={conflicts.has(e.id)} live={e.startAt&&e.startAt<=now&&now<e.endAt}/>)}</div></div>)}
+ </div>);}
 
 // ---------- Raumplan ----------
-function RoomView({d,ln,t}){const rn=Object.assign({mainStage:"Main Stage",max:"Max",audi:"Audi",weinkeller:"Weinkeller",catering:"Catering"},(d.rooms&&d.rooms[ln])||{});const plan=img(d,"roomPlan");
-const rooms=[["mainStage","bg-primary text-white"],["max","bg-accent text-white"],["audi","bg-accent text-white"],["weinkeller","bg-white text-primary border-2 border-primary"],["catering","bg-white text-ink border-2 border-accent"]];
-return(<div className="pt-6">
-<SectionHead label={t.room.label} title={t.room.title} desc={t.room.desc}/>
-{plan&&<a href={plan} target="_blank" rel="noopener noreferrer" className="block bg-white rounded-lg shadow-md p-3 mb-2"><img src={plan} alt={t.room.title} className="w-full h-auto rounded"/></a>}
-{plan&&<p className="text-center text-xs text-accent font-semibold mb-8"><a href={plan} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1">{t.room.open}<I.EL size={12}/></a></p>}
-<div className="space-y-3">{rooms.map(([id,cl])=><div key={id} className="bg-white rounded-lg border border-ink3/10 shadow-sm p-4 flex items-center gap-4">
-<div className={`w-11 h-11 rounded-sm flex items-center justify-center flex-shrink-0 ${cl}`}><I.Pin size={18}/></div>
-<div><h3 className="font-serif font-bold text-primary text-lg leading-tight">{rn[id]}</h3>{t.room.d[id]&&<p className="text-sm text-ink3 mt-0.5">{t.room.d[id]}</p>}</div></div>)}</div>
-{d.event.location&&d.event.location[ln]&&<p className="flex items-start justify-center text-sm text-ink2 mt-8 text-center"><I.Pin size={16} className="mr-2 mt-0.5 text-accent flex-shrink-0"/>{d.event.location[ln]}</p>}
-</div>);}
+function RoomView({d,ln,t}){const rn=Object.assign({mainStage:"Main Stage",max:"Max",audi:"Audi",weinkeller:"Weinkeller",catering:"Catering"},(d.rooms&&d.rooms[ln])||{});const plan=img(d,"roomPlan");const[zoom,setZoom]=useState(false);
+ const all=(d.schedule[ln]||d.schedule.de).flatMap(x=>x.events);const count=id=>{if(id==="mainStage")return all.filter(e=>isTalk(e.type)&&!e.location).length;const w=(rn[id]||"").split(/[\s/]/)[0].toLowerCase();return w?all.filter(e=>(e.location||"").toLowerCase().includes(w)).length:0;};
+ const rooms=[["mainStage","#081c74"],["max","#1e69c4"],["audi","#1e69c4"],["weinkeller","#4a4a4a"],["catering","#4a4a4a"]];
+ return(<div>
+ <Title sub={(d.event.location&&d.event.location[ln])||""}>{t.room.title}</Title>
+ {plan&&<button onClick={()=>setZoom(true)} className="relative block w-full bg-white rounded-2xl shadow-sm border border-ink3/10 p-2.5"><img src={plan} alt={t.room.title} className="w-full h-auto rounded-lg"/><span className="absolute right-4 bottom-4 flex items-center gap-1 bg-primary/90 text-white text-[11px] font-semibold px-2.5 py-1 rounded-full"><I.Zoom size={12}/>{t.room.hint}</span></button>}
+ <div className="mt-5 bg-white rounded-2xl border border-ink3/10 shadow-sm divide-y divide-ink3/10">{rooms.map(([id,c])=>{const n=count(id);return(<div key={id} className="flex items-center gap-3.5 px-4 py-3.5">
+ <span className="w-2.5 h-2.5 rounded-full flex-shrink-0" style={{backgroundColor:c}}/>
+ <div className="flex-1 min-w-0"><p className="font-serif font-bold text-primary text-[17px] leading-tight">{rn[id]}</p>{t.room.d[id]&&<p className="text-xs text-ink3 mt-0.5">{t.room.d[id]}</p>}</div>
+ {n>0&&<span className="text-[11px] font-semibold text-accent bg-cream px-2 py-1 rounded-full whitespace-nowrap">{t.room.sessions(n)}</span>}</div>);})}</div>
+ {zoom&&<div className="fixed inset-0 z-[70] bg-black flex flex-col" role="dialog" aria-modal="true">
+ <div className="flex justify-end safe-top px-3"><button onClick={()=>setZoom(false)} aria-label={t.gen.close} className="m-2 p-2 rounded-full bg-white/15 text-white"><I.X size={22}/></button></div>
+ <div className="flex-1 overflow-auto"><img src={plan} alt={t.room.title} className="max-w-none w-[230%] h-auto bg-white"/></div></div>}
+ </div>);}
 
 // ---------- Speaker ----------
-function SpeakersView({d,ln,t}){const[sel,setSel]=useState(null);const org=s=>ln==="de"?s.c:s.ce;const role=s=>ln==="de"?s.r:s.re;
-return(<div className="bg-primary -mx-4 -mt-6 px-4 pt-10 pb-10 min-h-[calc(100vh-8rem)]">
-<SectionHead title={t.speakers.title} dark/>
-<div className="grid grid-cols-2 gap-3">{d.speakers.map(s=><button key={s.id} onClick={()=>setSel(s)} className="relative overflow-hidden rounded-sm shadow-lg text-left animate-fadeUp">
-<div className="relative pt-[133.33%] bg-white/5">
-<img src={s.img} alt={s.n} loading="lazy" className="absolute inset-0 w-full h-full object-cover object-[center_20%]"/>
-<div className="absolute inset-0 bg-gradient-to-t from-primary via-black/40 to-transparent opacity-90"/>
-<div className="absolute bottom-0 left-0 w-full p-3 text-white">
-<h3 className="font-serif text-[15px] font-bold leading-tight mb-1">{s.n}</h3>
-<p className="text-sky-300 font-medium text-xs leading-snug">{role(s)}</p>
-{org(s)&&<p className="text-gray-300 text-[11px] leading-snug mt-0.5">{org(s)}</p>}</div></div></button>)}</div>
-{sel&&<Sheet onClose={()=>setSel(null)} label={sel.n}>
-<div className="relative">
-<div className="relative h-72 bg-primary"><img src={sel.img} alt={sel.n} className="absolute inset-0 w-full h-full object-cover object-[center_20%]"/><div className="absolute inset-0 bg-gradient-to-t from-primary via-black/30 to-transparent"/></div>
-<button onClick={()=>setSel(null)} aria-label={t.gen.close} className="absolute right-3 top-3 p-2 rounded-full bg-black/30 text-white"><I.X size={20}/></button>
-<div className="absolute bottom-0 left-0 right-0 p-6 text-white"><h2 className="font-serif text-2xl font-bold">{sel.n}</h2><p className="text-sky-300 font-medium text-sm mt-1">{role(sel)}</p>{org(sel)&&<p className="text-gray-300 text-xs mt-0.5">{org(sel)}</p>}</div></div>
-<div className="p-6">
-{(ln==="de"?sel.bio:sel.bioe)&&<p className="text-[15px] text-ink2 leading-relaxed">{ln==="de"?sel.bio:sel.bioe}</p>}
-{sel.li&&<a href={sel.li} target="_blank" rel="noopener noreferrer" className="mt-6 w-full bg-primary text-white px-6 py-3 rounded-sm font-medium flex items-center justify-center gap-2"><LinkedIn size={16}/>LinkedIn</a>}
-<button onClick={()=>setSel(null)} className="mt-3 w-full border border-ink3/30 text-ink2 px-6 py-3 rounded-sm font-medium">{t.gen.close}</button></div></Sheet>}
-</div>);}
+function SpeakerSheet({p,d,ln,t,onClose,openEvent}){const org=ln==="de"?p.c:p.ce;const tl=useMemo(()=>timeline(d,ln),[d,ln]);const sessions=tl.filter(e=>e.speaker&&e.speaker.includes(p.n));
+ return(<Sheet onClose={onClose} label={p.n}>
+ <div className="px-6 pb-6">
+ <div className="flex items-start gap-4">
+ <img src={p.img} alt="" className="w-20 h-20 rounded-2xl object-cover object-[center_20%] flex-shrink-0 bg-cream"/>
+ <div className="flex-1 min-w-0 pt-1"><h2 className="font-serif text-[22px] font-bold text-primary leading-tight">{p.n}</h2><p className="text-sm text-accent font-medium mt-1">{ln==="de"?p.r:p.re}</p>{org&&<p className="text-xs text-ink3 mt-0.5">{org}</p>}</div>
+ <button onClick={onClose} aria-label={t.gen.close} className="p-1.5 -mr-1.5 rounded-full bg-cream text-ink3"><I.X size={18}/></button></div>
+ {(ln==="de"?p.bio:p.bioe)&&<p className="text-[15px] text-ink2 leading-relaxed mt-5">{ln==="de"?p.bio:p.bioe}</p>}
+ {sessions.length>0&&<div className="mt-5"><p className="text-accent font-bold tracking-wider text-[11px] uppercase mb-2">{t.speakers.sessions}</p><div className="space-y-2">{sessions.map(e=><button key={e.id} onClick={()=>openEvent(e)} className="w-full text-left flex items-center gap-3 rounded-xl bg-cream px-4 py-3"><div className="flex-1 min-w-0"><p className="text-[11px] text-ink3">{e.dayLabel} · {e.time}</p><p className="text-sm font-semibold text-ink leading-snug">{e.title}</p></div><I.Chev size={18} className="text-ink3/50"/></button>)}</div></div>}
+ {p.li&&<a href={p.li} target="_blank" rel="noopener noreferrer" className="mt-5 w-full bg-primary text-white py-3 rounded-xl font-semibold text-sm flex items-center justify-center gap-2"><LinkedIn size={16}/>LinkedIn</a>}
+ </div></Sheet>);}
+
+function SpeakersView({d,ln,t,openSpeaker}){const[q,setQ]=useState("");const role=s=>ln==="de"?s.r:s.re;const org=s=>ln==="de"?s.c:s.ce;
+ const list=d.speakers.filter(s=>!q||[s.n,s.r,s.re,s.c,s.ce].join(" ").toLowerCase().includes(q.toLowerCase()));
+ return(<div>
+ <Title sub={`${d.speakers.length} ${t.speakers.title}`}>{t.speakers.title}</Title>
+ <label className="flex items-center gap-2 bg-white border border-ink3/15 rounded-xl px-3.5 py-2.5 shadow-sm mb-4"><I.Search size={17} className="text-ink3"/><input value={q} onChange={e=>setQ(e.target.value)} placeholder={t.speakers.search} className="flex-1 bg-transparent outline-none text-[15px] text-ink placeholder:text-ink3/60"/>{q&&<button onClick={()=>setQ("")} aria-label={t.gen.close} className="text-ink3"><I.X size={16}/></button>}</label>
+ {list.length===0?<p className="text-center text-ink3 py-10 text-sm">{t.speakers.none}</p>:
+ <div className="grid grid-cols-2 gap-3">{list.map(s=><button key={s.id} onClick={()=>openSpeaker(s)} className="relative rounded-xl overflow-hidden shadow-md text-left animate-fadeUp bg-primary">
+ <div className="relative pt-[120%]"><img src={s.img} alt={s.n} loading="lazy" className="absolute inset-0 w-full h-full object-cover object-[center_20%]"/>
+ <div className="absolute inset-0 bg-gradient-to-t from-primary via-primary/30 to-transparent"/>
+ <div className="absolute bottom-0 inset-x-0 p-3 text-white"><p className="font-serif text-[15px] font-bold leading-tight">{s.n}</p><p className="text-sky-300 text-[11px] font-medium leading-snug mt-0.5 line-clamp-3">{role(s)}</p>{org(s)&&<p className="text-white/70 text-[10px] leading-snug mt-0.5 truncate">{org(s)}</p>}</div></div></button>)}</div>}
+ </div>);}
 
 // ---------- Partner ----------
-function PartnersView({d,ln,t}){return(<div className="bg-white -mx-4 -mt-6 px-4 pt-10 pb-10 min-h-[calc(100vh-8rem)]">
-<SectionHead label={t.partners.label} title={t.partners.title}/>
-<div className="grid grid-cols-2 gap-3">{d.sponsors.map((s,i)=><a key={i} href={s.u||undefined} target="_blank" rel="noopener noreferrer" className="flex flex-col items-center justify-center gap-3 border border-ink3/10 rounded-lg p-4 h-36 bg-white shadow-sm animate-fadeUp">
-<div className="flex-1 flex items-center justify-center w-full"><img src={s.l} alt={s.n} loading="lazy" className="max-h-16 max-w-full object-contain"/></div>
-<span className="text-[11px] font-semibold text-ink3 text-center leading-tight">{s.n}</span></a>)}</div>
-<div className="text-center mt-10">
-<a href={d.event.website||"https://www.ebs-lawcongress.com/"} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 bg-primary text-white px-8 py-3 rounded-sm font-bold shadow-sm">{t.gen.website}<I.EL size={16}/></a></div>
-</div>);}
+function PartnersView({d,t}){return(<div>
+ <Title sub={`${d.sponsors.length} ${t.nav.partners}`}>{t.partners.title}</Title>
+ <div className="grid grid-cols-3 gap-2.5">{d.sponsors.map((s,i)=><a key={i} href={s.u||undefined} target="_blank" rel="noopener noreferrer" className="bg-white rounded-xl border border-ink3/10 shadow-sm aspect-square flex flex-col items-center justify-center p-2.5 animate-fadeUp active:scale-95 transition-transform">
+ <div className="flex-1 w-full flex items-center justify-center"><img src={s.l} alt={s.n} loading="lazy" className="max-h-12 max-w-full object-contain"/></div>
+ <span className="text-[10px] font-medium text-ink3 text-center leading-tight line-clamp-3">{s.n}</span></a>)}</div>
+ </div>);}
 
 // ---------- App ----------
 function App(){
-const[ln,setLnRaw]=useState(()=>store.get(LANG_KEY)||((navigator.language||"de").toLowerCase().startsWith("de")?"de":"en"));
-const setLn=l=>{setLnRaw(l);store.set(LANG_KEY,l);document.documentElement.lang=l;};
-const t=TT[ln];
-const[showInstall,setShowInstall]=useState(()=>!isStandalone()&&!sessionStorage.getItem(SKIP_KEY));
-const cont=useCallback(()=>{try{sessionStorage.setItem(SKIP_KEY,"1");}catch(e){}setShowInstall(false);window.scrollTo(0,0);},[]);
-const[vw,setVw]=useState("schedule");
-const[saved,setSaved]=useState(()=>{try{return new Set(JSON.parse(store.get(SAVED_KEY)||"[]"));}catch(e){return new Set();}});
-const toggle=useCallback(id=>{setSaved(p=>{const n=new Set(p);n.has(id)?n.delete(id):n.add(id);store.set(SAVED_KEY,JSON.stringify([...n]));return n;});},[]);
-const{data:d,status,sync}=useCongressData();
-useEffect(()=>{const b=document.getElementById("boot");if(b)b.remove();document.documentElement.lang=ln;},[]);
-const savedCount=useMemo(()=>d?d.schedule.de.reduce((n,dy)=>n+dy.events.filter(e=>saved.has(e.id)).length,0):0,[d,saved]);
-const go=v=>{setVw(v);window.scrollTo(0,0);};
+ const[ln,setLnRaw]=useState(()=>store.get(LANG_KEY)||((navigator.language||"de").toLowerCase().startsWith("de")?"de":"en"));
+ const setLn=l=>{setLnRaw(l);store.set(LANG_KEY,l);document.documentElement.lang=l;};
+ const t=TT[ln];const now=useNow();
+ const[showInstall,setShowInstall]=useState(()=>{try{return!isStandalone()&&!sessionStorage.getItem(SKIP_KEY);}catch(e){return!isStandalone();}});
+ const cont=useCallback(()=>{try{sessionStorage.setItem(SKIP_KEY,"1");}catch(e){}setShowInstall(false);window.scrollTo(0,0);},[]);
+ const[vw,setVw]=useState("schedule");
+ const[saved,setSaved]=useState(()=>{try{return new Set(JSON.parse(store.get(SAVED_KEY)||"[]"));}catch(e){return new Set();}});
+ const toggle=useCallback(id=>{setSaved(p=>{const n=new Set(p);n.has(id)?n.delete(id):n.add(id);store.set(SAVED_KEY,JSON.stringify([...n]));if(navigator.vibrate)navigator.vibrate(8);return n;});},[]);
+ const{data:d,status,sync}=useCongressData();
+ const[selEvent,setSelEvent]=useState(null);const[selSpeaker,setSelSpeaker]=useState(null);
+ const openEvent=useCallback(e=>{setSelSpeaker(null);setSelEvent(e);},[]);const openSpeaker=useCallback(p=>{setSelEvent(null);setSelSpeaker(p);},[]);
+ useEffect(()=>{const b=document.getElementById("boot");if(b)b.remove();document.documentElement.lang=ln;},[]);
+ const savedCount=useMemo(()=>d?d.schedule.de.reduce((n,dy)=>n+dy.events.filter(e=>saved.has(e.id)).length,0):0,[d,saved]);
+ const go=v=>{setVw(v);window.scrollTo(0,0);};
 
-if(showInstall)return <InstallPage data={d} ln={ln} setLn={setLn} t={t} onContinue={cont}/>;
+ if(showInstall)return <InstallPage data={d} ln={ln} setLn={setLn} t={t} onContinue={cont}/>;
 
-const nav=[["schedule",t.nav.schedule,I.Cal],["my",t.nav.my,I.Bm],["room",t.nav.room,I.Map],["speakers",t.nav.speakers,I.Users],["partners",t.nav.partners,I.Award]];
-return(<div className="min-h-screen bg-cream">
-<header className="sticky top-0 z-50 bg-primary text-white shadow-lg pt-safe">
-<div className="flex justify-between items-center h-16 px-4">
-<button onClick={()=>go("schedule")} className="flex items-center gap-3 min-w-0"><img src={img(d,"logo")} alt="" className="h-10 object-contain flex-shrink-0"/><span className="font-serif text-[17px] leading-tight font-bold text-cream truncate">{(d&&d.event.name)||"EBS Law Congress"}</span></button>
-<div className="flex items-center gap-3 flex-shrink-0">
-{savedCount>0&&vw!=="my"&&<button onClick={()=>go("my")} aria-label={t.nav.my} className="relative text-xs font-bold bg-accent px-3 py-1 rounded-sm flex items-center gap-1"><I.BmF size={12}/>{savedCount}</button>}
-<button onClick={()=>setLn(ln==="de"?"en":"de")} className="text-xs font-bold border border-white px-3 py-1 rounded-sm">{ln==="de"?"EN":"DE"}</button></div></div></header>
+ const nav=[["schedule",t.nav.schedule,I.Cal],["my",t.nav.my,I.Bm],["room",t.nav.room,I.Map],["speakers",t.nav.speakers,I.Users],["partners",t.nav.partners,I.Award]];
+ return(<div className="min-h-screen bg-cream">
+ <header className="sticky top-0 z-50 bg-primary text-white shadow-md safe-top">
+ <div className="flex justify-between items-center h-14 px-4">
+ <button onClick={()=>go("schedule")} className="flex items-center gap-2.5 min-w-0"><img src={img(d,"logo")} alt="" className="h-9 w-9 object-contain flex-shrink-0"/><span className="font-serif text-[17px] leading-tight font-bold text-cream truncate">{(d&&d.event.name)||"EBS Law Congress"}</span></button>
+ <div className="flex items-center gap-2 flex-shrink-0">
+ {status==="offline"&&d&&<span title={t.gen.offline} className="text-white/60"><I.Wifi size={16}/></span>}
+ <button onClick={()=>setLn(ln==="de"?"en":"de")} className="text-xs font-bold border border-white/70 px-2.5 py-1 rounded-sm">{ln==="de"?"EN":"DE"}</button></div></div></header>
 
-<main className="px-4 pt-6 pb-28 max-w-2xl mx-auto">
-{!d?<div className="text-center py-24">{status==="loading"?<p className="text-ink3 text-sm">{t.gen.loading}</p>:<><p className="text-ink2 text-sm mb-5">{t.gen.loadErr}</p><button onClick={sync} className="bg-accent text-white px-6 py-3 rounded-sm font-medium">{t.gen.retry}</button></>}</div>:<>
-{vw==="schedule"&&<ScheduleView d={d} ln={ln} t={t} saved={saved} onToggle={toggle} status={status}/>}
-{vw==="my"&&<MyPlanView d={d} ln={ln} t={t} saved={saved} onToggle={toggle}/>}
-{vw==="room"&&<RoomView d={d} ln={ln} t={t}/>}
-{vw==="speakers"&&<SpeakersView d={d} ln={ln} t={t}/>}
-{vw==="partners"&&<PartnersView d={d} ln={ln} t={t}/>}</>}
-</main>
+ <main className="px-4 pt-4 pb-28 max-w-2xl mx-auto">
+ {!d?<div className="text-center py-24">{status==="loading"?<p className="text-ink3 text-sm">{t.gen.loading}</p>:<><p className="text-ink2 text-sm mb-5">{t.gen.loadErr}</p><button onClick={sync} className="bg-accent text-white px-6 py-3 rounded-lg font-semibold">{t.gen.retry}</button></>}</div>:<>
+ {vw==="schedule"&&<ScheduleView d={d} ln={ln} t={t} saved={saved} onToggle={toggle} status={status} openEvent={openEvent} now={now}/>}
+ {vw==="my"&&<MyPlanView d={d} ln={ln} t={t} saved={saved} onToggle={toggle} openEvent={openEvent} go={go} now={now}/>}
+ {vw==="room"&&<RoomView d={d} ln={ln} t={t}/>}
+ {vw==="speakers"&&<SpeakersView d={d} ln={ln} t={t} openSpeaker={openSpeaker}/>}
+ {vw==="partners"&&<PartnersView d={d} t={t}/>}
+ {selEvent&&<EventDetail e={selEvent} saved={saved.has(selEvent.id)} onToggle={toggle} onClose={()=>setSelEvent(null)} t={t} ln={ln} d={d} openSpeaker={openSpeaker}/>}
+ {selSpeaker&&<SpeakerSheet p={selSpeaker} d={d} ln={ln} t={t} onClose={()=>setSelSpeaker(null)} openEvent={openEvent}/>}</>}
+ </main>
 
-<nav className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-ink3/15 pb-safe">
-<div className="flex max-w-2xl mx-auto">{nav.map(([id,lb,Ic])=>{const a=vw===id;return(<button key={id} onClick={()=>go(id)} aria-current={a?"page":undefined} className={`relative flex-1 flex flex-col items-center pt-2.5 pb-2 transition-colors ${a?"text-primary":"text-ink3/60"}`}>
-{a&&<span className="absolute top-0 left-1/2 -translate-x-1/2 w-8 h-[3px] bg-accent"/>}
-<Ic size={21} strokeWidth={a?2.4:1.8}/><span className={`text-[10px] mt-1 ${a?"font-bold":"font-medium"}`}>{lb}</span></button>);})}</div></nav>
-</div>);}
+ <nav className="fixed bottom-0 inset-x-0 z-50 bg-white/95 backdrop-blur border-t border-ink3/10 safe-bottom">
+ <div className="flex max-w-2xl mx-auto">{nav.map(([id,lb,Ic])=>{const a=vw===id;return(<button key={id} onClick={()=>go(id)} aria-current={a?"page":undefined} className={`relative flex-1 flex flex-col items-center pt-2 pb-1.5 transition-colors ${a?"text-primary":"text-ink3/55"}`}>
+ <span className={`relative flex items-center justify-center w-14 h-7 rounded-full transition-colors ${a?"bg-primary/10":""}`}><Ic size={20} strokeWidth={a?2.3:1.8}/>{id==="my"&&savedCount>0&&<span className="absolute -top-0.5 right-2 min-w-[16px] h-4 px-1 rounded-full bg-accent text-white text-[10px] font-bold flex items-center justify-center">{savedCount}</span>}</span>
+ <span className={`text-[10px] mt-0.5 ${a?"font-bold":"font-medium"}`}>{lb}</span></button>);})}</div></nav>
+ </div>);}
 
 ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
 </script>

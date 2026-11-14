@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-14T11:57:28.536Z",
+  "updatedAt": "2026-11-14T13:53:48.537Z",
   "source": "https://www.ebs-lawcongress.com/",
   "images": {
     "logo": "https://app.trickle.so/storage/public/images/usr_1a6da71af0000001/e5c2fd38-03c9-40e8-a275-becc52e0e3c8.png",
@@ -17,6 +17,10 @@
       "de": "26. und 27. November 2026",
       "en": "November 26 & 27, 2026"
     },
+    "days": [
+      "2026-11-26",
+      "2026-11-27"
+    ],
     "location": {
       "de": "Campus Schloss EBS, Rheingaustraße 1, Oestrich-Winkel",
       "en": "Campus Schloss EBS, Rheingaustraße 1, Oestrich-Winkel"

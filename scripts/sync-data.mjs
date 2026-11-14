@@ -277,6 +277,15 @@ async function main() {
     roomPlan: imgBy(new RegExp(`src:"(${IMG})",alt:t\\("roomPlan\\.mainTitle"\\)`), ''),
   };
 
+  // Konkrete Kongresstage (ISO) aus dem Datumstext, z. B. "26. und 27. November 2026"
+  const MONTHS = ['januar', 'februar', 'märz', 'april', 'mai', 'juni', 'juli', 'august', 'september', 'oktober', 'november', 'dezember'];
+  let days = [];
+  const dm = str(heroDe.date).toLowerCase().match(/^(\d{1,2})\.(?:\s*(?:und|&|–|-)\s*(\d{1,2})\.)?\s*([a-zäöü]+)\s+(\d{4})/);
+  if (dm && MONTHS.includes(dm[3])) {
+    const mo = String(MONTHS.indexOf(dm[3]) + 1).padStart(2, '0');
+    days = [dm[1], dm[2]].filter(Boolean).map(d => `${dm[4]}-${mo}-${d.padStart(2, '0')}`);
+  }
+
   const content = {
     source: BASE,
     images,
@@ -285,6 +294,7 @@ async function main() {
       name: edition ? `${edition}. EBS Law Congress` : 'EBS Law Congress',
       motto: { de: str(heroDe.title), en: str(heroEn.title) || str(heroDe.title) },
       date: { de: str(heroDe.date), en: str(heroEn.date) || str(heroDe.date) },
+      days,
       location: { de: str(heroDe.location), en: str(heroEn.location) || str(heroDe.location) },
       ticketUrl,
       website: BASE,
