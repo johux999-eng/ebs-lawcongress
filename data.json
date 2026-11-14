@@ -1,6 +1,11 @@
 {
-  "updatedAt": "2026-11-14T11:23:34.757Z",
+  "updatedAt": "2026-11-14T11:57:28.536Z",
   "source": "https://www.ebs-lawcongress.com/",
+  "images": {
+    "logo": "https://app.trickle.so/storage/public/images/usr_1a6da71af0000001/e5c2fd38-03c9-40e8-a275-becc52e0e3c8.png",
+    "hero": "https://app.trickle.so/storage/public/images/usr_1a6da71af0000001/70bdd53e-03b3-459e-8237-801da1b3aff3.avif",
+    "roomPlan": "https://app.trickle.so/storage/public/images/usr_1a6da71af0000001/25abaf13-236d-46ed-bf3d-b4b0ec4ac305.png"
+  },
   "event": {
     "edition": 13,
     "name": "13. EBS Law Congress",
@@ -41,6 +46,15 @@
       {
         "day": "Tag 1",
         "events": [
+          {
+            "id": "c13-d1-empfang",
+            "time": "09:00",
+            "title": "Sektempfang",
+            "location": "",
+            "speaker": "",
+            "type": "reception",
+            "description": "Auftakt des Tages mit einem Sektempfang. Um 10:00 Uhr folgt die Feierliche Eröffnung."
+          },
           {
             "id": "c13-d1-e1",
             "time": "10:00",
@@ -114,6 +128,15 @@
             "description": ""
           },
           {
+            "id": "c13-d1-ws-fgs",
+            "time": "13:30 – 14:30",
+            "title": "Workshop mit FGS: To be determined",
+            "location": "",
+            "speaker": "FGS",
+            "type": "workshop",
+            "description": "Das Thema wird noch bekannt gegeben."
+          },
+          {
             "id": "c13-d1-e8",
             "time": "14:15",
             "title": "Das Recht auf die eigenen Daten und das Ende der Autorenschaft durch KI",
@@ -121,6 +144,15 @@
             "speaker": "Dr. Michele Sciurba",
             "type": "lecture",
             "description": ""
+          },
+          {
+            "id": "c13-d1-ws-ao",
+            "time": "14:45 – 15:45",
+            "title": "Workshop mit A&O Shearman: To be determined",
+            "location": "",
+            "speaker": "A&O Shearman",
+            "type": "workshop",
+            "description": "Das Thema wird noch bekannt gegeben."
           },
           {
             "id": "c13-d1-e9",
@@ -172,6 +204,15 @@
       {
         "day": "Tag 2",
         "events": [
+          {
+            "id": "c13-d2-empfang",
+            "time": "09:00",
+            "title": "Sektempfang",
+            "location": "",
+            "speaker": "",
+            "type": "reception",
+            "description": "Auftakt des Tages mit einem Sektempfang. Um 10:00 Uhr folgt die Feierliche Eröffnung."
+          },
           {
             "id": "c13-d2-e1",
             "time": "10:00",
@@ -227,7 +268,7 @@
             "id": "c13-d2-e7",
             "time": "12:15 – 13:15",
             "title": "A Closer Look: M&A-Deals, IPOs und Dual-Track-Prozesse",
-            "location": "HG Audi",
+            "location": "HG Max",
             "speaker": "Skadden",
             "type": "workshop",
             "description": "Mit Georg Stickler und Hanna Wacker."
@@ -293,6 +334,15 @@
       {
         "day": "Day 1",
         "events": [
+          {
+            "id": "c13-d1-empfang",
+            "time": "09:00",
+            "title": "Champagne Reception",
+            "location": "",
+            "speaker": "",
+            "type": "reception",
+            "description": "The day starts with a champagne reception. The opening of the congress follows at 10:00."
+          },
           {
             "id": "c13-d1-e1",
             "time": "10:00",
@@ -366,6 +416,15 @@
             "description": ""
           },
           {
+            "id": "c13-d1-ws-fgs",
+            "time": "13:30 – 14:30",
+            "title": "Workshop with FGS: To be determined",
+            "location": "",
+            "speaker": "FGS",
+            "type": "workshop",
+            "description": "The topic will be announced."
+          },
+          {
             "id": "c13-d1-e8",
             "time": "14:15",
             "title": "The right to one's own data and the end of authorship through AI",
@@ -373,6 +432,15 @@
             "speaker": "Dr. Michele Sciurba",
             "type": "lecture",
             "description": ""
+          },
+          {
+            "id": "c13-d1-ws-ao",
+            "time": "14:45 – 15:45",
+            "title": "Workshop with A&O Shearman: To be determined",
+            "location": "",
+            "speaker": "A&O Shearman",
+            "type": "workshop",
+            "description": "The topic will be announced."
           },
           {
             "id": "c13-d1-e9",
@@ -424,6 +492,15 @@
       {
         "day": "Day 2",
         "events": [
+          {
+            "id": "c13-d2-empfang",
+            "time": "09:00",
+            "title": "Champagne Reception",
+            "location": "",
+            "speaker": "",
+            "type": "reception",
+            "description": "The day starts with a champagne reception. The opening of the congress follows at 10:00."
+          },
           {
             "id": "c13-d2-e1",
             "time": "10:00",
@@ -479,7 +556,7 @@
             "id": "c13-d2-e7",
             "time": "12:15 – 13:15",
             "title": "A Closer Look: M&A-Deals, IPOs und Dual-Track-Prozesse",
-            "location": "HG Audi",
+            "location": "HG Max",
             "speaker": "Skadden",
             "type": "workshop",
             "description": "Mit Georg Stickler und Hanna Wacker."

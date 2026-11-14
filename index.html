@@ -1,333 +1,357 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>EBS Law Congress</title>
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#081c74">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="EBS Law">
-    <link rel="apple-touch-icon" href="icon-192.png">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        *{-webkit-tap-highlight-color:transparent}body{font-family:'Inter',-apple-system,sans-serif;margin:0;background:#f8fafc}.font-display{font-family:'Playfair Display',serif}.scrollbar-hide::-webkit-scrollbar{display:none}.scrollbar-hide{-ms-overflow-style:none;scrollbar-width:none}@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}.animate-fadeUp{animation:fadeUp .3s ease-out forwards}@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}.animate-slideUp{animation:slideUp .25s ease-out}
-        /* PWA Install Overlay */
-        #pwa-install-overlay{position:fixed;inset:0;z-index:9999;background:#081c74;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px;text-align:center;color:white;font-family:'Inter',-apple-system,sans-serif;overflow-y:auto}
-        #pwa-install-overlay.hidden{display:none}
-        #pwa-install-overlay .install-logo{width:96px;height:96px;margin-bottom:24px;border-radius:20px;box-shadow:0 8px 32px rgba(0,0,0,0.3)}
-        #pwa-install-overlay h1{font-family:'Playfair Display',serif;font-size:28px;font-weight:700;margin:0 0 8px}
-        #pwa-install-overlay .subtitle{font-size:14px;opacity:0.7;margin-bottom:32px}
-        #pwa-install-overlay .instruction-box{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);border-radius:16px;padding:24px;max-width:340px;width:100%;margin-bottom:16px;backdrop-filter:blur(8px)}
-        #pwa-install-overlay .instruction-box h2{font-size:16px;font-weight:700;margin:0 0 16px;display:flex;align-items:center;gap:8px}
-        #pwa-install-overlay .step{display:flex;align-items:flex-start;gap:12px;margin-bottom:14px;text-align:left}
-        #pwa-install-overlay .step:last-child{margin-bottom:0}
-        #pwa-install-overlay .step-num{width:24px;height:24px;border-radius:50%;background:#1e69c4;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0}
-        #pwa-install-overlay .step-text{font-size:14px;line-height:1.5;opacity:0.9}
-        #pwa-install-overlay .step-text strong{opacity:1}
-        #pwa-install-overlay .install-chrome-btn{margin-top:16px;padding:14px 32px;border-radius:12px;border:none;background:white;color:#081c74;font-size:14px;font-weight:700;cursor:pointer;transition:all 0.2s;display:none}
-        #pwa-install-overlay .install-chrome-btn:hover{transform:scale(1.02);box-shadow:0 4px 12px rgba(0,0,0,0.2)}
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>EBS Law Congress</title>
+<meta name="description" content="Die App zum EBS Law Congress: Programm, persönlicher Zeitplan, Speaker, Raumplan und Partner.">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#081c74">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="EBS Law">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="icon" type="image/png" href="icon-192.png">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+// Farben und Schriften wie auf www.ebs-lawcongress.com
+tailwind.config={theme:{extend:{colors:{primary:'#081c74',accent:'#1e69c4',cream:'#f8f5f2',ink:'#202020',ink2:'#363636',ink3:'#4a4a4a'}}}};
+</script>
+<style>
+:root{--primary:#081c74;--accent:#1e69c4;--cream:#f8f5f2}
+*{-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:#f8f5f2;color:#202020;font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased}
+.font-serif{font-family:ui-serif,Georgia,Cambria,"Times New Roman",Times,serif}
+.scrollbar-hide::-webkit-scrollbar{display:none}.scrollbar-hide{-ms-overflow-style:none;scrollbar-width:none}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.animate-fadeUp{animation:fadeUp .3s ease-out both}
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.animate-slideUp{animation:slideUp .25s ease-out}
+.pt-safe{padding-top:env(safe-area-inset-top,0px)}
+.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px)}
+#boot{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:#081c74}
+#boot img{width:72px;height:72px;object-fit:contain;opacity:.9}
+</style>
 </head>
 <body>
-    <!-- PWA Install Overlay -->
-    <div id="pwa-install-overlay" class="hidden">
-        <img src="https://app.trickle.so/storage/public/images/usr_1a6da71af0000001/e5c2fd38-03c9-40e8-a275-becc52e0e3c8.png" alt="EBS Law Congress" class="install-logo" style="background:white;padding:12px">
-        <h1>EBS Law Congress</h1>
-        <p class="subtitle">App installieren für das beste Erlebnis</p>
+<div id="boot"><img src="icon-192.png" alt=""></div>
+<div id="root"></div>
 
-        <!-- iOS Instructions -->
-        <div class="instruction-box" id="install-ios" style="display:none">
-            <h2>
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83"/><path d="M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11"/></svg>
-                iPhone / iPad
-            </h2>
-            <div class="step"><span class="step-num">1</span><span class="step-text">Tippe auf das <strong>Teilen-Symbol</strong> (□ mit Pfeil nach oben) unten im Safari-Browser</span></div>
-            <div class="step"><span class="step-num">2</span><span class="step-text">Scrolle und tippe auf <strong>„Zum Home-Bildschirm"</strong></span></div>
-            <div class="step"><span class="step-num">3</span><span class="step-text">Bestätige mit <strong>„Hinzufügen"</strong> – fertig!</span></div>
-        </div>
+<script>
+// Service Worker
+if('serviceWorker' in navigator){
+  window.addEventListener('load',function(){
+    navigator.serviceWorker.register('./sw.js').catch(function(err){console.warn('[PWA] SW registration failed:',err);});
+  });
+}
+// Installations-Prompt (Chrome/Android/Desktop) früh abfangen, damit React ihn später nutzen kann
+window.__installPrompt=null;
+window.addEventListener('beforeinstallprompt',function(e){
+  e.preventDefault();window.__installPrompt=e;window.dispatchEvent(new Event('installprompt-ready'));
+});
+window.addEventListener('appinstalled',function(){window.__installPrompt=null;window.dispatchEvent(new Event('app-installed'));});
+</script>
 
-        <!-- Android Instructions -->
-        <div class="instruction-box" id="install-android" style="display:none">
-            <h2>
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M17.6 9.48l1.84-3.18c.16-.31.04-.69-.26-.85-.29-.15-.65-.06-.83.22l-1.88 3.24a11.463 11.463 0 0 0-8.94 0L5.65 5.67c-.19-.29-.54-.38-.84-.22-.29.16-.42.54-.25.85L6.4 9.48C3.3 11.25 1.28 14.44 1 18h22c-.28-3.56-2.3-6.75-5.4-8.52zM7 15.25a1.25 1.25 0 1 1 0-2.5 1.25 1.25 0 0 1 0 2.5zm10 0a1.25 1.25 0 1 1 0-2.5 1.25 1.25 0 0 1 0 2.5z"/></svg>
-                Android
-            </h2>
-            <div class="step"><span class="step-num">1</span><span class="step-text">Tippe auf das <strong>Menü</strong> (⋮) oben rechts in Chrome</span></div>
-            <div class="step"><span class="step-num">2</span><span class="step-text">Wähle <strong>„App installieren"</strong> oder <strong>„Zum Startbildschirm hinzufügen"</strong></span></div>
-            <div class="step"><span class="step-num">3</span><span class="step-text">Bestätige mit <strong>„Installieren"</strong> – fertig!</span></div>
-        </div>
-
-        <!-- Chrome install button (shown when beforeinstallprompt fires) -->
-        <button class="install-chrome-btn" id="install-chrome-btn" onclick="installPWA()">App jetzt installieren</button>
-    </div>
-
-    <div id="root"></div>
-
-    <!-- Service Worker Registration & Install Logic -->
-    <script>
-    // Service Worker
-    if ('serviceWorker' in navigator) {
-        window.addEventListener('load', function() {
-            navigator.serviceWorker.register('./sw.js')
-                .then(function(reg) { console.log('[PWA] SW registered:', reg.scope); })
-                .catch(function(err) { console.warn('[PWA] SW registration failed:', err); });
-        });
-    }
-
-    // Install prompt handling
-    let deferredPrompt = null;
-
-    window.addEventListener('beforeinstallprompt', function(e) {
-        e.preventDefault();
-        deferredPrompt = e;
-        // Show the native install button
-        var btn = document.getElementById('install-chrome-btn');
-        if (btn) btn.style.display = 'block';
-    });
-
-    function installPWA() {
-        if (deferredPrompt) {
-            deferredPrompt.prompt();
-            deferredPrompt.userChoice.then(function(result) {
-                deferredPrompt = null;
-            });
-        }
-    }
-
-    // Show install overlay logic
-    window.addEventListener('DOMContentLoaded', function() {
-        var isStandalone = window.matchMedia('(display-mode: standalone)').matches 
-                        || window.navigator.standalone === true;
-
-        if (!isStandalone) {
-            var overlay = document.getElementById('pwa-install-overlay');
-            if (overlay) overlay.classList.remove('hidden');
-
-            // Detect platform and show right instructions
-            var ua = navigator.userAgent || '';
-            var isIOS = /iPad|iPhone|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-            var isAndroid = /Android/.test(ua);
-
-            var iosBox = document.getElementById('install-ios');
-            var androidBox = document.getElementById('install-android');
-
-            if (isIOS && iosBox) {
-                iosBox.style.display = 'block';
-            } else if (androidBox) {
-                // Show Android for Android and desktop (Chrome)
-                androidBox.style.display = 'block';
-            }
-            // If neither detected, show both
-            if (!isIOS && !isAndroid) {
-                if (iosBox) iosBox.style.display = 'block';
-                if (androidBox) androidBox.style.display = 'block';
-            }
-        }
-    });
-    </script>
 <script type="text/babel">
-const{useState,useEffect,useCallback,useMemo,createContext,useContext}=React;
-const Icon=({d,size=20,className="",strokeWidth=2})=>(<svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" className={className}>{d}</svg>);
+const{useState,useEffect,useCallback,useMemo}=React;
+
+// ---------- Icons (Lucide-Stil, wie auf der Website) ----------
+const Icon=({children,size=20,className="",strokeWidth=2,style})=>(<svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" className={className} style={style} aria-hidden="true">{children}</svg>);
 const I={
-Cal:p=><Icon {...p} d={<><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></>}/>,
-Clk:p=><Icon {...p} d={<><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></>}/>,
-Pin:p=><Icon {...p} d={<><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></>}/>,
-Usr:p=><Icon {...p} d={<><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></>}/>,
-Bm:p=><Icon {...p} d={<path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>}/>,
-BmF:p=><svg xmlns="http://www.w3.org/2000/svg" width={p.size||20} height={p.size||20} viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={p.className}><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>,
-Gl:p=><Icon {...p} d={<><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></>}/>,
-X:p=><Icon {...p} d={<><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></>}/>,
-CD:p=><Icon {...p} d={<polyline points="6 9 12 15 18 9"/>}/>,
-EL:p=><Icon {...p} d={<><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></>}/>,
-Map:p=><Icon {...p} d={<><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></>}/>,
-U1:p=><Icon {...p} d={<><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></>}/>,
-Aw:p=><Icon {...p} d={<><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></>}/>,
-Pr:p=><Icon {...p} d={<><path d="M2 3h20"/><path d="M21 3v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V3"/><path d="M12 18v4"/><path d="m8 22 4-4 4 4"/></>}/>,
-Wi:p=><Icon {...p} d={<><path d="M8 22h8"/><path d="M12 11v11"/><path d="M5.28 5.61A7.46 7.46 0 0 0 4 10c0 4.42 3.58 8 8 8s8-3.58 8-8a7.46 7.46 0 0 0-1.28-4.39"/><path d="M6 2h12l-.5 3H6.5L6 2z"/></>}/>,
-Ut:p=><Icon {...p} d={<><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2v0a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"/></>}/>
+Cal:p=><Icon {...p}><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></Icon>,
+Clk:p=><Icon {...p}><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></Icon>,
+Pin:p=><Icon {...p}><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></Icon>,
+Usr:p=><Icon {...p}><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></Icon>,
+Users:p=><Icon {...p}><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></Icon>,
+Bm:p=><Icon {...p}><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></Icon>,
+BmF:p=><svg xmlns="http://www.w3.org/2000/svg" width={p.size||20} height={p.size||20} viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={p.className} aria-hidden="true"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>,
+X:p=><Icon {...p}><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></Icon>,
+EL:p=><Icon {...p}><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></Icon>,
+Map:p=><Icon {...p}><polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"/><line x1="9" y1="3" x2="9" y2="18"/><line x1="15" y1="6" x2="15" y2="21"/></Icon>,
+Award:p=><Icon {...p}><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></Icon>,
+Ticket:p=><Icon {...p}><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/><path d="M13 5v2"/><path d="M13 17v2"/><path d="M13 11v2"/></Icon>,
+Share:p=><Icon {...p}><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></Icon>,
+PlusSq:p=><Icon {...p}><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></Icon>,
+More:p=><Icon {...p}><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></Icon>,
+Dl:p=><Icon {...p}><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></Icon>,
+Check:p=><Icon {...p}><polyline points="20 6 9 17 4 12"/></Icon>,
+Arrow:p=><Icon {...p}><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></Icon>,
+Wifi:p=><Icon {...p}><path d="M12 20h.01"/><path d="M8.5 16.43a5 5 0 0 1 7 0"/><path d="M5 12.86a10 10 0 0 1 14 0"/><path d="M2 8.82a15 15 0 0 1 20 0"/></Icon>,
 };
-const LC=createContext();
-const TT={de:{nav:{schedule:"Programm",mySchedule:"Mein Plan",roomPlan:"Raumplan",speakers:"Speaker",sponsors:"Partner"},schedule:{title:"Programm",filterAll:"Alle",filterV:"Vorträge",filterW:"Workshops",noEv:"Keine Events in dieser Kategorie.",added:"Gemerkt ✓",add:"★ Merken"},my:{title:"Mein Zeitplan",empty:"Du hast noch keine Sessions gemerkt.",hint:"Tippe auf ★ im Programm."},rp:{title:"Raumplan",ent:"Eingang",mainStageD:"Keynotes, Vorträge & Podiumsdiskussion",maxD:"Workshops",audiD:"Workshops",weinkellerD:"Garderobe",cateringD:"Essen & Karrieremesse im Obergeschoss"},sp:{title:"Speaker"},spo:{title:"Partner & Sponsoren",visit:"Website besuchen"},gen:{close:"Schließen",tickets:"Tickets sichern",website:"Website",updated:"Stand",offline:"Offline – zeige gespeicherte Daten",loading:"Lade aktuelle Daten …",loadErr:"Die Daten konnten nicht geladen werden. Bitte prüfe deine Internetverbindung.",retry:"Erneut versuchen"},lb:{v:"Vortrag",k:"Eröffnung",p:"Podium",w:"Workshop",i:"Einzelinterview"}},
-en:{nav:{schedule:"Schedule",mySchedule:"My Plan",roomPlan:"Room Plan",speakers:"Speakers",sponsors:"Partners"},schedule:{title:"Schedule",filterAll:"All",filterV:"Lectures",filterW:"Workshops",noEv:"No events in this category.",added:"Saved ✓",add:"★ Save"},my:{title:"My Schedule",empty:"No sessions saved yet.",hint:"Tap ★ in the schedule to save sessions."},rp:{title:"Room Plan",ent:"Entrance",mainStageD:"Keynotes, lectures & panel discussion",maxD:"Workshops",audiD:"Workshops",weinkellerD:"Cloakroom",cateringD:"Catering & career fair on the upper floor"},sp:{title:"Speakers"},spo:{title:"Partners & Sponsors",visit:"Visit website"},gen:{close:"Close",tickets:"Get tickets",website:"Website",updated:"Updated",offline:"Offline – showing saved data",loading:"Loading current data …",loadErr:"The data could not be loaded. Please check your internet connection.",retry:"Try again"},lb:{v:"Lecture",k:"Opening",p:"Panel",w:"Workshop",i:"Interview"}}};
+const LinkedIn=({size=18,className=""})=>(<svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" className={className} aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>);
 
-const isTalk=type=>type==="lecture"||type==="keynote"||type==="panel";
-function gL(type,t){if(type==="lecture")return t.lb.v;if(type==="keynote")return t.lb.k;if(type==="panel")return t.lb.p;if(type==="workshop")return t.lb.w;if(type==="interview")return t.lb.i;return null;}
-function gS(type){if(isTalk(type))return{bg:"#dbeafe",tx:"#1e40af",dot:"#3b82f6"};if(type==="workshop")return{bg:"#d1fae5",tx:"#065f46",dot:"#10b981"};if(type==="interview")return{bg:"#fef3c7",tx:"#92400e",dot:"#f59e0b"};return{bg:"transparent",tx:"transparent",dot:"#cbd5e1"};}
-function fmtTs(iso,ln){try{return new Date(iso).toLocaleString(ln==="de"?"de-DE":"en-GB",{day:"2-digit",month:"2-digit",year:"numeric",hour:"2-digit",minute:"2-digit"});}catch(e){return"";}}
-function matchSpeakers(e,spk){if(!e.speaker)return[];return spk.filter(s=>e.speaker.includes(s.n));}
+// ---------- Texte ----------
+const TT={
+de:{nav:{schedule:"Zeitplan",my:"Mein Plan",room:"Raumplan",speakers:"Speaker",partners:"Partner"},
+ schedule:{title:"Zeitplan",all:"Alle",talks:"Vorträge",ws:"Workshops",none:"Keine Programmpunkte in dieser Kategorie.",saved:"Gemerkt",save:"Merken"},
+ my:{label:"Persönlich",title:"Mein Plan",empty:"Du hast noch keine Programmpunkte gemerkt.",hint:"Tippe im Zeitplan auf das Lesezeichen, um Programmpunkte hier zu sammeln.",count:n=>n===1?"1 Programmpunkt":`${n} Programmpunkte`},
+ room:{label:"Orientierung",title:"Raumplan",desc:"Finden Sie sich auf dem Campus zurecht und verpassen Sie keinen Programmpunkt.",open:"Plan in voller Größe öffnen",d:{mainStage:"Eröffnung, Vorträge und Podiumsdiskussion",max:"Workshops",audi:"Workshops",weinkeller:"",catering:""}},
+ speakers:{label:"Referenten",title:"Speaker"},
+ partners:{label:"Partner",title:"Unsere Sponsoren",visit:"Website besuchen"},
+ gen:{close:"Schließen",tickets:"Tickets Sichern",program:"Zum Programm",website:"Zur Website",updated:"Stand",offline:"Offline: zuletzt gespeicherte Daten",loading:"Aktuelle Daten werden geladen …",loadErr:"Die Daten konnten nicht geladen werden. Bitte prüfe deine Internetverbindung.",retry:"Erneut versuchen"},
+ types:{reception:"Empfang",keynote:"Keynote",lecture:"Vortrag",panel:"Podium",workshop:"Workshop",interview:"Interview",break:"Pause",other:"Programm"},
+ inst:{badge:"Offizielle App",lead:"Programm, persönlicher Zeitplan, Speaker und Raumplan – immer aktuell und auch offline verfügbar.",label:"Installation",title:"App installieren",intro:"Füge die App zu deinem Startbildschirm hinzu. Eine Installation über den App Store ist nicht nötig.",ios:"iPhone & iPad",android:"Android & Chrome",
+  iosSteps:[["Share","Tippe in Safari unten auf das Teilen-Symbol."],["PlusSq","Wähle „Zum Home-Bildschirm“."],["Check","Bestätige oben rechts mit „Hinzufügen“."]],
+  andSteps:[["More","Tippe in Chrome oben rechts auf das Menü (⋮)."],["Dl","Wähle „App installieren“ bzw. „Zum Startbildschirm hinzufügen“."],["Check","Bestätige mit „Installieren“."]],
+  iosHint:"Wichtig: Auf dem iPhone funktioniert die Installation nur in Safari.",
+  btn:"App jetzt installieren",cont:"Im Browser fortfahren",feat:[["Cal","Zeitplan"],["Bm","Mein Plan"],["Wifi","Offline"]]}},
+en:{nav:{schedule:"Schedule",my:"My Plan",room:"Room Plan",speakers:"Speakers",partners:"Partners"},
+ schedule:{title:"Schedule",all:"All",talks:"Lectures",ws:"Workshops",none:"No items in this category.",saved:"Saved",save:"Save"},
+ my:{label:"Personal",title:"My Plan",empty:"You have not saved any items yet.",hint:"Tap the bookmark in the schedule to collect items here.",count:n=>n===1?"1 item":`${n} items`},
+ room:{label:"Orientation",title:"Room Plan",desc:"Find your way around campus and don't miss a single session.",open:"Open full-size plan",d:{mainStage:"Opening, lectures and panel discussion",max:"Workshops",audi:"Workshops",weinkeller:"",catering:""}},
+ speakers:{label:"Speakers",title:"Speakers"},
+ partners:{label:"Partners",title:"Our Sponsors",visit:"Visit website"},
+ gen:{close:"Close",tickets:"Get Tickets",program:"View Schedule",website:"Website",updated:"Updated",offline:"Offline: showing saved data",loading:"Loading current data …",loadErr:"The data could not be loaded. Please check your internet connection.",retry:"Try again"},
+ types:{reception:"Reception",keynote:"Keynote",lecture:"Lecture",panel:"Panel",workshop:"Workshop",interview:"Interview",break:"Break",other:"Programme"},
+ inst:{badge:"Official app",lead:"Schedule, personal plan, speakers and room plan – always up to date and available offline.",label:"Installation",title:"Install the app",intro:"Add the app to your home screen. No app store needed.",ios:"iPhone & iPad",android:"Android & Chrome",
+  iosSteps:[["Share","In Safari, tap the share icon at the bottom."],["PlusSq","Choose “Add to Home Screen”."],["Check","Confirm with “Add” in the top right."]],
+  andSteps:[["More","In Chrome, tap the menu (⋮) in the top right."],["Dl","Choose “Install app” or “Add to Home screen”."],["Check","Confirm with “Install”."]],
+  iosHint:"Note: on iPhone, installing only works in Safari.",
+  btn:"Install app now",cont:"Continue in browser",feat:[["Cal","Schedule"],["Bm","My plan"],["Wifi","Offline"]]}}};
 
-const LOGO="https://app.trickle.so/storage/public/images/usr_1a6da71af0000001/e5c2fd38-03c9-40e8-a275-becc52e0e3c8.png";
-const DATA_URL="data.json";
-const DATA_KEY="lc_data13";
-const SAVED_KEY="lc_sv13";
+// ---------- Daten ----------
+const DATA_URL="data.json",DATA_KEY="lc_data13",SAVED_KEY="lc_sv13",LANG_KEY="lc_lang",SKIP_KEY="lc_install_skip";
+const FALLBACK_IMG={logo:"https://app.trickle.so/storage/public/images/usr_1a6da71af0000001/e5c2fd38-03c9-40e8-a275-becc52e0e3c8.png",hero:"https://app.trickle.so/storage/public/images/usr_1a6da71af0000001/70bdd53e-03b3-459e-8237-801da1b3aff3.avif",roomPlan:""};
 const validData=d=>!!(d&&d.schedule&&Array.isArray(d.schedule.de)&&Array.isArray(d.schedule.en)&&Array.isArray(d.speakers)&&Array.isArray(d.sponsors)&&d.event);
-function loadCachedData(){try{const s=localStorage.getItem(DATA_KEY);if(s){const d=JSON.parse(s);if(validData(d))return d;}}catch(e){}return null;}
+const store={get(k){try{return localStorage.getItem(k);}catch(e){return null;}},set(k,v){try{localStorage.setItem(k,v);}catch(e){}}};
+function loadCachedData(){try{const d=JSON.parse(store.get(DATA_KEY));return validData(d)?d:null;}catch(e){return null;}}
+const img=(d,k)=>(d&&d.images&&d.images[k])||FALLBACK_IMG[k];
+const isTalk=t=>t==="lecture"||t==="keynote"||t==="panel";
+function fmtTs(iso,ln){try{return new Date(iso).toLocaleString(ln==="de"?"de-DE":"en-GB",{day:"2-digit",month:"2-digit",year:"numeric",hour:"2-digit",minute:"2-digit"});}catch(e){return"";}}
+const matchSpeakers=(e,spk)=>e.speaker?spk.filter(s=>e.speaker.includes(s.n)):[];
+const isStandalone=()=>window.matchMedia('(display-mode: standalone)').matches||window.navigator.standalone===true;
+const platform=()=>{const ua=navigator.userAgent||"";if(/iPad|iPhone|iPod/.test(ua)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1))return"ios";return"android";};
 
-const LinkedInIcon=({size=18})=>(<svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>);
-
-function SubEvents({items}){if(!items||!items.length)return null;return(<div className="mt-2 pl-3 border-l-2 border-blue-200 space-y-0.5">{items.map((s,i)=><p key={i} className="text-xs text-slate-500"><span className="font-semibold text-slate-700 mr-1">{s.time}</span>– {s.title}</p>)}</div>);}
-
-function EC({event:e,isSaved:sv,onToggleSave:ts,onSelect:os,t}){const lb=gL(e.type,t);const s=gS(e.type);return(
-<div className="animate-fadeUp group relative bg-white rounded-xl border border-slate-200 hover:border-slate-300 hover:shadow-lg transition-all duration-200 overflow-hidden cursor-pointer" onClick={()=>os(e)}>
-<div className="absolute left-0 top-0 bottom-0 w-1 rounded-l-xl" style={{backgroundColor:s.dot}}/>
-<div className="p-4 pl-5"><div className="flex items-start justify-between gap-3"><div className="flex-1 min-w-0">
-<div className="flex items-center gap-2 mb-1.5 flex-wrap">
-{lb&&<span className="inline-flex items-center px-2 py-0.5 rounded-md text-xs font-semibold" style={{backgroundColor:s.bg,color:s.tx}}>{lb}</span>}
-<span className="text-xs text-slate-400 flex items-center gap-1"><I.Clk size={12}/> {e.time}</span></div>
-<h3 className="font-semibold text-slate-900 text-sm leading-snug mb-1">{e.title}</h3>
-{e.speaker&&<p className="text-xs text-slate-500 flex items-center gap-1"><I.Usr size={12}/><span className="truncate">{e.speaker}</span></p>}
-{e.location&&<p className="text-xs text-slate-400 flex items-center gap-1 mt-0.5"><I.Pin size={12}/> {e.location}</p>}
-<SubEvents items={e.subEvents}/></div>
-<button onClick={ev=>{ev.stopPropagation();ts(e.id);}} aria-label={sv?t.schedule.added:t.schedule.add} className="flex-shrink-0 p-2 rounded-lg transition-all" style={{backgroundColor:sv?'#fef3c7':'#f8fafc',color:sv?'#d97706':'#cbd5e1'}}>
-{sv?<I.BmF size={20}/>:<I.Bm size={20}/>}</button></div></div></div>);}
-
-function ED({event:e,onClose:oc,isSaved:sv,onToggleSave:ts,t,lang:ln,speakers:spk}){const lb=gL(e.type,t);const s=gS(e.type);const ms=matchSpeakers(e,spk);return(
-<div className="fixed inset-0 z-50 bg-black/40 flex items-end sm:items-center justify-center" style={{backdropFilter:'blur(4px)'}} onClick={oc}>
-<div className="animate-slideUp bg-white w-full sm:max-w-lg sm:rounded-2xl rounded-t-2xl max-h-[85vh] overflow-y-auto shadow-2xl" onClick={ev=>ev.stopPropagation()}>
-<div className="h-2 sm:rounded-t-2xl rounded-t-2xl" style={{backgroundColor:s.dot}}/>
-<div className="p-6">
-<div className="flex items-start justify-between mb-4">{lb?<span className="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-semibold" style={{backgroundColor:s.bg,color:s.tx}}>{lb}</span>:<div/>}
-<button onClick={oc} aria-label={t.gen.close} className="p-1 hover:bg-slate-100 rounded-lg"><I.X size={20} className="text-slate-400"/></button></div>
-<h2 className="font-display text-xl font-bold text-slate-900 mb-3 leading-tight">{e.title}</h2>
-<div className="space-y-2 mb-4">
-<div className="flex items-center gap-2 text-sm text-slate-600"><I.Clk size={16} style={{color:'#3b82f6'}}/> {e.time}</div>
-{e.location&&<div className="flex items-center gap-2 text-sm text-slate-600"><I.Pin size={16} style={{color:'#3b82f6'}}/> {e.location}</div>}
-{e.speaker&&<div className="flex items-center gap-2 text-sm text-slate-600"><I.Usr size={16} style={{color:'#3b82f6'}}/> {e.speaker}</div>}</div>
-<SubEvents items={e.subEvents}/>
-{e.description&&<p className="text-sm text-slate-600 leading-relaxed my-4">{e.description}</p>}
-{ms.length>0&&<div className="space-y-2 my-4">{ms.map(p=><div key={p.id} className="flex items-center gap-3 bg-slate-50 rounded-xl p-3">
-<img src={p.img} alt={p.n} style={{width:44,height:44,borderRadius:'50%',objectFit:'cover',flexShrink:0}} onError={ev=>{ev.target.style.display='none'}}/>
-<div className="min-w-0"><p className="text-sm font-semibold text-slate-900">{p.n}</p><p className="text-xs text-slate-500">{ln==="de"?p.r:p.re}{(ln==="de"?p.c:p.ce)?`, ${ln==="de"?p.c:p.ce}`:""}</p></div></div>)}</div>}
-<button onClick={()=>ts(e.id)} className="w-full py-3 mt-2 rounded-xl font-semibold text-sm transition-all" style={sv?{backgroundColor:'#fef3c7',color:'#92400e',border:'2px solid #fde68a'}:{backgroundColor:'#081c74',color:'white'}}>{sv?t.schedule.added:t.schedule.add}</button>
-</div></div></div>);}
-
-function InfoCard({data:d,lang:ln,t,status:st}){const ev=d.event;return(
-<div className="rounded-2xl p-5 mb-5 text-white shadow-md" style={{background:'linear-gradient(135deg,#081c74 0%,#1e69c4 100%)'}}>
-<p className="text-xs font-semibold uppercase tracking-wider opacity-80 mb-1">{ev.name}</p>
-{ev.motto&&ev.motto[ln]&&<h2 className="font-display text-lg font-bold leading-snug mb-3">{ev.motto[ln]}</h2>}
-<div className="space-y-1.5 text-sm opacity-90 mb-4">
-{ev.date&&ev.date[ln]&&<p className="flex items-center gap-2"><I.Cal size={14}/> {ev.date[ln]}</p>}
-{ev.location&&ev.location[ln]&&<p className="flex items-start gap-2"><I.Pin size={14} className="mt-0.5 flex-shrink-0"/> {ev.location[ln]}</p>}</div>
-<div className="flex gap-2 flex-wrap">
-{ev.ticketUrl&&<a href={ev.ticketUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-white text-sm font-semibold" style={{color:'#081c74',textDecoration:'none'}}><I.EL size={14}/>{t.gen.tickets}</a>}
-{ev.website&&<a href={ev.website} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-semibold text-white" style={{backgroundColor:'rgba(255,255,255,0.15)',textDecoration:'none'}}><I.Gl size={14}/>{t.gen.website}</a>}</div>
-<p className="text-[11px] opacity-70 mt-4">{st==="offline"?t.gen.offline:`${t.gen.updated}: ${fmtTs(d.updatedAt,ln)}`}</p>
-</div>);}
-
-function SV({data:d,savedIds:si,onToggleSave:ts,lang:ln,t,status:st}){const[ad,setAd]=useState(0);const[fi,setFi]=useState("all");const[sel,setSel]=useState(null);const days=d.schedule[ln]||d.schedule.de;const di=Math.min(ad,Math.max(days.length-1,0));
-const fl=useMemo(()=>{const ev=days[di]?.events||[];if(fi==="v")return ev.filter(e=>isTalk(e.type));if(fi==="w")return ev.filter(e=>e.type==="workshop");return ev;},[days,di,fi]);
-return(<div className="pb-24">
-<InfoCard data={d} lang={ln} t={t} status={st}/>
-<h1 className="font-display text-2xl font-bold text-slate-900 mb-4 px-1">{t.schedule.title}</h1>
-<div className="flex gap-2 mb-4">{days.map((dy,i)=><button key={i} onClick={()=>setAd(i)} className="flex-1 py-2.5 rounded-xl text-sm font-semibold transition-all" style={di===i?{backgroundColor:'#081c74',color:'white',boxShadow:'0 4px 6px -1px rgba(8,28,116,0.3)'}:{backgroundColor:'white',color:'#64748b',border:'1px solid #e2e8f0'}}>{dy.day}</button>)}</div>
-<div className="flex gap-1.5 mb-4">{[{id:"all",lb:t.schedule.filterAll},{id:"v",lb:t.schedule.filterV},{id:"w",lb:t.schedule.filterW}].map(f=><button key={f.id} onClick={()=>setFi(f.id)} className="px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all" style={fi===f.id?{backgroundColor:'#dbeafe',color:'#1e40af',border:'1px solid #bfdbfe'}:{backgroundColor:'#f8fafc',color:'#94a3b8',border:'1px solid transparent'}}>{f.lb}</button>)}</div>
-<div className="space-y-3">{fl.length===0?<p className="text-center text-slate-400 py-12 text-sm">{t.schedule.noEv}</p>:fl.map(e=><EC key={e.id} event={e} isSaved={si.has(e.id)} onToggleSave={ts} onSelect={setSel} t={t}/>)}</div>
-{sel&&<ED event={sel} onClose={()=>setSel(null)} isSaved={si.has(sel.id)} onToggleSave={ts} t={t} lang={ln} speakers={d.speakers}/>}</div>);}
-
-function MSV({data:d,savedIds:si,onToggleSave:ts,lang:ln,t}){const[sel,setSel]=useState(null);const days=d.schedule[ln]||d.schedule.de;
-const sv=useMemo(()=>days.flatMap(dy=>dy.events.map(e=>({...e,dl:dy.day}))).filter(e=>si.has(e.id)),[days,si]);
-const gr=useMemo(()=>{const g={};sv.forEach(e=>{if(!g[e.dl])g[e.dl]=[];g[e.dl].push(e);});return g;},[sv]);
-return(<div className="pb-24">
-<h1 className="font-display text-2xl font-bold text-slate-900 mb-1 px-1">{t.my.title}</h1>
-<p className="text-xs text-slate-400 mb-5 px-1">{sv.length} Sessions</p>
-{sv.length===0?<div className="text-center py-16"><I.Bm size={48} className="text-slate-200 mx-auto mb-4"/><p className="text-slate-500 font-medium mb-1">{t.my.empty}</p><p className="text-slate-400 text-sm">{t.my.hint}</p></div>
-:Object.entries(gr).map(([day,evs])=><div key={day} className="mb-6"><h2 className="text-sm font-bold uppercase tracking-wider mb-3 px-1" style={{color:'#081c74'}}>{day}</h2><div className="space-y-3">{evs.map(e=><EC key={e.id} event={e} isSaved={true} onToggleSave={ts} onSelect={setSel} t={t}/>)}</div></div>)}
-{sel&&<ED event={sel} onClose={()=>setSel(null)} isSaved={si.has(sel.id)} onToggleSave={ts} t={t} lang={ln} speakers={d.speakers}/>}</div>);}
-
-function RPV({data:d,lang:ln,t}){const rn=Object.assign({mainStage:"Main Stage",max:"Max",audi:"Audi",weinkeller:"Weinkeller",catering:"Catering"},(d.rooms&&d.rooms[ln])||{});
-const rms=[{id:"mainStage",ds:t.rp.mainStageD,cl:"#081c74",tc:"white",ic:I.Pr},{id:"max",ds:t.rp.maxD,cl:"#1e69c4",tc:"white",ic:I.Usr},{id:"audi",ds:t.rp.audiD,cl:"#3b82f6",tc:"white",ic:I.Usr},{id:"weinkeller",ds:t.rp.weinkellerD,cl:"#fef3c7",tc:"#92400e",ic:I.Wi},{id:"catering",ds:t.rp.cateringD,cl:"#d1fae5",tc:"#065f46",ic:I.Ut}];
-return(<div className="pb-24"><h1 className="font-display text-2xl font-bold text-slate-900 mb-1 px-1">{t.rp.title}</h1><p className="text-xs text-slate-400 mb-6 px-1">{(d.event.location&&d.event.location[ln])||"EBS Universität, Oestrich-Winkel"}</p>
-<div className="bg-white rounded-2xl border border-slate-200 p-5 mb-6 shadow-sm">
-<div className="text-center mb-4"><span className="inline-flex items-center gap-1.5 bg-slate-100 text-slate-500 text-xs font-semibold px-3 py-1.5 rounded-full"><I.CD size={14}/> {t.rp.ent}</span></div>
-<div style={{display:'grid',gridTemplateColumns:'1fr 1.5fr 1fr',gridTemplateRows:'1fr 1fr 12px 0.8fr',gap:'8px',maxWidth:'340px',margin:'0 auto'}}>
-<div style={{gridArea:'1/1/3/2',backgroundColor:'#fef3c7',border:'2px dashed #fde68a',borderRadius:'12px',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',padding:'12px'}}><I.Wi size={20} style={{color:'#d97706'}}/><span style={{fontSize:'11px',fontWeight:700,color:'#92400e',textAlign:'center',marginTop:4}}>{rn.weinkeller}</span></div>
-<div style={{gridArea:'1/2/3/3',backgroundColor:'#081c74',borderRadius:'12px',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',padding:'12px'}}><I.Pr size={24} style={{color:'#93c5fd'}}/><span style={{fontSize:'12px',fontWeight:700,color:'white',marginTop:4,textAlign:'center'}}>{rn.mainStage}</span></div>
-<div style={{gridArea:'1/3/2/4',backgroundColor:'#1e69c4',borderRadius:'12px',display:'flex',alignItems:'center',justifyContent:'center',padding:'8px'}}><span style={{fontSize:'11px',fontWeight:700,color:'white'}}>{rn.max}</span></div>
-<div style={{gridArea:'2/3/3/4',backgroundColor:'#3b82f6',borderRadius:'12px',display:'flex',alignItems:'center',justifyContent:'center',padding:'8px'}}><span style={{fontSize:'11px',fontWeight:700,color:'white'}}>{rn.audi}</span></div>
-<div style={{gridArea:'3/1/4/4',backgroundColor:'#f1f5f9',borderRadius:'6px'}}/>
-<div style={{gridArea:'4/1/5/4',backgroundColor:'#d1fae5',border:'2px dashed #a7f3d0',borderRadius:'12px',display:'flex',alignItems:'center',justifyContent:'center',gap:'8px',padding:'12px'}}><I.Ut size={16} style={{color:'#059669'}}/><span style={{fontSize:'11px',fontWeight:700,color:'#065f46',textAlign:'center'}}>{rn.catering}</span></div>
-</div></div>
-<div className="space-y-3">{rms.map(r=><div key={r.id} className="bg-white rounded-xl border border-slate-200 p-4 flex items-start gap-3">
-<div className="p-2.5 rounded-lg flex-shrink-0" style={{backgroundColor:r.cl}}><r.ic size={20} style={{color:r.tc}}/></div>
-<div><h3 className="font-semibold text-slate-900 text-sm">{rn[r.id]}</h3><p className="text-xs text-slate-500 mt-0.5">{r.ds}</p></div></div>)}</div></div>);}
-
-function SPV({data:d,lang:ln,t}){const[sel,setSel]=useState(null);const org=s=>ln==="de"?s.c:s.ce;return(<div className="pb-24">
-<h1 className="font-display text-2xl font-bold text-slate-900 mb-1 px-1">{t.sp.title}</h1><p className="text-xs text-slate-400 mb-5 px-1">{d.event.name}</p>
-<div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'12px'}}>{d.speakers.map(s=><div key={s.id} onClick={()=>setSel(s)} className="bg-white rounded-xl border border-slate-200 p-4 hover:shadow-md transition-all cursor-pointer">
-<div style={{display:'flex',alignItems:'flex-start',justifyContent:'space-between'}}><img src={s.img} alt={s.n} style={{width:56,height:56,borderRadius:'50%',objectFit:'cover',border:'2px solid #f1f5f9'}} onError={e=>{e.target.style.display='none'}}/>
-{s.li&&<a href={s.li} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" onClick={e=>e.stopPropagation()} style={{color:'#0a66c2',flexShrink:0,padding:4}}><LinkedInIcon/></a>}
-</div>
-<h3 className="font-semibold text-slate-900 text-sm leading-tight mb-0.5 mt-3">{s.n}</h3><p className="text-xs text-slate-500">{ln==="de"?s.r:s.re}</p>
-{org(s)&&<p className="text-xs font-medium mt-0.5" style={{color:'#1e69c4'}}>{org(s)}</p>}</div>)}</div>
-{sel&&<div className="fixed inset-0 z-50 bg-black/40 flex items-end sm:items-center justify-center" style={{backdropFilter:'blur(4px)'}} onClick={()=>setSel(null)}>
-<div className="animate-slideUp bg-white w-full sm:max-w-md sm:rounded-2xl rounded-t-2xl shadow-2xl max-h-[85vh] overflow-y-auto" onClick={e=>e.stopPropagation()}>
-<div className="h-2 sm:rounded-t-2xl rounded-t-2xl" style={{backgroundColor:'#081c74'}}/>
-<div className="p-6 text-center">
-<img src={sel.img} alt={sel.n} style={{width:96,height:96,borderRadius:'50%',objectFit:'cover',margin:'0 auto 16px',boxShadow:'0 4px 6px rgba(0,0,0,0.1)'}}/>
-<h2 className="font-display text-xl font-bold text-slate-900 mb-1">{sel.n}</h2><p className="text-sm text-slate-500">{ln==="de"?sel.r:sel.re}</p>
-{org(sel)&&<p className="text-sm font-semibold mt-1" style={{color:'#1e69c4'}}>{org(sel)}</p>}
-{(ln==="de"?sel.bio:sel.bioe)&&<p className="text-sm text-slate-600 leading-relaxed text-left mt-4">{ln==="de"?sel.bio:sel.bioe}</p>}
-{sel.li&&<a href={sel.li} target="_blank" rel="noopener noreferrer" style={{display:'inline-flex',alignItems:'center',gap:6,marginTop:16,padding:'10px 20px',borderRadius:10,backgroundColor:'#0a66c2',color:'white',fontSize:13,fontWeight:600,textDecoration:'none'}}><LinkedInIcon size={16}/>LinkedIn</a>}
-<button onClick={()=>setSel(null)} className="mt-4 w-full py-3 rounded-xl bg-slate-100 text-slate-600 font-semibold text-sm hover:bg-slate-200 transition-colors">{t.gen.close}</button>
-</div></div></div>}</div>);}
-
-function SPOV({data:d,t}){const[sel,setSel]=useState(null);return(<div className="pb-24">
-<h1 className="font-display text-2xl font-bold text-slate-900 mb-1 px-1">{t.spo.title}</h1><p className="text-xs text-slate-400 mb-5 px-1">{d.event.name}</p>
-<div className="space-y-2.5">{d.sponsors.map((s,i)=><div key={i} onClick={()=>setSel(s)} className="bg-white rounded-xl border border-slate-200 p-3.5 flex items-center justify-between hover:shadow-md transition-all cursor-pointer">
-<div className="flex items-center gap-3"><div style={{width:48,height:48,borderRadius:10,backgroundColor:'white',border:'1px solid #f1f5f9',display:'flex',alignItems:'center',justifyContent:'center',padding:6,flexShrink:0}}><img src={s.l} alt={s.n} style={{maxWidth:'100%',maxHeight:'100%',objectFit:'contain'}}/></div>
-<span className="font-semibold text-slate-800 text-sm">{s.n}</span></div><I.EL size={16} className="text-slate-300 flex-shrink-0"/></div>)}</div>
-{sel&&<div className="fixed inset-0 z-50 bg-black/40 flex items-end sm:items-center justify-center" style={{backdropFilter:'blur(4px)'}} onClick={()=>setSel(null)}>
-<div className="animate-slideUp bg-white w-full sm:max-w-md sm:rounded-2xl rounded-t-2xl shadow-2xl" onClick={e=>e.stopPropagation()}>
-<div className="h-2 sm:rounded-t-2xl rounded-t-2xl" style={{backgroundColor:'#081c74'}}/>
-<div className="p-6 text-center">
-<div style={{width:80,height:80,borderRadius:16,backgroundColor:'white',border:'1px solid #e2e8f0',display:'flex',alignItems:'center',justifyContent:'center',padding:12,margin:'0 auto 16px',boxShadow:'0 2px 8px rgba(0,0,0,0.06)'}}><img src={sel.l} alt={sel.n} style={{maxWidth:'100%',maxHeight:'100%',objectFit:'contain'}}/></div>
-<h2 className="font-display text-xl font-bold text-slate-900 mb-4">{sel.n}</h2>
-{sel.u&&<a href={sel.u} target="_blank" rel="noopener noreferrer" style={{display:'inline-flex',alignItems:'center',gap:8,padding:'12px 24px',borderRadius:12,backgroundColor:'#081c74',color:'white',fontSize:14,fontWeight:600,textDecoration:'none'}}><I.EL size={16}/>{t.spo.visit}</a>}
-<button onClick={()=>setSel(null)} className="mt-4 w-full py-3 rounded-xl bg-slate-100 text-slate-600 font-semibold text-sm hover:bg-slate-200 transition-colors">{t.gen.close}</button>
-</div></div></div>}
-</div>);}
-
-// Lädt data.json (wird stündlich per GitHub Action von ebs-lawcongress.com aktualisiert).
-// Reihenfolge: zuletzt gespeicherte Daten sofort anzeigen, dann im Hintergrund aktualisieren.
 function useCongressData(){const[data,setData]=useState(loadCachedData);const[status,setStatus]=useState("loading");
-const sync=useCallback(async()=>{try{const r=await fetch(DATA_URL,{cache:"no-store"});if(!r.ok)throw new Error("HTTP "+r.status);const d=await r.json();if(!validData(d))throw new Error("invalid data");
-setData(p=>p&&p.updatedAt===d.updatedAt?p:d);try{localStorage.setItem(DATA_KEY,JSON.stringify(d));}catch(e){}setStatus(navigator.onLine===false?"offline":"ok");}catch(e){setStatus("offline");}},[]);
-useEffect(()=>{sync();const iv=setInterval(sync,10*60*1000);const onVis=()=>{if(document.visibilityState==="visible")sync();};document.addEventListener("visibilitychange",onVis);window.addEventListener("online",sync);
-return()=>{clearInterval(iv);document.removeEventListener("visibilitychange",onVis);window.removeEventListener("online",sync);};},[sync]);
+const sync=useCallback(async()=>{try{const r=await fetch(DATA_URL,{cache:"no-store"});if(!r.ok)throw new Error("HTTP "+r.status);const d=await r.json();if(!validData(d))throw new Error("invalid");
+setData(p=>p&&p.updatedAt===d.updatedAt?p:d);store.set(DATA_KEY,JSON.stringify(d));setStatus(navigator.onLine===false?"offline":"ok");}catch(e){setStatus("offline");}},[]);
+useEffect(()=>{sync();const iv=setInterval(sync,10*60*1000);const vis=()=>{if(document.visibilityState==="visible")sync();};document.addEventListener("visibilitychange",vis);window.addEventListener("online",sync);
+return()=>{clearInterval(iv);document.removeEventListener("visibilitychange",vis);window.removeEventListener("online",sync);};},[sync]);
 return{data,status,sync};}
 
-function App(){const[ln,setLn]=useState("de");const[vw,setVw]=useState("schedule");const[si,setSi]=useState(new Set());const t=TT[ln];const{data:d,status:st,sync}=useCongressData();
-useEffect(()=>{try{const s=localStorage.getItem(SAVED_KEY);if(s)setSi(new Set(JSON.parse(s)));}catch(e){}},[]);
-const ts=useCallback(id=>{setSi(p=>{const n=new Set(p);if(n.has(id))n.delete(id);else n.add(id);try{localStorage.setItem(SAVED_KEY,JSON.stringify([...n]));}catch(e){}return n;});},[]);
-const savedCount=useMemo(()=>d?d.schedule.de.reduce((n,dy)=>n+dy.events.filter(e=>si.has(e.id)).length,0):0,[d,si]);
-const nv=[{id:"schedule",lb:t.nav.schedule,ic:I.Cal},{id:"mySchedule",lb:t.nav.mySchedule,ic:I.Bm},{id:"roomPlan",lb:t.nav.roomPlan,ic:I.Map},{id:"speakers",lb:t.nav.speakers,ic:I.U1},{id:"sponsors",lb:t.nav.sponsors,ic:I.Aw}];
-return(<LC.Provider value={t}><div style={{minHeight:'100vh',backgroundColor:'#f8fafc'}}>
-<header className="sticky top-0 z-40 border-b border-slate-200" style={{backgroundColor:'rgba(255,255,255,0.85)',backdropFilter:'blur(16px)'}}>
-<div style={{height:'env(safe-area-inset-top,0px)',backgroundColor:'rgba(255,255,255,0.85)'}}/>
-<div style={{maxWidth:'100%',width:'100%',margin:'0 auto',boxSizing:'border-box',padding:'0 16px',height:56,display:'flex',alignItems:'center',justifyContent:'space-between'}}>
-<div style={{display:'flex',alignItems:'center',gap:10,minWidth:0}}><img src={LOGO} alt="LC" style={{height:32,objectFit:'contain'}}/><div style={{minWidth:0}}><h1 style={{fontSize:14,fontWeight:700,color:'#0f172a',lineHeight:1.2,margin:0}}>EBS Law Congress</h1>{d&&d.event.date&&<p style={{fontSize:11,color:'#64748b',margin:0,whiteSpace:'nowrap',overflow:'hidden',textOverflow:'ellipsis'}}>{d.event.date[ln]}</p>}</div></div>
-<div style={{display:'flex',alignItems:'center',gap:8}}>
-{savedCount>0&&vw!=="mySchedule"&&<button onClick={()=>setVw("mySchedule")} className="relative" style={{padding:8,borderRadius:8,backgroundColor:'#fef3c7',color:'#d97706',border:'none',cursor:'pointer'}}><I.BmF size={16}/><span style={{position:'absolute',top:-4,right:-4,width:16,height:16,backgroundColor:'#f59e0b',color:'white',fontSize:10,fontWeight:700,borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center'}}>{savedCount}</span></button>}
-<button onClick={()=>setLn(ln==="de"?"en":"de")} style={{display:'flex',alignItems:'center',gap:4,padding:'6px 10px',borderRadius:8,backgroundColor:'#f1f5f9',border:'none',cursor:'pointer'}}><I.Gl size={14} className="text-slate-500"/><span style={{fontSize:12,fontWeight:700,color:'#475569'}}>{ln==="de"?"EN":"DE"}</span></button>
-</div></div></header>
-<main style={{maxWidth:'100%',width:'100%',margin:'0 auto',boxSizing:'border-box',padding:'20px 16px 0'}}>
-{!d?<div className="text-center py-20 px-4">{st==="loading"?<p className="text-slate-400 text-sm">{t.gen.loading}</p>:<><p className="text-slate-500 text-sm mb-4">{t.gen.loadErr}</p><button onClick={sync} className="px-5 py-2.5 rounded-xl text-sm font-semibold text-white" style={{backgroundColor:'#081c74'}}>{t.gen.retry}</button></>}</div>:<>
-{vw==="schedule"&&<SV data={d} savedIds={si} onToggleSave={ts} lang={ln} t={t} status={st}/>}
-{vw==="mySchedule"&&<MSV data={d} savedIds={si} onToggleSave={ts} lang={ln} t={t}/>}
-{vw==="roomPlan"&&<RPV data={d} lang={ln} t={t}/>}
-{vw==="speakers"&&<SPV data={d} lang={ln} t={t}/>}
-{vw==="sponsors"&&<SPOV data={d} t={t}/>}</>}
+// ---------- Bausteine im Stil der Website ----------
+function SectionHead({label,title,desc,dark}){return(<div className="text-center mb-8">
+{label&&<p className="text-accent font-bold tracking-wider text-sm uppercase mb-2">{label}</p>}
+<h2 className={`font-serif text-3xl font-bold mb-4 ${dark?"text-white":"text-primary"}`}>{title}</h2>
+<div className="w-24 h-1 bg-accent mx-auto"/>
+{desc&&<p className="text-ink2 text-sm mt-5 max-w-md mx-auto leading-relaxed">{desc}</p>}</div>);}
+
+function Pills({ev,ln}){return(<div className="flex flex-col items-center gap-2 mb-5">
+{ev.date&&ev.date[ln]&&<span className="bg-accent text-white px-4 py-1.5 rounded-full text-xs font-semibold tracking-wide shadow-sm">{ev.date[ln]}</span>}
+{ev.location&&ev.location[ln]&&<span className="bg-white/20 backdrop-blur-sm border border-white/30 text-white px-4 py-1.5 rounded-full text-xs font-semibold tracking-wide text-center">{ev.location[ln]}</span>}</div>);}
+
+function Sheet({onClose,children,label}){useEffect(()=>{const k=e=>{if(e.key==="Escape")onClose();};document.addEventListener("keydown",k);const o=document.body.style.overflow;document.body.style.overflow="hidden";return()=>{document.removeEventListener("keydown",k);document.body.style.overflow=o;};},[onClose]);
+return(<div className="fixed inset-0 z-[60] bg-black/50 flex items-end sm:items-center justify-center" onClick={onClose} role="dialog" aria-modal="true" aria-label={label}>
+<div className="animate-slideUp bg-white w-full sm:max-w-lg rounded-t-lg sm:rounded-lg max-h-[88vh] overflow-y-auto shadow-2xl pb-safe" onClick={e=>e.stopPropagation()}>{children}</div></div>);}
+
+// ---------- Installationsseite ----------
+function InstallPage({data:d,ln,setLn,t,onContinue}){const ev=(d&&d.event)||{name:"EBS Law Congress"};const[pf,setPf]=useState(platform);const[canPrompt,setCanPrompt]=useState(!!window.__installPrompt);
+useEffect(()=>{const on=()=>setCanPrompt(!!window.__installPrompt);window.addEventListener("installprompt-ready",on);window.addEventListener("app-installed",onContinue);return()=>{window.removeEventListener("installprompt-ready",on);window.removeEventListener("app-installed",onContinue);};},[onContinue]);
+const install=async()=>{const p=window.__installPrompt;if(!p)return;p.prompt();try{const r=await p.userChoice;if(r&&r.outcome==="accepted")onContinue();}catch(e){}window.__installPrompt=null;setCanPrompt(false);};
+const steps=pf==="ios"?t.inst.iosSteps:t.inst.andSteps;
+return(<div className="min-h-screen bg-cream">
+<header className="bg-primary text-white pt-safe">
+<div className="flex justify-between items-center h-16 px-4">
+<img src={img(d,"logo")} alt="EBS Law Congress" className="h-10 object-contain"/>
+<button onClick={()=>setLn(ln==="de"?"en":"de")} className="text-xs font-bold border border-white px-3 py-1 rounded-sm">{ln==="de"?"EN":"DE"}</button></div></header>
+
+<section className="relative overflow-hidden">
+<img src={img(d,"hero")} alt="" className="absolute inset-0 w-full h-full object-cover"/>
+<div className="absolute inset-0 bg-black/60"/>
+<div className="relative z-10 text-center text-white px-5 pt-12 pb-14">
+<p className="text-sky-300 font-bold tracking-wider text-xs uppercase mb-4">{t.inst.badge}</p>
+<h1 className="font-serif text-4xl font-bold leading-tight mb-5">{ev.name}</h1>
+<Pills ev={ev} ln={ln}/>
+{ev.motto&&ev.motto[ln]&&<p className="font-serif text-lg leading-snug text-white/90 max-w-md mx-auto mb-4">„{ev.motto[ln]}“</p>}
+<p className="text-sm text-white/80 max-w-sm mx-auto leading-relaxed">{t.inst.lead}</p>
+</div></section>
+
+<section className="px-4 py-12">
+<SectionHead label={t.inst.label} title={t.inst.title} desc={t.inst.intro}/>
+<div className="max-w-md mx-auto">
+{canPrompt&&<button onClick={install} className="w-full bg-accent text-white px-6 py-3.5 rounded-sm font-medium flex items-center justify-center gap-2 shadow-sm mb-6"><I.Dl size={18}/>{t.inst.btn}</button>}
+<div className="flex justify-center mb-6"><div className="inline-flex bg-white rounded-lg p-1 shadow-sm border border-ink3/20">
+{[["ios",t.inst.ios],["android",t.inst.android]].map(([id,lb])=><button key={id} onClick={()=>setPf(id)} className={`px-4 py-2.5 rounded-md text-sm font-semibold transition-all ${pf===id?"bg-primary text-white shadow-md":"text-ink3"}`}>{lb}</button>)}</div></div>
+<div className="bg-white rounded-lg shadow-sm border border-ink3/10 divide-y divide-ink3/10">
+{steps.map(([ic,tx],i)=>{const Ic=I[ic];return(<div key={i} className="flex items-center gap-4 p-5">
+<div className="w-10 h-10 rounded-sm bg-primary text-white flex items-center justify-center font-serif font-bold text-lg flex-shrink-0">{i+1}</div>
+<p className="text-ink2 text-[15px] leading-snug flex-1">{tx}</p><Ic size={22} className="text-accent flex-shrink-0"/></div>);})}</div>
+{pf==="ios"&&<p className="text-xs text-ink3 mt-4 text-center">{t.inst.iosHint}</p>}
+<div className="grid grid-cols-3 gap-3 mt-10">{t.inst.feat.map(([ic,lb])=>{const Ic=I[ic];return(<div key={lb} className="text-center"><div className="w-12 h-12 mx-auto rounded-full bg-white border border-ink3/10 shadow-sm flex items-center justify-center text-primary mb-2"><Ic size={20}/></div><p className="text-xs font-semibold text-ink2">{lb}</p></div>);})}</div>
+<button onClick={onContinue} className="w-full mt-10 border border-primary text-primary px-6 py-3 rounded-sm font-medium flex items-center justify-center gap-2">{t.inst.cont}<I.Arrow size={16}/></button>
+</div></section>
+
+<footer className="bg-primary text-[#f8f5f2]/70 text-center text-xs py-8 px-4 pb-safe">
+<img src={img(d,"logo")} alt="" className="h-9 mx-auto mb-3 object-contain"/>
+<a href={(ev&&ev.website)||"https://www.ebs-lawcongress.com/"} target="_blank" rel="noopener noreferrer" className="hover:text-white">www.ebs-lawcongress.com</a></footer>
+</div>);}
+
+// ---------- Zeitplan ----------
+function TypeBadge({type,t}){return <span className="inline-block text-xs text-ink3 font-medium bg-cream px-2 py-0.5 rounded">{t.types[type]||t.types.other}</span>;}
+function SubEvents({items}){if(!items||!items.length)return null;return(<div className="mt-3 pl-3 border-l-2 border-accent/40 space-y-1">{items.map((s,i)=><p key={i} className="text-sm text-ink2"><span className="font-semibold text-primary mr-2">{s.time}</span>– {s.title}</p>)}</div>);}
+
+function EventCard({e,saved,onToggle,onOpen,t}){return(
+<div className="animate-fadeUp bg-white p-5 rounded-lg shadow-sm border border-ink3/10 cursor-pointer active:bg-cream/50" onClick={()=>onOpen(e)}>
+<div className="flex items-start justify-between gap-3">
+<div className="min-w-0 flex-1">
+<p className="text-xl font-bold text-primary">{e.time}</p>
+<div className="mt-1 mb-3"><TypeBadge type={e.type} t={t}/></div>
+<h3 className="text-[17px] font-bold text-primary leading-snug">{e.title}</h3>
+{e.speaker&&<p className="flex items-center text-ink2 text-sm mt-1.5"><I.Usr size={15} className="mr-2 flex-shrink-0 text-ink3"/>{e.speaker}</p>}
+{e.location&&<p className="flex items-center text-ink3 text-sm mt-1.5"><I.Pin size={15} className="mr-2 flex-shrink-0 text-accent"/>{e.location}</p>}
+<SubEvents items={e.subEvents}/></div>
+<button onClick={ev=>{ev.stopPropagation();onToggle(e.id);}} aria-label={saved?t.schedule.saved:t.schedule.save} aria-pressed={saved} className={`flex-shrink-0 -mr-1 -mt-1 p-2 rounded-sm transition-colors ${saved?"text-accent":"text-ink3/40"}`}>{saved?<I.BmF size={22}/>:<I.Bm size={22}/>}</button>
+</div></div>);}
+
+function EventDetail({e,saved,onToggle,onClose,t,ln,speakers}){const ms=matchSpeakers(e,speakers);return(
+<Sheet onClose={onClose} label={e.title}>
+<div className="bg-primary text-white px-6 pt-5 pb-6 relative">
+<button onClick={onClose} aria-label={t.gen.close} className="absolute right-3 top-3 p-2 text-white/70"><I.X size={20}/></button>
+<p className="text-2xl font-bold">{e.time}</p>
+<span className="inline-block text-xs font-medium bg-white/15 px-2 py-0.5 rounded mt-1">{t.types[e.type]||t.types.other}</span>
+<h2 className="font-serif text-2xl font-bold leading-tight mt-3 pr-6">{e.title}</h2></div>
+<div className="p-6">
+{((e.speaker&&!ms.length)||e.location)&&<div className="space-y-2 mb-4">
+{e.speaker&&!ms.length&&<p className="flex items-center text-ink2 text-sm"><I.Usr size={16} className="mr-2 text-ink3"/>{e.speaker}</p>}
+{e.location&&<p className="flex items-center text-ink2 text-sm"><I.Pin size={16} className="mr-2 text-accent"/>{e.location}</p>}</div>}
+<SubEvents items={e.subEvents}/>
+{e.description&&<p className="text-[15px] text-ink2 leading-relaxed my-4">{e.description}</p>}
+{ms.length>0&&<div className="space-y-2 my-5">{ms.map(p=><div key={p.id} className="flex items-center gap-3 bg-cream rounded-lg p-3">
+<img src={p.img} alt={p.n} className="w-12 h-12 rounded-full object-cover object-[center_20%] flex-shrink-0" onError={ev=>{ev.target.style.visibility='hidden'}}/>
+<div className="min-w-0"><p className="font-serif font-bold text-primary">{p.n}</p><p className="text-xs text-ink3">{ln==="de"?p.r:p.re}{(ln==="de"?p.c:p.ce)?` · ${ln==="de"?p.c:p.ce}`:""}</p></div></div>)}</div>}
+<button onClick={()=>onToggle(e.id)} className={`w-full mt-2 px-6 py-3 rounded-sm font-medium flex items-center justify-center gap-2 transition-colors ${saved?"border border-accent text-accent bg-white":"bg-accent text-white"}`}>{saved?<><I.BmF size={18}/>{t.schedule.saved}</>:<><I.Bm size={18}/>{t.schedule.save}</>}</button>
+</div></Sheet>);}
+
+function Hero({d,ln,t,status,onProgram}){const ev=d.event;return(
+<section className="relative overflow-hidden -mx-4 -mt-6 mb-0">
+<img src={img(d,"hero")} alt="" className="absolute inset-0 w-full h-full object-cover"/>
+<div className="absolute inset-0 bg-black/60"/>
+<div className="relative z-10 text-center text-white px-5 pt-10 pb-10">
+<Pills ev={ev} ln={ln}/>
+{ev.motto&&ev.motto[ln]&&<h1 className="font-serif text-[26px] font-bold leading-tight mb-6 max-w-xl mx-auto">{ev.motto[ln]}</h1>}
+<div className="flex flex-col gap-3 max-w-xs mx-auto">
+<button onClick={onProgram} className="bg-accent text-white px-6 py-3 rounded-sm font-medium">{t.gen.program}</button>
+{ev.ticketUrl&&<a href={ev.ticketUrl} target="_blank" rel="noopener noreferrer" className="border border-white text-white px-6 py-3 rounded-sm font-medium">{t.gen.tickets}</a>}</div>
+<p className="text-[11px] text-white/60 mt-6">{status==="offline"?t.gen.offline:`${t.gen.updated}: ${fmtTs(d.updatedAt,ln)}`}</p>
+</div></section>);}
+
+function ScheduleView({d,ln,t,saved,onToggle,status}){const[ad,setAd]=useState(0);const[fi,setFi]=useState("all");const[sel,setSel]=useState(null);const days=d.schedule[ln]||d.schedule.de;const di=Math.min(ad,Math.max(days.length-1,0));
+const list=useMemo(()=>{const ev=days[di]?.events||[];if(fi==="talks")return ev.filter(e=>isTalk(e.type));if(fi==="ws")return ev.filter(e=>e.type==="workshop"||e.type==="interview");return ev;},[days,di,fi]);
+const toProgram=()=>{const el=document.getElementById("zeitplan");if(el)el.scrollIntoView({behavior:"smooth",block:"start"});};
+return(<div>
+<Hero d={d} ln={ln} t={t} status={status} onProgram={toProgram}/>
+<section id="zeitplan" className="pt-12 scroll-mt-20">
+<SectionHead title={t.schedule.title}/>
+<div className="flex justify-center mb-5"><div className="inline-flex bg-white rounded-lg p-1 shadow-sm border border-ink3/20">
+{days.map((dy,i)=><button key={i} onClick={()=>setAd(i)} className={`px-6 py-2.5 rounded-md text-sm font-semibold transition-all ${di===i?"bg-primary text-white shadow-md":"text-ink3"}`}>{dy.day}</button>)}</div></div>
+<div className="flex justify-center gap-2 mb-6">{[["all",t.schedule.all],["talks",t.schedule.talks],["ws",t.schedule.ws]].map(([id,lb])=><button key={id} onClick={()=>setFi(id)} className={`px-3 py-1.5 rounded-sm text-xs font-semibold border transition-colors ${fi===id?"bg-primary border-primary text-white":"bg-white border-ink3/20 text-ink3"}`}>{lb}</button>)}</div>
+<div className="space-y-4">{list.length===0?<p className="text-center text-ink3 py-12 text-sm">{t.schedule.none}</p>:list.map(e=><EventCard key={e.id} e={e} saved={saved.has(e.id)} onToggle={onToggle} onOpen={setSel} t={t}/>)}</div>
+</section>
+{sel&&<EventDetail e={sel} saved={saved.has(sel.id)} onToggle={onToggle} onClose={()=>setSel(null)} t={t} ln={ln} speakers={d.speakers}/>}
+</div>);}
+
+function MyPlanView({d,ln,t,saved,onToggle}){const[sel,setSel]=useState(null);const days=d.schedule[ln]||d.schedule.de;
+const groups=useMemo(()=>days.map(dy=>({day:dy.day,events:dy.events.filter(e=>saved.has(e.id))})).filter(g=>g.events.length),[days,saved]);
+const n=groups.reduce((a,g)=>a+g.events.length,0);
+return(<div className="pt-6">
+<SectionHead label={t.my.label} title={t.my.title} desc={n?t.my.count(n):null}/>
+{n===0?<div className="bg-white rounded-lg border border-ink3/10 shadow-sm text-center px-6 py-12"><I.Bm size={40} className="text-accent/40 mx-auto mb-4"/><p className="font-serif text-lg font-bold text-primary mb-2">{t.my.empty}</p><p className="text-ink3 text-sm">{t.my.hint}</p></div>
+:groups.map(g=><div key={g.day} className="mb-8"><h3 className="font-serif text-xl font-bold text-primary mb-3 flex items-center gap-3"><span className="w-1 h-6 bg-accent inline-block"/>{g.day}</h3><div className="space-y-4">{g.events.map(e=><EventCard key={e.id} e={e} saved={true} onToggle={onToggle} onOpen={setSel} t={t}/>)}</div></div>)}
+{sel&&<EventDetail e={sel} saved={saved.has(sel.id)} onToggle={onToggle} onClose={()=>setSel(null)} t={t} ln={ln} speakers={d.speakers}/>}
+</div>);}
+
+// ---------- Raumplan ----------
+function RoomView({d,ln,t}){const rn=Object.assign({mainStage:"Main Stage",max:"Max",audi:"Audi",weinkeller:"Weinkeller",catering:"Catering"},(d.rooms&&d.rooms[ln])||{});const plan=img(d,"roomPlan");
+const rooms=[["mainStage","bg-primary text-white"],["max","bg-accent text-white"],["audi","bg-accent text-white"],["weinkeller","bg-white text-primary border-2 border-primary"],["catering","bg-white text-ink border-2 border-accent"]];
+return(<div className="pt-6">
+<SectionHead label={t.room.label} title={t.room.title} desc={t.room.desc}/>
+{plan&&<a href={plan} target="_blank" rel="noopener noreferrer" className="block bg-white rounded-lg shadow-md p-3 mb-2"><img src={plan} alt={t.room.title} className="w-full h-auto rounded"/></a>}
+{plan&&<p className="text-center text-xs text-accent font-semibold mb-8"><a href={plan} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1">{t.room.open}<I.EL size={12}/></a></p>}
+<div className="space-y-3">{rooms.map(([id,cl])=><div key={id} className="bg-white rounded-lg border border-ink3/10 shadow-sm p-4 flex items-center gap-4">
+<div className={`w-11 h-11 rounded-sm flex items-center justify-center flex-shrink-0 ${cl}`}><I.Pin size={18}/></div>
+<div><h3 className="font-serif font-bold text-primary text-lg leading-tight">{rn[id]}</h3>{t.room.d[id]&&<p className="text-sm text-ink3 mt-0.5">{t.room.d[id]}</p>}</div></div>)}</div>
+{d.event.location&&d.event.location[ln]&&<p className="flex items-start justify-center text-sm text-ink2 mt-8 text-center"><I.Pin size={16} className="mr-2 mt-0.5 text-accent flex-shrink-0"/>{d.event.location[ln]}</p>}
+</div>);}
+
+// ---------- Speaker ----------
+function SpeakersView({d,ln,t}){const[sel,setSel]=useState(null);const org=s=>ln==="de"?s.c:s.ce;const role=s=>ln==="de"?s.r:s.re;
+return(<div className="bg-primary -mx-4 -mt-6 px-4 pt-10 pb-10 min-h-[calc(100vh-8rem)]">
+<SectionHead title={t.speakers.title} dark/>
+<div className="grid grid-cols-2 gap-3">{d.speakers.map(s=><button key={s.id} onClick={()=>setSel(s)} className="relative overflow-hidden rounded-sm shadow-lg text-left animate-fadeUp">
+<div className="relative pt-[133.33%] bg-white/5">
+<img src={s.img} alt={s.n} loading="lazy" className="absolute inset-0 w-full h-full object-cover object-[center_20%]"/>
+<div className="absolute inset-0 bg-gradient-to-t from-primary via-black/40 to-transparent opacity-90"/>
+<div className="absolute bottom-0 left-0 w-full p-3 text-white">
+<h3 className="font-serif text-[15px] font-bold leading-tight mb-1">{s.n}</h3>
+<p className="text-sky-300 font-medium text-xs leading-snug">{role(s)}</p>
+{org(s)&&<p className="text-gray-300 text-[11px] leading-snug mt-0.5">{org(s)}</p>}</div></div></button>)}</div>
+{sel&&<Sheet onClose={()=>setSel(null)} label={sel.n}>
+<div className="relative">
+<div className="relative h-72 bg-primary"><img src={sel.img} alt={sel.n} className="absolute inset-0 w-full h-full object-cover object-[center_20%]"/><div className="absolute inset-0 bg-gradient-to-t from-primary via-black/30 to-transparent"/></div>
+<button onClick={()=>setSel(null)} aria-label={t.gen.close} className="absolute right-3 top-3 p-2 rounded-full bg-black/30 text-white"><I.X size={20}/></button>
+<div className="absolute bottom-0 left-0 right-0 p-6 text-white"><h2 className="font-serif text-2xl font-bold">{sel.n}</h2><p className="text-sky-300 font-medium text-sm mt-1">{role(sel)}</p>{org(sel)&&<p className="text-gray-300 text-xs mt-0.5">{org(sel)}</p>}</div></div>
+<div className="p-6">
+{(ln==="de"?sel.bio:sel.bioe)&&<p className="text-[15px] text-ink2 leading-relaxed">{ln==="de"?sel.bio:sel.bioe}</p>}
+{sel.li&&<a href={sel.li} target="_blank" rel="noopener noreferrer" className="mt-6 w-full bg-primary text-white px-6 py-3 rounded-sm font-medium flex items-center justify-center gap-2"><LinkedIn size={16}/>LinkedIn</a>}
+<button onClick={()=>setSel(null)} className="mt-3 w-full border border-ink3/30 text-ink2 px-6 py-3 rounded-sm font-medium">{t.gen.close}</button></div></Sheet>}
+</div>);}
+
+// ---------- Partner ----------
+function PartnersView({d,ln,t}){return(<div className="bg-white -mx-4 -mt-6 px-4 pt-10 pb-10 min-h-[calc(100vh-8rem)]">
+<SectionHead label={t.partners.label} title={t.partners.title}/>
+<div className="grid grid-cols-2 gap-3">{d.sponsors.map((s,i)=><a key={i} href={s.u||undefined} target="_blank" rel="noopener noreferrer" className="flex flex-col items-center justify-center gap-3 border border-ink3/10 rounded-lg p-4 h-36 bg-white shadow-sm animate-fadeUp">
+<div className="flex-1 flex items-center justify-center w-full"><img src={s.l} alt={s.n} loading="lazy" className="max-h-16 max-w-full object-contain"/></div>
+<span className="text-[11px] font-semibold text-ink3 text-center leading-tight">{s.n}</span></a>)}</div>
+<div className="text-center mt-10">
+<a href={d.event.website||"https://www.ebs-lawcongress.com/"} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 bg-primary text-white px-8 py-3 rounded-sm font-bold shadow-sm">{t.gen.website}<I.EL size={16}/></a></div>
+</div>);}
+
+// ---------- App ----------
+function App(){
+const[ln,setLnRaw]=useState(()=>store.get(LANG_KEY)||((navigator.language||"de").toLowerCase().startsWith("de")?"de":"en"));
+const setLn=l=>{setLnRaw(l);store.set(LANG_KEY,l);document.documentElement.lang=l;};
+const t=TT[ln];
+const[showInstall,setShowInstall]=useState(()=>!isStandalone()&&!sessionStorage.getItem(SKIP_KEY));
+const cont=useCallback(()=>{try{sessionStorage.setItem(SKIP_KEY,"1");}catch(e){}setShowInstall(false);window.scrollTo(0,0);},[]);
+const[vw,setVw]=useState("schedule");
+const[saved,setSaved]=useState(()=>{try{return new Set(JSON.parse(store.get(SAVED_KEY)||"[]"));}catch(e){return new Set();}});
+const toggle=useCallback(id=>{setSaved(p=>{const n=new Set(p);n.has(id)?n.delete(id):n.add(id);store.set(SAVED_KEY,JSON.stringify([...n]));return n;});},[]);
+const{data:d,status,sync}=useCongressData();
+useEffect(()=>{const b=document.getElementById("boot");if(b)b.remove();document.documentElement.lang=ln;},[]);
+const savedCount=useMemo(()=>d?d.schedule.de.reduce((n,dy)=>n+dy.events.filter(e=>saved.has(e.id)).length,0):0,[d,saved]);
+const go=v=>{setVw(v);window.scrollTo(0,0);};
+
+if(showInstall)return <InstallPage data={d} ln={ln} setLn={setLn} t={t} onContinue={cont}/>;
+
+const nav=[["schedule",t.nav.schedule,I.Cal],["my",t.nav.my,I.Bm],["room",t.nav.room,I.Map],["speakers",t.nav.speakers,I.Users],["partners",t.nav.partners,I.Award]];
+return(<div className="min-h-screen bg-cream">
+<header className="sticky top-0 z-50 bg-primary text-white shadow-lg pt-safe">
+<div className="flex justify-between items-center h-16 px-4">
+<button onClick={()=>go("schedule")} className="flex items-center gap-3 min-w-0"><img src={img(d,"logo")} alt="" className="h-10 object-contain flex-shrink-0"/><span className="font-serif text-[17px] leading-tight font-bold text-cream truncate">{(d&&d.event.name)||"EBS Law Congress"}</span></button>
+<div className="flex items-center gap-3 flex-shrink-0">
+{savedCount>0&&vw!=="my"&&<button onClick={()=>go("my")} aria-label={t.nav.my} className="relative text-xs font-bold bg-accent px-3 py-1 rounded-sm flex items-center gap-1"><I.BmF size={12}/>{savedCount}</button>}
+<button onClick={()=>setLn(ln==="de"?"en":"de")} className="text-xs font-bold border border-white px-3 py-1 rounded-sm">{ln==="de"?"EN":"DE"}</button></div></div></header>
+
+<main className="px-4 pt-6 pb-28 max-w-2xl mx-auto">
+{!d?<div className="text-center py-24">{status==="loading"?<p className="text-ink3 text-sm">{t.gen.loading}</p>:<><p className="text-ink2 text-sm mb-5">{t.gen.loadErr}</p><button onClick={sync} className="bg-accent text-white px-6 py-3 rounded-sm font-medium">{t.gen.retry}</button></>}</div>:<>
+{vw==="schedule"&&<ScheduleView d={d} ln={ln} t={t} saved={saved} onToggle={toggle} status={status}/>}
+{vw==="my"&&<MyPlanView d={d} ln={ln} t={t} saved={saved} onToggle={toggle}/>}
+{vw==="room"&&<RoomView d={d} ln={ln} t={t}/>}
+{vw==="speakers"&&<SpeakersView d={d} ln={ln} t={t}/>}
+{vw==="partners"&&<PartnersView d={d} ln={ln} t={t}/>}</>}
 </main>
-<nav className="fixed bottom-0 left-0 right-0 z-40 border-t border-slate-200" style={{backgroundColor:'rgba(255,255,255,0.92)',backdropFilter:'blur(16px)'}}>
-<div style={{maxWidth:'100%',width:'100%',margin:'0 auto',boxSizing:'border-box',display:'flex'}}>{nv.map(item=>{const a=vw===item.id;return(<button key={item.id} onClick={()=>setVw(item.id)} style={{flex:1,display:'flex',flexDirection:'column',alignItems:'center',padding:'10px 0 8px',border:'none',background:'none',cursor:'pointer',color:a?'#081c74':'#94a3b8',transition:'color 0.15s'}}>
-<item.ic size={20} strokeWidth={a?2.5:2}/><span style={{fontSize:10,marginTop:2,fontWeight:a?700:500}}>{item.lb}</span>{a&&<div style={{width:4,height:4,borderRadius:'50%',backgroundColor:'#081c74',marginTop:3}}/>}</button>);})}</div>
-<div style={{height:'env(safe-area-inset-bottom,0px)',backgroundColor:'white'}}/></nav>
-</div></LC.Provider>);}
+
+<nav className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-ink3/15 pb-safe">
+<div className="flex max-w-2xl mx-auto">{nav.map(([id,lb,Ic])=>{const a=vw===id;return(<button key={id} onClick={()=>go(id)} aria-current={a?"page":undefined} className={`relative flex-1 flex flex-col items-center pt-2.5 pb-2 transition-colors ${a?"text-primary":"text-ink3/60"}`}>
+{a&&<span className="absolute top-0 left-1/2 -translate-x-1/2 w-8 h-[3px] bg-accent"/>}
+<Ic size={21} strokeWidth={a?2.4:1.8}/><span className={`text-[10px] mt-1 ${a?"font-bold":"font-medium"}`}>{lb}</span></button>);})}</div></nav>
+</div>);}
+
 ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
-</script></body></html>
+</script>
+</body>
+</html>

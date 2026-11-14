@@ -267,8 +267,19 @@ async function main() {
     console.warn('tickets.html nicht lesbar, nutze Fallback-Link:', e.message);
   }
 
+  // Bilder (Logo, Hero-Foto, Raumplan) aus den Komponenten der Website
+  const imgBy = (re, fallback) => { const m = html.match(re); return m ? m[1] : fallback; };
+  const IMG = 'https://app.trickle.so/storage/[^"]+';
+  const images = {
+    logo: imgBy(new RegExp(`src:"(${IMG})",alt:"Law Congress Logo"`),
+      'https://app.trickle.so/storage/public/images/usr_1a6da71af0000001/e5c2fd38-03c9-40e8-a275-becc52e0e3c8.png'),
+    hero: imgBy(new RegExp(`src:"(${IMG})",alt:"Law Congress Background"`), ''),
+    roomPlan: imgBy(new RegExp(`src:"(${IMG})",alt:t\\("roomPlan\\.mainTitle"\\)`), ''),
+  };
+
   const content = {
     source: BASE,
+    images,
     event: {
       edition,
       name: edition ? `${edition}. EBS Law Congress` : 'EBS Law Congress',
