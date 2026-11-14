@@ -1,12 +1,11 @@
-const CACHE_NAME = 'ebs-law-congress-v1';
+const CACHE_NAME = 'ebs-law-congress-v2';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
+  './data.json',
   './manifest.json',
   './icon-192.png',
   './icon-512.png',
-  './icon-maskable-192.png',
-  './icon-maskable-512.png',
   // CDN dependencies
   'https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js',
   'https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js',
@@ -15,74 +14,64 @@ const ASSETS_TO_CACHE = [
   'https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap'
 ];
 
-// Install: pre-cache all critical assets
+// Install: Assets einzeln cachen, damit eine fehlende Datei nicht den gesamten Pre-Cache verhindert.
 self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_NAME)
-      .then(cache => {
-        console.log('[SW] Pre-caching app shell');
-        return cache.addAll(ASSETS_TO_CACHE);
-      })
+      .then(cache => Promise.all(ASSETS_TO_CACHE.map(url =>
+        cache.add(url).catch(err => console.warn('[SW] Pre-cache fehlgeschlagen:', url, err))
+      )))
       .then(() => self.skipWaiting())
-      .catch(err => {
-        console.warn('[SW] Pre-cache failed for some assets, continuing:', err);
-        // Still skip waiting even if some CDN assets fail
-        return self.skipWaiting();
-      })
   );
 });
 
-// Activate: clean up old caches
+// Activate: alte Caches löschen
 self.addEventListener('activate', event => {
   event.waitUntil(
-    caches.keys().then(cacheNames => {
-      return Promise.all(
-        cacheNames
-          .filter(name => name !== CACHE_NAME)
-          .map(name => {
-            console.log('[SW] Deleting old cache:', name);
-            return caches.delete(name);
-          })
-      );
-    }).then(() => self.clients.claim())
+    caches.keys()
+      .then(names => Promise.all(names.filter(n => n !== CACHE_NAME).map(n => caches.delete(n))))
+      .then(() => self.clients.claim())
   );
 });
 
-// Fetch: cache-first strategy
-self.addEventListener('fetch', event => {
-  event.respondWith(
-    caches.match(event.request)
-      .then(cachedResponse => {
-        if (cachedResponse) {
-          // Return from cache, but also update cache in background (stale-while-revalidate)
-          const fetchPromise = fetch(event.request).then(networkResponse => {
-            if (networkResponse && networkResponse.ok) {
-              const responseClone = networkResponse.clone();
-              caches.open(CACHE_NAME).then(cache => {
-                cache.put(event.request, responseClone);
-              });
-            }
-            return networkResponse;
-          }).catch(() => {});
-          
-          return cachedResponse;
-        }
+function putInCache(request, response) {
+  if (response && response.ok && request.method === 'GET') {
+    const clone = response.clone();
+    caches.open(CACHE_NAME).then(cache => cache.put(request, clone));
+  }
+  return response;
+}
 
-        // Not in cache: fetch from network and cache it
-        return fetch(event.request).then(networkResponse => {
-          if (networkResponse && networkResponse.ok) {
-            const responseClone = networkResponse.clone();
-            caches.open(CACHE_NAME).then(cache => {
-              cache.put(event.request, responseClone);
-            });
-          }
-          return networkResponse;
-        }).catch(() => {
-          // Offline fallback for navigation requests
-          if (event.request.mode === 'navigate') {
-            return caches.match('./index.html');
-          }
-        });
-      })
-  );
+// Network-first: für die App selbst und die synchronisierten Daten, damit Updates sofort ankommen.
+function networkFirst(request, cacheKey) {
+  return fetch(request)
+    .then(res => putInCache(cacheKey || request, res))
+    .catch(() => caches.match(cacheKey || request, { ignoreSearch: true })
+      .then(cached => cached || caches.match('./index.html')));
+}
+
+// Cache-first mit Hintergrund-Aktualisierung: für Bibliotheken, Fonts, Bilder.
+function staleWhileRevalidate(request) {
+  return caches.match(request).then(cached => {
+    const network = fetch(request).then(res => putInCache(request, res)).catch(() => cached);
+    return cached || network;
+  });
+}
+
+self.addEventListener('fetch', event => {
+  const req = event.request;
+  if (req.method !== 'GET') return;
+  const url = new URL(req.url);
+  const sameOrigin = url.origin === self.location.origin;
+
+  if (sameOrigin && url.pathname.endsWith('/data.json')) {
+    // Ohne Query-String cachen, damit Offline-Fallback immer greift.
+    event.respondWith(networkFirst(req, new Request(url.origin + url.pathname)));
+    return;
+  }
+  if (req.mode === 'navigate' || (sameOrigin && url.pathname.endsWith('.html'))) {
+    event.respondWith(networkFirst(req));
+    return;
+  }
+  event.respondWith(staleWhileRevalidate(req));
 });

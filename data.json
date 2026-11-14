@@ -1,0 +1,756 @@
+{
+  "updatedAt": "2026-11-14T11:23:34.757Z",
+  "source": "https://www.ebs-lawcongress.com/",
+  "event": {
+    "edition": 13,
+    "name": "13. EBS Law Congress",
+    "motto": {
+      "de": "Recht im Nebel der Daten: Neue Herausforderungen durch den Einsatz künstlicher Intelligenz",
+      "en": "Law in the Fog of Data: New Challenges through the Use of Artificial Intelligence"
+    },
+    "date": {
+      "de": "26. und 27. November 2026",
+      "en": "November 26 & 27, 2026"
+    },
+    "location": {
+      "de": "Campus Schloss EBS, Rheingaustraße 1, Oestrich-Winkel",
+      "en": "Campus Schloss EBS, Rheingaustraße 1, Oestrich-Winkel"
+    },
+    "ticketUrl": "https://vivenu.com/event/13-ebs-law-congress-4s3bla",
+    "website": "https://www.ebs-lawcongress.com/",
+    "instagram": "https://www.instagram.com/ebs.lawcongress/"
+  },
+  "rooms": {
+    "de": {
+      "mainStage": "Main Stage",
+      "max": "Max",
+      "audi": "Audi",
+      "weinkeller": "Weinkeller / Garderobe",
+      "catering": "Essen / Karrieremesse (OG)"
+    },
+    "en": {
+      "mainStage": "Main Stage",
+      "max": "Max",
+      "audi": "Audi",
+      "weinkeller": "Wine Cellar / Cloakroom",
+      "catering": "Catering / Career Fair (Upper Floor)"
+    }
+  },
+  "schedule": {
+    "de": [
+      {
+        "day": "Tag 1",
+        "events": [
+          {
+            "id": "c13-d1-e1",
+            "time": "10:00",
+            "title": "Feierliche Eröffnung",
+            "location": "",
+            "speaker": "",
+            "type": "keynote",
+            "description": ""
+          },
+          {
+            "id": "c13-d1-e2",
+            "time": "10:30",
+            "title": "Coming soon (Speaker und Thema folgen)",
+            "location": "",
+            "speaker": "",
+            "type": "lecture",
+            "description": ""
+          },
+          {
+            "id": "c13-d1-ws-interview",
+            "time": "10:30 – 12:45",
+            "title": "Einzelinterviews mit DLA Piper",
+            "location": "",
+            "speaker": "DLA Piper",
+            "type": "interview",
+            "description": "Einzelgespräche mit DLA Piper von jeweils rund 20 Minuten. Für die Bewerbung ist ein Motivationsschreiben erforderlich. Die Bewerbung läuft über den internen Bereich."
+          },
+          {
+            "id": "c13-d1-e3",
+            "time": "11:15",
+            "title": "Wie KI die Rechtswelt verändert: Vom Werkzeug zur Transformation",
+            "location": "",
+            "speaker": "Dr. Michael Dorner",
+            "type": "lecture",
+            "description": ""
+          },
+          {
+            "id": "c13-d1-e4",
+            "time": "11:15 – 12:15",
+            "title": "Krise, Haftung, KI: Restrukturierung & Insolvenz in der Praxis",
+            "location": "HG Audi",
+            "speaker": "DLA Piper",
+            "type": "workshop",
+            "description": "Was passiert, wenn ein Unternehmen in die Krise gerät? Anhand praxisnaher Fälle beschäftigen wir uns mit einer Restrukturierungstransaktion und der Geschäftsführerhaftung in der Insolvenz. Dabei zeigen wir euch nicht nur, wie Jurist:innen solche Fragestellungen bearbeiten, sondern auch, wie KI-Tools wie Harvey und Microsoft Copilot die tägliche Arbeit unterstützen können."
+          },
+          {
+            "id": "c13-d1-e5",
+            "time": "11:15 – 12:15",
+            "title": "Der Wahrheit auf der Spur: Mit KI von der Datenflut zum Durchblick in Internal Investigations",
+            "location": "HG Max",
+            "speaker": "Gleiss Lutz",
+            "type": "workshop",
+            "description": "Mit Marina von Eicke und Helin Wöllstein. Tausende E-Mails, unzählige Dokumente und komplexe Datenstrukturen: Interne Untersuchungen stellen Unternehmen und ihre Berater vor enorme Herausforderungen. Kann künstliche Intelligenz helfen, in der Datenflut die entscheidenden Hinweise zu finden? Anhand der Praxis von Internal Investigations beleuchtet der Workshop, wie KI die Aufklärung von Sachverhalten unterstützen kann, welche neuen Möglichkeiten sich eröffnen und warum menschliche Bewertung und juristische Expertise unverzichtbar bleiben."
+          },
+          {
+            "id": "c13-d1-e6",
+            "time": "12:00",
+            "title": "Mittagspause",
+            "location": "",
+            "speaker": "",
+            "type": "break",
+            "description": ""
+          },
+          {
+            "id": "c13-d1-e7",
+            "time": "13:30",
+            "title": "Automatisierte Gesichtserkennung zur Gefahrenabwehr – Hessen als Vorreiter",
+            "location": "",
+            "speaker": "Dr. Fabian Schäfer-Lassig",
+            "type": "lecture",
+            "description": ""
+          },
+          {
+            "id": "c13-d1-e8",
+            "time": "14:15",
+            "title": "Das Recht auf die eigenen Daten und das Ende der Autorenschaft durch KI",
+            "location": "",
+            "speaker": "Dr. Michele Sciurba",
+            "type": "lecture",
+            "description": ""
+          },
+          {
+            "id": "c13-d1-e9",
+            "time": "15:00",
+            "title": "Kaffeepause",
+            "location": "",
+            "speaker": "",
+            "type": "break",
+            "description": ""
+          },
+          {
+            "id": "c13-d1-e10",
+            "time": "15:30",
+            "title": "Law in the Fog of Data: Is It Legal to Train AI with Our Data?",
+            "location": "",
+            "speaker": "Dinor Kadrijaj",
+            "type": "lecture",
+            "description": ""
+          },
+          {
+            "id": "c13-d1-e11",
+            "time": "16:15",
+            "title": "Europas digitale Selbstbehauptung: Algorithmische Macht braucht demokratische Kontrolle – von der Vielfaltssicherung zur Infrastrukturregulierung",
+            "location": "",
+            "speaker": "Carl Christian Müller",
+            "type": "lecture",
+            "description": ""
+          },
+          {
+            "id": "c13-d1-e12",
+            "time": "17:00",
+            "title": "Podiumsdiskussion: Globale KI-Regulierungen: Schutzschild für Bürger oder Innovationskiller für die Wirtschaft?",
+            "location": "",
+            "speaker": "",
+            "type": "panel",
+            "description": ""
+          },
+          {
+            "id": "c13-d1-e13",
+            "time": "18:00",
+            "title": "Abendessen",
+            "location": "",
+            "speaker": "",
+            "type": "break",
+            "description": ""
+          }
+        ]
+      },
+      {
+        "day": "Tag 2",
+        "events": [
+          {
+            "id": "c13-d2-e1",
+            "time": "10:00",
+            "title": "Feierliche Eröffnung",
+            "location": "",
+            "speaker": "",
+            "type": "keynote",
+            "description": ""
+          },
+          {
+            "id": "c13-d2-e2",
+            "time": "10:30",
+            "title": "Krieg, KI und hybride Angriffe – wie begegnet der BND den Herausforderungen unserer Zeit?",
+            "location": "",
+            "speaker": "Martin Heinemann",
+            "type": "lecture",
+            "description": "",
+            "subEvents": [
+              {
+                "time": "11:15",
+                "title": "Anschließendes Q&A"
+              }
+            ]
+          },
+          {
+            "id": "c13-d2-e3",
+            "time": "11:00 – 12:00",
+            "title": "Haftung für KI-Agenten? Anwendung der BGB-Grundsätze auf neueste Technologie in der Rechtspraxis",
+            "location": "HG Audi",
+            "speaker": "Heuking",
+            "type": "workshop",
+            "description": "Mit Dr. Lutz Keppeler."
+          },
+          {
+            "id": "c13-d2-e4",
+            "time": "11:00 – 12:00",
+            "title": "Follow the Money: Mensch gegen KI auf der Spur verdächtiger Zahlungen",
+            "location": "HG Max",
+            "speaker": "Baker Tilly",
+            "type": "workshop",
+            "description": "Mit Jochen Erhardt und Felix Tillmanns. Die Teilnehmenden schlüpfen in die Rolle eines Insolvenzverwalters und prüfen fiktive Kontoauszüge einer GmbH in der Krise auf verdächtige Zahlungen. Danach analysiert eine KI dieselben Auszüge live, und gemeinsam wird verglichen, wo die KI besser ist, wo sie danebenliegt und warum am Ende der Anwalt entscheidet und die Verantwortung trägt."
+          },
+          {
+            "id": "c13-d2-e6",
+            "time": "12:00",
+            "title": "Mittagspause",
+            "location": "",
+            "speaker": "",
+            "type": "break",
+            "description": ""
+          },
+          {
+            "id": "c13-d2-e7",
+            "time": "12:15 – 13:15",
+            "title": "A Closer Look: M&A-Deals, IPOs und Dual-Track-Prozesse",
+            "location": "HG Audi",
+            "speaker": "Skadden",
+            "type": "workshop",
+            "description": "Mit Georg Stickler und Hanna Wacker."
+          },
+          {
+            "id": "c13-d2-e8",
+            "time": "13:30",
+            "title": "KI-Einsatz in Banken",
+            "location": "",
+            "speaker": "Dr. Dr. Johannes Blassl",
+            "type": "lecture",
+            "description": ""
+          },
+          {
+            "id": "c13-d2-e9",
+            "time": "14:15",
+            "title": "Navigating the AI Transformation: Opportunities and Challenges for Global Companies",
+            "location": "",
+            "speaker": "Dr. Ilkin Karakaya",
+            "type": "lecture",
+            "description": ""
+          },
+          {
+            "id": "c13-d2-e10",
+            "time": "15:00",
+            "title": "KI-ndustrialisierung des Rechtswesens",
+            "location": "",
+            "speaker": "Lukas Pagel",
+            "type": "lecture",
+            "description": ""
+          },
+          {
+            "id": "c13-d2-e11",
+            "time": "15:45",
+            "title": "Diskriminierung durch künstliche Intelligenz? Mechanismen, Folgen und strafrechtliche Relevanz",
+            "location": "",
+            "speaker": "Reyhan Esra Karakoc",
+            "type": "lecture",
+            "description": ""
+          },
+          {
+            "id": "c13-d2-e12",
+            "time": "16:30",
+            "title": "Mensch gegen Maschine? KI im Insolvenzrecht zwischen Effizienzgewinn und anwaltlicher Verantwortung",
+            "location": "",
+            "speaker": "Jochen Erhardt",
+            "type": "lecture",
+            "description": ""
+          },
+          {
+            "id": "c13-d2-e13",
+            "time": "18:00",
+            "title": "Abendessen",
+            "location": "",
+            "speaker": "",
+            "type": "break",
+            "description": ""
+          }
+        ]
+      }
+    ],
+    "en": [
+      {
+        "day": "Day 1",
+        "events": [
+          {
+            "id": "c13-d1-e1",
+            "time": "10:00",
+            "title": "Opening of the Congress",
+            "location": "",
+            "speaker": "",
+            "type": "keynote",
+            "description": ""
+          },
+          {
+            "id": "c13-d1-e2",
+            "time": "10:30",
+            "title": "Coming soon (Speaker and Topic to follow)",
+            "location": "",
+            "speaker": "",
+            "type": "lecture",
+            "description": ""
+          },
+          {
+            "id": "c13-d1-ws-interview",
+            "time": "10:30 – 12:45",
+            "title": "One-on-one interviews with DLA Piper",
+            "location": "",
+            "speaker": "DLA Piper",
+            "type": "interview",
+            "description": "One-on-one interviews with DLA Piper of around 20 minutes each. A cover letter is required for the application. Applications are submitted in the internal area."
+          },
+          {
+            "id": "c13-d1-e3",
+            "time": "11:15",
+            "title": "How AI is changing the legal world: From tool to transformation",
+            "location": "",
+            "speaker": "Dr. Michael Dorner",
+            "type": "lecture",
+            "description": ""
+          },
+          {
+            "id": "c13-d1-e4",
+            "time": "11:15 – 12:15",
+            "title": "Krise, Haftung, KI: Restrukturierung & Insolvenz in der Praxis",
+            "location": "HG Audi",
+            "speaker": "DLA Piper",
+            "type": "workshop",
+            "description": "Was passiert, wenn ein Unternehmen in die Krise gerät? Anhand praxisnaher Fälle beschäftigen wir uns mit einer Restrukturierungstransaktion und der Geschäftsführerhaftung in der Insolvenz. Dabei zeigen wir euch nicht nur, wie Jurist:innen solche Fragestellungen bearbeiten, sondern auch, wie KI-Tools wie Harvey und Microsoft Copilot die tägliche Arbeit unterstützen können."
+          },
+          {
+            "id": "c13-d1-e5",
+            "time": "11:15 – 12:15",
+            "title": "Der Wahrheit auf der Spur: Mit KI von der Datenflut zum Durchblick in Internal Investigations",
+            "location": "HG Max",
+            "speaker": "Gleiss Lutz",
+            "type": "workshop",
+            "description": "Mit Marina von Eicke und Helin Wöllstein. Tausende E-Mails, unzählige Dokumente und komplexe Datenstrukturen: Interne Untersuchungen stellen Unternehmen und ihre Berater vor enorme Herausforderungen. Kann künstliche Intelligenz helfen, in der Datenflut die entscheidenden Hinweise zu finden? Anhand der Praxis von Internal Investigations beleuchtet der Workshop, wie KI die Aufklärung von Sachverhalten unterstützen kann, welche neuen Möglichkeiten sich eröffnen und warum menschliche Bewertung und juristische Expertise unverzichtbar bleiben."
+          },
+          {
+            "id": "c13-d1-e6",
+            "time": "12:00",
+            "title": "Lunch Break",
+            "location": "",
+            "speaker": "",
+            "type": "break",
+            "description": ""
+          },
+          {
+            "id": "c13-d1-e7",
+            "time": "13:30",
+            "title": "Automated facial recognition for threat prevention - Hesse as a pioneer",
+            "location": "",
+            "speaker": "Dr. Fabian Schäfer-Lassig",
+            "type": "lecture",
+            "description": ""
+          },
+          {
+            "id": "c13-d1-e8",
+            "time": "14:15",
+            "title": "The right to one's own data and the end of authorship through AI",
+            "location": "",
+            "speaker": "Dr. Michele Sciurba",
+            "type": "lecture",
+            "description": ""
+          },
+          {
+            "id": "c13-d1-e9",
+            "time": "15:00",
+            "title": "Coffee Break",
+            "location": "",
+            "speaker": "",
+            "type": "break",
+            "description": ""
+          },
+          {
+            "id": "c13-d1-e10",
+            "time": "15:30",
+            "title": "Law in the Fog of Data: Is It Legal to Train AI with Our Data?",
+            "location": "",
+            "speaker": "Dinor Kadrijaj",
+            "type": "lecture",
+            "description": ""
+          },
+          {
+            "id": "c13-d1-e11",
+            "time": "16:15",
+            "title": "Europe's digital self-assertion: Algorithmic power needs democratic control - from ensuring diversity to infrastructure regulation",
+            "location": "",
+            "speaker": "Carl Christian Müller",
+            "type": "lecture",
+            "description": ""
+          },
+          {
+            "id": "c13-d1-e12",
+            "time": "17:00",
+            "title": "Panel discussion: Global AI regulations: Protective shield for citizens or innovation killer for the economy?",
+            "location": "",
+            "speaker": "",
+            "type": "panel",
+            "description": ""
+          },
+          {
+            "id": "c13-d1-e13",
+            "time": "18:00",
+            "title": "Dinner",
+            "location": "",
+            "speaker": "",
+            "type": "break",
+            "description": ""
+          }
+        ]
+      },
+      {
+        "day": "Day 2",
+        "events": [
+          {
+            "id": "c13-d2-e1",
+            "time": "10:00",
+            "title": "Opening of the Congress",
+            "location": "",
+            "speaker": "",
+            "type": "keynote",
+            "description": ""
+          },
+          {
+            "id": "c13-d2-e2",
+            "time": "10:30",
+            "title": "War, AI and hybrid attacks - how is the BND meeting the challenges of our time?",
+            "location": "",
+            "speaker": "Martin Heinemann",
+            "type": "lecture",
+            "description": "",
+            "subEvents": [
+              {
+                "time": "11:15",
+                "title": "Subsequent Q&A"
+              }
+            ]
+          },
+          {
+            "id": "c13-d2-e3",
+            "time": "11:00 – 12:00",
+            "title": "Haftung für KI-Agenten? Anwendung der BGB-Grundsätze auf neueste Technologie in der Rechtspraxis",
+            "location": "HG Audi",
+            "speaker": "Heuking",
+            "type": "workshop",
+            "description": "Mit Dr. Lutz Keppeler."
+          },
+          {
+            "id": "c13-d2-e4",
+            "time": "11:00 – 12:00",
+            "title": "Follow the Money: Mensch gegen KI auf der Spur verdächtiger Zahlungen",
+            "location": "HG Max",
+            "speaker": "Baker Tilly",
+            "type": "workshop",
+            "description": "Mit Jochen Erhardt und Felix Tillmanns. Die Teilnehmenden schlüpfen in die Rolle eines Insolvenzverwalters und prüfen fiktive Kontoauszüge einer GmbH in der Krise auf verdächtige Zahlungen. Danach analysiert eine KI dieselben Auszüge live, und gemeinsam wird verglichen, wo die KI besser ist, wo sie danebenliegt und warum am Ende der Anwalt entscheidet und die Verantwortung trägt."
+          },
+          {
+            "id": "c13-d2-e6",
+            "time": "12:00",
+            "title": "Lunch Break",
+            "location": "",
+            "speaker": "",
+            "type": "break",
+            "description": ""
+          },
+          {
+            "id": "c13-d2-e7",
+            "time": "12:15 – 13:15",
+            "title": "A Closer Look: M&A-Deals, IPOs und Dual-Track-Prozesse",
+            "location": "HG Audi",
+            "speaker": "Skadden",
+            "type": "workshop",
+            "description": "Mit Georg Stickler und Hanna Wacker."
+          },
+          {
+            "id": "c13-d2-e8",
+            "time": "13:30",
+            "title": "Use of AI in banks",
+            "location": "",
+            "speaker": "Dr. Dr. Johannes Blassl",
+            "type": "lecture",
+            "description": ""
+          },
+          {
+            "id": "c13-d2-e9",
+            "time": "14:15",
+            "title": "Navigating the AI Transformation: Opportunities and Challenges for Global Companies",
+            "location": "",
+            "speaker": "Dr. Ilkin Karakaya",
+            "type": "lecture",
+            "description": ""
+          },
+          {
+            "id": "c13-d2-e10",
+            "time": "15:00",
+            "title": "AI-ndustrialization of the legal system",
+            "location": "",
+            "speaker": "Lukas Pagel",
+            "type": "lecture",
+            "description": ""
+          },
+          {
+            "id": "c13-d2-e11",
+            "time": "15:45",
+            "title": "Discrimination by artificial intelligence? Mechanisms, consequences and relevance to criminal law",
+            "location": "",
+            "speaker": "Reyhan Esra Karakoc",
+            "type": "lecture",
+            "description": ""
+          },
+          {
+            "id": "c13-d2-e12",
+            "time": "16:30",
+            "title": "Man vs. machine? AI in insolvency law between efficiency gains and lawyer responsibility",
+            "location": "",
+            "speaker": "Jochen Erhardt",
+            "type": "lecture",
+            "description": ""
+          },
+          {
+            "id": "c13-d2-e13",
+            "time": "18:00",
+            "title": "Dinner",
+            "location": "",
+            "speaker": "",
+            "type": "break",
+            "description": ""
+          }
+        ]
+      }
+    ]
+  },
+  "speakers": [
+    {
+      "id": "martin-heinemann",
+      "n": "Martin Heinemann",
+      "r": "Kommunikationsdirektor",
+      "re": "Director of Communications",
+      "c": "Bundesnachrichtendienst",
+      "ce": "Federal Intelligence Service (BND)",
+      "li": "https://www.linkedin.com/in/martin-heinemann-a9b32b402/",
+      "img": "https://app.trickle.so/storage/public/images/usr_1a6da71af0000001/39e564ba-40b4-45cc-b420-37cfc8c22946.jpeg",
+      "bio": "Martin Heinemann ist der Kommunikationsdirektor des Bundesnachrichtendienstes. Zuvor war er Leiter der Kommunikation und Pressesprecher des BND. In seiner Funktion leitet Herr Heinemann das Direktorat für Kommunikation und Protokoll, hierbei ist er für die strategische Kommunikation des BND nach innen und außen verantwortlich.",
+      "bioe": "Martin Heinemann is Director of Communications at the German Federal Intelligence Service (BND). He previously served as the BND’s Head of Communications and spokesperson. In his current role, Mr. Heinemann heads the Directorate for Communications and Protocol, where he is responsible for the BND’s internal and external strategic communications."
+    },
+    {
+      "id": "dr-fabian-schafer-lassig",
+      "n": "Dr. Fabian Schäfer-Lassig",
+      "r": "Richter",
+      "re": "Judge",
+      "c": "Amtsgericht Wiesbaden",
+      "ce": "Local Court of Wiesbaden",
+      "li": "https://www.linkedin.com/in/dr-fabian-sch%C3%A4fer-lassig-901373260/",
+      "img": "https://app.trickle.so/storage/public/images/usr_1a6da71af0000001/c98d0085-05d8-4846-8ddc-9044d633ed3d.jpeg",
+      "bio": "Dr. Fabian Schäfer-Lassig ist Richter beim Amtsgericht Wiesbaden und Vizepräsident des EBS Alumni e.V. Im Rahmen seiner ermittlungsrichterlichen Tätigkeit entschied er als erster Richter über Anträge auf Videoüberwachung per KI-gestützter Gesichtserkennung. Seine Veröffentlichungen in Fachzeitschriften befassen sich unter anderem mit den rechtlichen Anforderungen an staatliche Eingriffsmaßnahmen mithilfe neuer Technologien.",
+      "bioe": "Dr. Fabian Schäfer-Lassig is a judge at the Local Court (Amtsgericht) of Wiesbaden and Vice President of EBS Alumni e.V. In his capacity as an investigating judge, he was the first judge to rule on applications for video surveillance using AI-assisted facial recognition. His articles in legal journals address, among other topics, the legal requirements for intrusive state measures that use new technologies."
+    },
+    {
+      "id": "dr-michael-dorner",
+      "n": "Dr. Michael Dorner",
+      "r": "Head of Legal",
+      "re": "Head of Legal",
+      "c": "Microsoft Deutschland und Österreich",
+      "ce": "Microsoft Germany and Austria",
+      "li": "https://www.linkedin.com/in/dr-michael-dorner-253930b1/",
+      "img": "https://app.trickle.so/storage/public/images/usr_1a6da71af0000001/364447a8-1ae1-4c1d-a28a-10bc3de3bfea.jpeg",
+      "bio": "Dr. Michael Dorner ist Wirtschaftsjurist und leitet als Head of Legal die Rechtsabteilung von Microsoft in Deutschland und Österreich. Zuvor war er unter anderem als Rechtsanwalt im Bereich IT- und Datenrecht bei CMS Deutschland tätig und leitete die deutsche Rechtsabteilung von Cisco.",
+      "bioe": "Dr. Michael Dorner is a business lawyer and, as Head of Legal, leads Microsoft’s legal department in Germany and Austria. Previously, among other roles, he worked as a lawyer specializing in IT and data law at CMS Germany and headed Cisco’s legal department in Germany."
+    },
+    {
+      "id": "dr-michele-sciurba",
+      "n": "Dr. Michele Sciurba",
+      "r": "Rechtswissenschaftler und Autor",
+      "re": "Managing Director",
+      "c": "GMVV & Co. GmbH",
+      "ce": "GMVV & Co. GmbH and Edition Faust",
+      "li": "",
+      "img": "https://app.trickle.so/storage/public/images/usr_1a6da71af0000001/7f7a55e1-030c-4cf4-b67c-c92ed41c90ae.jpeg",
+      "bio": "Dr. Michele Sciurba ist Rechtswissenschaftler, Strategieberater und Autor mit Schwerpunkt auf Völkerrecht, Menschenrechten sowie Geldwäsche- und Terrorismusbekämpfung. Er leitet als Geschäftsführer den Frankfurter Think Tank GMVV & Co. GmbH und ist Mitgründer und Geschäftsführer des Verlags Edition Faust.",
+      "bioe": "Dr. Michele Sciurba is a legal scholar, strategy consultant, and author focusing on international law, human rights, and anti-money laundering and counter-terrorism. He is Managing Director of the Frankfurt-based think tank GMVV & Co. GmbH and co-founder and Managing Director of the publishing house Edition Faust."
+    },
+    {
+      "id": "dr-ilkin-karakaya",
+      "n": "Dr. Ilkin Karakaya",
+      "r": "Group General Counsel",
+      "re": "Group General Counsel",
+      "c": "Siemens Energy",
+      "ce": "Siemens Energy",
+      "li": "https://www.linkedin.com/in/ilkin-karakaya-70bb3712a/",
+      "img": "https://app.trickle.so/storage/public/images/usr_1a6da71af0000001/989a72a5-c813-4e88-8655-f60ea9397c92.jpeg",
+      "bio": "Dr. Ilkin Karakaya ist Wirtschaftsjurist und Group General Counsel bei Siemens Energy. Dort ist er verantwortlich für die Bereiche Recht und Compliance. Zuvor leitete er die globalen Rechtsabteilungen von Knorr-Bremse sowie Tetra Pak.",
+      "bioe": "Dr. Ilkin Karakaya is a business lawyer and Group General Counsel at Siemens Energy, where he is responsible for legal and compliance. He previously headed the global legal departments of Knorr-Bremse and Tetra Pak."
+    },
+    {
+      "id": "carl-christian-muller",
+      "n": "Carl Christian Müller",
+      "r": "Rechtsanwalt und Partner",
+      "re": "Lawyer and Partner",
+      "c": "Mueller.legal",
+      "ce": "Mueller.legal",
+      "li": "https://www.linkedin.com/in/carl-christian-mueller/",
+      "img": "https://app.trickle.so/storage/public/images/usr_1a6da71af0000001/49e5bd47-c38a-4673-87aa-16ba57906bc2.jpeg",
+      "bio": "Carl Christian Müller ist Rechtsanwalt und Partner der Berliner Kanzlei Mueller.legal. Zudem ist er Fachanwalt für Urheber- und Medienrecht. Seine Tätigkeitsschwerpunkte umfassen daneben das Datenschutzrecht, das Recht der Informationsfreiheit sowie das KI-Recht. Er verfügt über langjährige Erfahrung im Bereich Legal Tech und der Entwicklung digitaler Kanzleistrukturen.",
+      "bioe": "Carl Christian Müller is a lawyer and partner at the Berlin law firm Mueller.legal. He is also a certified specialist in copyright and media law (Fachanwalt für Urheber- und Medienrecht). His practice further focuses on data protection law, freedom of information law, and AI law. He has many years of experience in legal tech and in developing digital law firm structures."
+    },
+    {
+      "id": "dr-dr-johannes-blassl",
+      "n": "Dr. Dr. Johannes Blassl",
+      "r": "Equity Partner",
+      "re": "Equity Partner",
+      "c": "HEUKING",
+      "ce": "HEUKING",
+      "li": "https://www.linkedin.com/in/dr-dr-johannes-blassl-432535114/",
+      "img": "https://app.trickle.so/storage/public/images/usr_1a6da71af0000001/cffbc247-aa08-4292-b0bc-3660fa0ef71e.jpeg",
+      "bio": "Dr. Dr. Johannes Blassl ist Fachanwalt für Bank- und Kapitalmarkrecht und Equity Partner bei der Wirtschaftskanzlei HEUKING am Standort Frankfurt am Main. Zudem ist er unter anderem Lehrbeauftragter für Bankenaufsichtsrecht an der EBS Law School.",
+      "bioe": "Dr. Dr. Johannes Blassl is a certified specialist in banking and capital markets law and an equity partner at the commercial law firm HEUKING in Frankfurt am Main. Among other roles, he is also an adjunct lecturer in banking supervisory law at EBS Law School."
+    },
+    {
+      "id": "dinor-kadrijaj",
+      "n": "Dinor Kadrijaj",
+      "r": "Rechtsanwalt und Manager",
+      "re": "Lawyer and Manager",
+      "c": "PwC Legal",
+      "ce": "PwC Legal",
+      "li": "https://www.linkedin.com/in/dinor-kadrijaj-ll-m-b3640765/",
+      "img": "https://app.trickle.so/storage/public/images/usr_1a6da71af0000001/16d7ad6f-1d50-48b4-b4bf-1f6f401d0751.jpeg",
+      "bio": "Dinor Kadrijaj ist Rechtsanwalt und Manager bei PwC Legal in Frankfurt am Main. Seine fachlichen Schwerpunkte liegen im Bereich des gewerblichen Rechtsschutzes, des IT-Rechts und des Datenschutzrechts. Er berät Konzerne und Unternehmen im Marken-, Design-, Urheber- und Wettbewerbsrecht.",
+      "bioe": "Dinor Kadrijaj is a lawyer and manager at PwC Legal in Frankfurt am Main. His practice focuses on intellectual property, IT law, and data protection law. He advises corporate groups and companies on trademark, design, copyright, and unfair competition law."
+    },
+    {
+      "id": "reyhan-esra-karakoc",
+      "n": "Reyhan Esra Karakoc",
+      "r": "Wissenschaftliche Mitarbeiterin",
+      "re": "Research Associate and Doctoral Candidate",
+      "c": "Leibniz Universität Hannover",
+      "ce": "Leibniz University Hannover",
+      "li": "https://www.linkedin.com/in/reyhan-esra-karakoc-a39188279/",
+      "img": "https://app.trickle.so/storage/public/images/usr_1a6da71af0000001/2b86fdf7-802e-4d1c-972a-07236302818a.jpeg",
+      "bio": "Reyhan Esra Karakoc ist wissenschaftliche Mitarbeiterin und Doktorandin am Lehrstuhl für Strafrecht, Strafprozessrecht, Strafrechtsvergleichung und Rechtsphilosophie an der Leibniz Universität Hannover. Ihr Forschungsschwerpunkt liegt dabei im Einsatz von KI in der Medizin mit besonderem Fokus auf den strafrechtlichen Bezügen. Zudem ist sie Vorsitzende der Regionalgruppe Hannover des Deutschen Juristinnenbunds.",
+      "bioe": "Reyhan Esra Karakoc is a research associate and doctoral candidate at the Chair of Criminal Law, Criminal Procedure, Comparative Criminal Law and Legal Philosophy at Leibniz University Hannover. Her research focuses on the use of AI in medicine, with particular emphasis on its criminal law implications. She also chairs the Hannover regional group of the German Women Lawyers Association (Deutscher Juristinnenbund)."
+    },
+    {
+      "id": "lukas-pagel",
+      "n": "Lukas Pagel",
+      "r": "Unternehmer und Legal-Tech-Gründer",
+      "re": "Entrepreneur and Legal Tech Founder",
+      "c": "ONYST und Justin Legal",
+      "ce": "ONYST and Justin Legal",
+      "li": "https://www.linkedin.com/in/lukas-pagel/",
+      "img": "https://app.trickle.so/storage/public/images/usr_1a6da71af0000001/4d2e7e00-50b7-473c-b53e-6568ed21180f.jpeg",
+      "bio": "Lukas Pagel ist Unternehmer und Legal Technology Gründer von ONYST. Zudem gründete er Justin Legal, einen KI-Kanzlei-Assistenten, mit dem die Mandatsannahme und Aktenanlegung automatisiert wird. Als Informatiker treibt er die KI-Digitalisierung des Rechtsmarktes voran.",
+      "bioe": "Lukas Pagel is an entrepreneur and the legal tech founder of ONYST. He also founded Justin Legal, an AI law firm assistant that automates client intake and file opening. As a computer scientist, he is driving the AI-powered digitalization of the legal market."
+    },
+    {
+      "id": "jochen-erhardt",
+      "n": "Jochen Erhardt",
+      "r": "Rechtsanwalt",
+      "re": "Lawyer",
+      "c": "Baker Tilly",
+      "ce": "Baker Tilly",
+      "li": "https://www.linkedin.com/in/jochen-erhardt-a96817a0/",
+      "img": "https://app.trickle.so/storage/u/usr_1a6da71af0000001/2026-11/b3ee59ae-61cf-4ef6-972e-866e45f09e3c.jpg",
+      "bio": "Jochen Erhardt ist Rechtsanwalt bei Baker Tilly. Seine Expertise erstreckt sich insbesondere auf das Insolvenz- und Restrukturierungsrecht. Neben seiner juristischen Ausbildung absolvierte er ein Bachelorstudium in Business Administration. Zu seinen weiteren beruflichen Stationen zählt unter anderem eine Tätigkeit bei Clifford Chance.",
+      "bioe": "Jochen Erhardt is a lawyer at Baker Tilly. His expertise lies in particular in insolvency and restructuring law. In addition to his legal training, he completed a bachelor's degree in business administration. His previous professional experience includes a position at Clifford Chance."
+    }
+  ],
+  "sponsors": [
+    {
+      "n": "Europäisches Parlament",
+      "u": "https://www.europarl.europa.eu/portal/de",
+      "l": "https://app.trickle.so/storage/public/images/usr_1a6da71af0000001/251e4c41-96f1-47b2-8e61-d0508fa61627.png"
+    },
+    {
+      "n": "A&O Shearman",
+      "u": "https://www.aoshearman.com",
+      "l": "https://app.trickle.so/storage/public/images/usr_1a6da71af0000001/c81ab4b1-3e2d-4589-abf4-9b4a529fffef.png"
+    },
+    {
+      "n": "Clifford Chance",
+      "u": "https://www.cliffordchance.com",
+      "l": "https://app.trickle.so/storage/public/images/usr_1a6da71af0000001/600fab9e-7b88-4ff9-97ba-0abc4bb56bb1.png"
+    },
+    {
+      "n": "DLA Piper",
+      "u": "https://www.dlapiper.com",
+      "l": "https://app.trickle.so/storage/public/images/usr_1a6da71af0000001/d484a3d1-091a-4f9c-b062-5c3ad2d809d3.png"
+    },
+    {
+      "n": "EBS Alumni",
+      "u": "https://my.ebs-alumni.com",
+      "l": "https://app.trickle.so/storage/public/images/usr_1a6da71af0000001/fc0e57e9-ff3c-46e6-9900-bc4271b6d38b.png"
+    },
+    {
+      "n": "EBS Universität",
+      "u": "https://www.ebs.edu",
+      "l": "https://app.trickle.so/storage/public/images/usr_1a6da71af0000001/a3f68ebb-96e6-439c-86bd-eba7151ef1b6.png"
+    },
+    {
+      "n": "FGS",
+      "u": "https://www.fgs.de",
+      "l": "https://app.trickle.so/storage/public/images/usr_1a6da71af0000001/ca1932a0-a8e6-40be-8a74-d0d24443b93e.png"
+    },
+    {
+      "n": "Gleiss Lutz",
+      "u": "https://www.gleisslutz.com",
+      "l": "https://app.trickle.so/storage/public/images/usr_1a6da71af0000001/70b75f68-d217-4e67-9eee-15253d33b7ee.png"
+    },
+    {
+      "n": "Heuking",
+      "u": "https://www.heuking.de",
+      "l": "https://app.trickle.so/storage/public/images/usr_1a6da71af0000001/3209aa6d-cc1a-4c48-9515-feb726ede32f.png"
+    },
+    {
+      "n": "Siemens Energy",
+      "u": "https://www.siemens-energy.com",
+      "l": "https://app.trickle.so/storage/public/images/usr_1a6da71af0000001/db32ccfe-ab1e-4c53-a153-3b8525e88213.png"
+    },
+    {
+      "n": "Skadden",
+      "u": "https://www.skadden.com",
+      "l": "https://app.trickle.so/storage/public/images/usr_1a6da71af0000001/8741521d-9cfe-4677-b7e0-114d025a0ce9.png"
+    },
+    {
+      "n": "Staatlich Fachingen",
+      "u": "https://www.fachingen.de",
+      "l": "https://app.trickle.so/storage/public/images/usr_1a6da71af0000001/9bd291ea-a93b-4c42-9e0a-072cd504e651.png"
+    },
+    {
+      "n": "White & Case",
+      "u": "https://www.whitecase.com",
+      "l": "https://app.trickle.so/storage/public/images/usr_1a6da71af0000001/8b6e67ff-41ec-489a-a410-99284d2e0c2e.png"
+    },
+    {
+      "n": "Oppenhoff",
+      "u": "https://www.oppenhoff.eu",
+      "l": "https://app.trickle.so/storage/public/images/usr_1a6da71af0000001/e1e77911-e237-4fc8-b59a-1c9c9daea010.png"
+    },
+    {
+      "n": "Baker Tilly",
+      "u": "https://www.bakertilly.de",
+      "l": "https://app.trickle.so/storage/public/images/usr_1a6da71af0000001/e0936cff-d966-483c-ae3e-51da470a575c.png"
+    }
+  ]
+}

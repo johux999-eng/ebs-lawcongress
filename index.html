@@ -153,110 +153,26 @@ Wi:p=><Icon {...p} d={<><path d="M8 22h8"/><path d="M12 11v11"/><path d="M5.28 5
 Ut:p=><Icon {...p} d={<><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2v0a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"/></>}/>
 };
 const LC=createContext();
-const TT={de:{nav:{schedule:"Programm",mySchedule:"Mein Plan",roomPlan:"Raumplan",speakers:"Speaker",sponsors:"Partner"},schedule:{title:"Programm",filterAll:"Alle",filterV:"Vorträge",filterW:"Workshops",noEv:"Keine Events in dieser Kategorie.",added:"Gemerkt ✓",add:"★ Merken",kl:"Key Learnings"},my:{title:"Mein Zeitplan",empty:"Du hast noch keine Sessions gemerkt.",hint:"Tippe auf ★ im Programm."},rp:{title:"Raumplan",ent:"Eingang",forum:"Forum",max:"HG Max",audi:"HG Audi",wk:"Weinkeller",foyer:"Foyer / Catering",forumD:"Hauptbühne – Keynotes, Vorträge & Panels",maxD:"Workshops & Seminare",audiD:"Workshops & Seminare",wkD:"Networking & Get-Together",foyerD:"Empfang, Mittagessen & Karrieremesse"},sp:{title:"Speaker"},spo:{title:"Partner & Sponsoren"},gen:{close:"Schließen"},lb:{v:"Vortrag",w:"Workshop"}},
-en:{nav:{schedule:"Schedule",mySchedule:"My Plan",roomPlan:"Room Plan",speakers:"Speakers",sponsors:"Partners"},schedule:{title:"Schedule",filterAll:"All",filterV:"Lectures",filterW:"Workshops",noEv:"No events in this category.",added:"Saved ✓",add:"★ Save",kl:"Key Learnings"},my:{title:"My Schedule",empty:"No sessions saved yet.",hint:"Tap ★ in the schedule to save sessions."},rp:{title:"Room Plan",ent:"Entrance",forum:"Forum",max:"HG Max",audi:"HG Audi",wk:"Wine Cellar",foyer:"Foyer / Catering",forumD:"Main Stage – Keynotes, Lectures & Panels",maxD:"Workshops & Seminars",audiD:"Workshops & Seminars",wkD:"Networking & Get-Together",foyerD:"Reception, Lunch & Career Fair"},sp:{title:"Speakers"},spo:{title:"Partners & Sponsors"},gen:{close:"Close"},lb:{v:"Lecture",w:"Workshop"}}};
+const TT={de:{nav:{schedule:"Programm",mySchedule:"Mein Plan",roomPlan:"Raumplan",speakers:"Speaker",sponsors:"Partner"},schedule:{title:"Programm",filterAll:"Alle",filterV:"Vorträge",filterW:"Workshops",noEv:"Keine Events in dieser Kategorie.",added:"Gemerkt ✓",add:"★ Merken"},my:{title:"Mein Zeitplan",empty:"Du hast noch keine Sessions gemerkt.",hint:"Tippe auf ★ im Programm."},rp:{title:"Raumplan",ent:"Eingang",mainStageD:"Keynotes, Vorträge & Podiumsdiskussion",maxD:"Workshops",audiD:"Workshops",weinkellerD:"Garderobe",cateringD:"Essen & Karrieremesse im Obergeschoss"},sp:{title:"Speaker"},spo:{title:"Partner & Sponsoren",visit:"Website besuchen"},gen:{close:"Schließen",tickets:"Tickets sichern",website:"Website",updated:"Stand",offline:"Offline – zeige gespeicherte Daten",loading:"Lade aktuelle Daten …",loadErr:"Die Daten konnten nicht geladen werden. Bitte prüfe deine Internetverbindung.",retry:"Erneut versuchen"},lb:{v:"Vortrag",k:"Eröffnung",p:"Podium",w:"Workshop",i:"Einzelinterview"}},
+en:{nav:{schedule:"Schedule",mySchedule:"My Plan",roomPlan:"Room Plan",speakers:"Speakers",sponsors:"Partners"},schedule:{title:"Schedule",filterAll:"All",filterV:"Lectures",filterW:"Workshops",noEv:"No events in this category.",added:"Saved ✓",add:"★ Save"},my:{title:"My Schedule",empty:"No sessions saved yet.",hint:"Tap ★ in the schedule to save sessions."},rp:{title:"Room Plan",ent:"Entrance",mainStageD:"Keynotes, lectures & panel discussion",maxD:"Workshops",audiD:"Workshops",weinkellerD:"Cloakroom",cateringD:"Catering & career fair on the upper floor"},sp:{title:"Speakers"},spo:{title:"Partners & Sponsors",visit:"Visit website"},gen:{close:"Close",tickets:"Get tickets",website:"Website",updated:"Updated",offline:"Offline – showing saved data",loading:"Loading current data …",loadErr:"The data could not be loaded. Please check your internet connection.",retry:"Try again"},lb:{v:"Lecture",k:"Opening",p:"Panel",w:"Workshop",i:"Interview"}}};
 
-function gL(type,t){if(type==="lecture"||type==="keynote"||type==="panel")return t.lb.v;if(type==="workshop")return t.lb.w;return null;}
-function gS(type){if(type==="lecture"||type==="keynote"||type==="panel")return{bg:"#dbeafe",tx:"#1e40af",dot:"#3b82f6"};if(type==="workshop")return{bg:"#d1fae5",tx:"#065f46",dot:"#10b981"};return{bg:"transparent",tx:"transparent",dot:"#cbd5e1"};}
+const isTalk=type=>type==="lecture"||type==="keynote"||type==="panel";
+function gL(type,t){if(type==="lecture")return t.lb.v;if(type==="keynote")return t.lb.k;if(type==="panel")return t.lb.p;if(type==="workshop")return t.lb.w;if(type==="interview")return t.lb.i;return null;}
+function gS(type){if(isTalk(type))return{bg:"#dbeafe",tx:"#1e40af",dot:"#3b82f6"};if(type==="workshop")return{bg:"#d1fae5",tx:"#065f46",dot:"#10b981"};if(type==="interview")return{bg:"#fef3c7",tx:"#92400e",dot:"#f59e0b"};return{bg:"transparent",tx:"transparent",dot:"#cbd5e1"};}
+function fmtTs(iso,ln){try{return new Date(iso).toLocaleString(ln==="de"?"de-DE":"en-GB",{day:"2-digit",month:"2-digit",year:"numeric",hour:"2-digit",minute:"2-digit"});}catch(e){return"";}}
+function matchSpeakers(e,spk){if(!e.speaker)return[];return spk.filter(s=>e.speaker.includes(s.n));}
 
 const LOGO="https://app.trickle.so/storage/public/images/usr_1a6da71af0000001/e5c2fd38-03c9-40e8-a275-becc52e0e3c8.png";
-const SD={de:[{day:"Tag 1",events:[
-{id:"d1-e1",time:"09:00 – 09:45",title:"Einlass mit Sektempfang",location:"Foyer",speaker:"",type:"reception",description:"Begrüßung und Akkreditierung der Teilnehmer mit einem Sektempfang.",kl:[]},
-{id:"d1-e2",time:"10:00",title:"Feierliche Eröffnung",location:"Forum",speaker:"Prof. Dr. Roman Poseck",type:"keynote",description:"Rede von Prof. Dr. Roman Poseck, Hessischer Minister des Inneren.",kl:["Eröffnung","Politische Perspektive","Sicherheit"]},
-{id:"d1-e3",time:"11:00",title:"Der Fall Wirecard – Totalversagen der Geldwäscheprävention",location:"Forum",speaker:"Prof. Dr. Alfred Dierlamm",type:"lecture",description:"Analyse des Wirecard-Skandals unter dem Aspekt der Geldwäscheprävention.",kl:["Wirecard Analyse","Geldwäscheprävention","Compliance Versagen"]},
-{id:"d1-e4",time:"11:00 – 12:30",title:"Project RedRock – Non-Compliance als Stolperstein",location:"HG Max",speaker:"Skadden",type:"workshop",description:"Planbeispiel zu Geldwäscherecht und Vorstandshaftung.",kl:["Vorstandshaftung","Geldwäscherecht"]},
-{id:"d1-e5",time:"11:00 – 12:30",title:"Legal Tech & KI in der Großkanzlei",location:"HG Audi",speaker:"DLA Piper",type:"workshop",description:"Einblick in Legal Tech und KI in Großkanzleien.",kl:["Legal Tech","KI im Rechtsmarkt"]},
-{id:"d1-e6",time:"12:00 – 14:00",title:"Mittagessen",location:"Foyer",speaker:"",type:"break",description:"Gemeinsames Mittagessen und Networking.",kl:[]},
-{id:"d1-e7",time:"13:30",title:"Das Potenzial von RegTech in der Geldwäscheprävention",location:"Forum",speaker:"Louisa Lippold",type:"lecture",description:"Wie RegTech Geldwäsche effektiver bekämpfen kann.",kl:["RegTech","Effizienzsteigerung"]},
-{id:"d1-e8",time:"14:30",title:"Vom Rechtsstaat zum Präventionsstaat?",location:"Forum",speaker:"Dr. Michele Sciurba",type:"lecture",description:"Kritische Perspektiven auf die Geldwäschegesetzgebung.",kl:["Rechtsstaatlichkeit","EU Perspektiven"]},
-{id:"d1-e9",time:"14:45 – 16:45",title:"Geldwäscheprävention zwischen Theorie und Praxis",location:"HG Audi",speaker:"Gleiss Lutz",type:"workshop",description:"Workshop zur praktischen Umsetzung.",kl:["Praxis","Risikomanagement"]},
-{id:"d1-e10",time:"15:30",title:"Anti-Money Laundering",location:"Forum",speaker:"Dr. Ilkin Karakaya",type:"lecture",description:"Vortrag zum Thema AML.",kl:["AML Grundlagen","Aktuelle Entwicklungen"]},
-{id:"d1-e11",time:"16:30",title:"Panel: Effektivität der Geldwäschebekämpfung",location:"Forum",speaker:"Penelope Schneider, Dr. Michele Sciurba",type:"panel",description:"Diskussionsrunde.",kl:["Effektivität","Expertenaustausch"]},
-{id:"d1-e12",time:"16:30 – 18:00",title:"Jura und Journalismus – passt das zusammen?",location:"HG Max",speaker:"FAZ",type:"workshop",description:"Workshop der FAZ.",kl:["Medienrecht","Karrierewege"]},
-{id:"d1-e13",time:"18:00",title:"Abendessen",location:"Foyer",speaker:"",type:"break",description:"Ausklang des ersten Tages.",kl:[]}
-]},{day:"Tag 2",events:[
-{id:"d2-e1",time:"09:00 – 09:45",title:"Einlass mit Sektempfang",location:"Foyer",speaker:"",type:"reception",description:"Begrüßung und Akkreditierung.",kl:[]},
-{id:"d2-e2",time:"10:00",title:"Eröffnung",location:"Forum",speaker:"Vera Herting, Dr. Dorothee Hofer, Günther H. Oettinger",type:"keynote",description:"Eröffnungsreden.",kl:["Eröffnung","Impulse"]},
-{id:"d2-e3",time:"10:30",title:"Die italienische Mafia in Deutschland – ab nach Geldorado",location:"Forum",speaker:"Dr. Alessandro Bellardita",type:"lecture",description:"Aktivitäten der italienischen Mafia in Deutschland.",kl:["Organisierte Kriminalität","Geldwäsche"]},
-{id:"d2-e4",time:"11:30 – 13:00",title:"Geldwäscherecht im Bankenalltag",location:"HG Audi",speaker:"Heuking",type:"workshop",description:"Was bedeutet Geldwäscherecht für Banken?",kl:["Bankenpraxis","Compliance"]},
-{id:"d2-e5",time:"12:00 – 14:00",title:"Mittagessen",location:"Foyer",speaker:"",type:"break",description:"Gemeinsames Mittagessen.",kl:[]},
-{id:"d2-e6",time:"13:00",title:"Anti Money Laundering 2.0",location:"Forum",speaker:"Charlotte Salathé",type:"lecture",description:"Aktuelle Entwicklungen in der Geldwäscheprävention.",kl:["AML 2.0","Unternehmenspflichten"]},
-{id:"d2-e7",time:"13:30 – 15:00",title:"Compliance – Erfahrungen aus der Praxis",location:"HG Audi",speaker:"Kliemt.Arbeitsrecht",type:"workshop",description:"Interne Untersuchungen.",kl:["Interne Untersuchungen"]},
-{id:"d2-e8",time:"13:30 – 15:00",title:"Geldwäschebekämpfung – Beitrag der Steuerverwaltung",location:"HG Max",speaker:"Hessisches Finanzministerium",type:"workshop",description:"Workshop des HMdF.",kl:["Steuerverwaltung"]},
-{id:"d2-e9",time:"13:30 – 18:30",title:"Karrieremesse",location:"Obergeschoss",speaker:"",type:"other",description:"Karrieremöglichkeiten.",kl:["Networking"]},
-{id:"d2-e10",time:"14:00",title:"Justizpolitische Reformansätze",location:"Forum",speaker:"Philipp Fernis",type:"lecture",description:"Vortrag des Justizministers von Rheinland-Pfalz.",kl:["Justizpolitik"]},
-{id:"d2-e11",time:"15:30",title:"Extraterritoriale US-Sanktionen",location:"Forum",speaker:"Prof. Dr. Darius Schindler",type:"lecture",description:"Extraterritoriale Wirkung von US-Sanktionen.",kl:["US-Sanktionen"]},
-{id:"d2-e12",time:"15:30 – 17:00",title:"Durchsuchung bei Geldwäscheverdacht",location:"HG Audi",speaker:"Clifford Chance",type:"workshop",description:"Workshop von Clifford Chance.",kl:["Strafprozessrecht"]},
-{id:"d2-e13",time:"16:30",title:"Panel: Law meets Entrepreneurship",location:"Forum",speaker:"Prof. Dr. Burmeister-Lamp, K. Hunger, P. di Prima, Dr. Muñoz",type:"panel",description:"Drei Perspektiven auf Gründung.",kl:["Entrepreneurship"]},
-{id:"d2-e14",time:"18:00",title:"Closing",location:"Forum",speaker:"",type:"other",description:"Offizielle Schließung.",kl:[]},
-{id:"d2-e15",time:"18:15",title:"Abendessen",location:"Foyer",speaker:"",type:"break",description:"Gemeinsames Abendessen.",kl:[]},
-{id:"d2-e16",time:"ab 21:30",title:"Afterparty",location:"Alte Schmelze, Wiesbaden",speaker:"",type:"other",description:"Feierlicher Ausklang.",kl:[]}
-]}],en:[{day:"Day 1",events:[
-{id:"d1-e1",time:"09:00 – 09:45",title:"Admission with Champagne Reception",location:"Foyer",speaker:"",type:"reception",description:"Welcome and accreditation.",kl:[]},
-{id:"d1-e2",time:"10:00",title:"Ceremonial Opening",location:"Forum",speaker:"Prof. Dr. Roman Poseck",type:"keynote",description:"Speech by the Hessian Minister of the Interior.",kl:["Opening","Political Perspective"]},
-{id:"d1-e3",time:"11:00",title:"The Wirecard Case – Total Failure in AML",location:"Forum",speaker:"Prof. Dr. Alfred Dierlamm",type:"lecture",description:"Analysis of the Wirecard scandal.",kl:["Wirecard","AML","Compliance Failure"]},
-{id:"d1-e4",time:"11:00 – 12:30",title:"Project RedRock – AML Non-Compliance",location:"HG Max",speaker:"Skadden",type:"workshop",description:"Case study on AML and board liability.",kl:["Board Liability"]},
-{id:"d1-e5",time:"11:00 – 12:30",title:"Legal Tech & AI in Large Law Firms",location:"HG Audi",speaker:"DLA Piper",type:"workshop",description:"Insight into Legal Tech and AI.",kl:["Legal Tech"]},
-{id:"d1-e6",time:"12:00 – 14:00",title:"Lunch",location:"Foyer",speaker:"",type:"break",description:"Lunch and networking.",kl:[]},
-{id:"d1-e7",time:"13:30",title:"The Potential of RegTech in AML",location:"Forum",speaker:"Louisa Lippold",type:"lecture",description:"How RegTech fights money laundering.",kl:["RegTech"]},
-{id:"d1-e8",time:"14:30",title:"From Rule of Law to Prevention State?",location:"Forum",speaker:"Dr. Michele Sciurba",type:"lecture",description:"Critical perspectives on AML legislation.",kl:["Rule of Law"]},
-{id:"d1-e9",time:"14:45 – 16:45",title:"AML between Theory and Practice",location:"HG Audi",speaker:"Gleiss Lutz",type:"workshop",description:"Workshop on practical AML.",kl:["AML Practice"]},
-{id:"d1-e10",time:"15:30",title:"Anti-Money Laundering",location:"Forum",speaker:"Dr. Ilkin Karakaya",type:"lecture",description:"Lecture on AML.",kl:["AML Basics"]},
-{id:"d1-e11",time:"16:30",title:"Panel: Effectiveness of AML Measures",location:"Forum",speaker:"Penelope Schneider, Dr. Michele Sciurba",type:"panel",description:"Discussion round.",kl:["Effectiveness"]},
-{id:"d1-e12",time:"16:30 – 18:00",title:"Law and Journalism – Do They Fit?",location:"HG Max",speaker:"FAZ",type:"workshop",description:"Workshop by FAZ.",kl:["Media Law"]},
-{id:"d1-e13",time:"18:00",title:"Dinner",location:"Foyer",speaker:"",type:"break",description:"End of first day.",kl:[]}
-]},{day:"Day 2",events:[
-{id:"d2-e1",time:"09:00 – 09:45",title:"Admission with Champagne Reception",location:"Foyer",speaker:"",type:"reception",description:"Welcome.",kl:[]},
-{id:"d2-e2",time:"10:00",title:"Opening",location:"Forum",speaker:"Vera Herting, Dr. D. Hofer, G.H. Oettinger",type:"keynote",description:"Opening speeches.",kl:["Opening"]},
-{id:"d2-e3",time:"10:30",title:"The Italian Mafia in Germany",location:"Forum",speaker:"Dr. Alessandro Bellardita",type:"lecture",description:"Italian Mafia in Germany.",kl:["Organized Crime"]},
-{id:"d2-e4",time:"11:30 – 13:00",title:"AML in Everyday Banking",location:"HG Audi",speaker:"Heuking",type:"workshop",description:"AML for banks.",kl:["Banking"]},
-{id:"d2-e5",time:"12:00 – 14:00",title:"Lunch",location:"Foyer",speaker:"",type:"break",description:"Joint lunch.",kl:[]},
-{id:"d2-e6",time:"13:00",title:"Anti Money Laundering 2.0",location:"Forum",speaker:"Charlotte Salathé",type:"lecture",description:"Current AML developments.",kl:["AML 2.0"]},
-{id:"d2-e7",time:"13:30 – 15:00",title:"Compliance from Practice",location:"HG Audi",speaker:"Kliemt.Arbeitsrecht",type:"workshop",description:"Internal investigations.",kl:["Investigations"]},
-{id:"d2-e8",time:"13:30 – 15:00",title:"Combating AML – Tax Administration",location:"HG Max",speaker:"Ministry of Finance Hesse",type:"workshop",description:"Workshop by HMdF.",kl:["Tax"]},
-{id:"d2-e9",time:"13:30 – 18:30",title:"Career Fair",location:"Upper Floor",speaker:"",type:"other",description:"Career opportunities.",kl:["Networking"]},
-{id:"d2-e10",time:"14:00",title:"Judicial Policy Reform",location:"Forum",speaker:"Philipp Fernis",type:"lecture",description:"Lecture by Minister of Justice.",kl:["Judicial Policy"]},
-{id:"d2-e11",time:"15:30",title:"Extraterritorial U.S. Sanctions",location:"Forum",speaker:"Prof. Dr. Darius Schindler",type:"lecture",description:"US sanctions.",kl:["US Sanctions"]},
-{id:"d2-e12",time:"15:30 – 17:00",title:"Search & Seizure in AML",location:"HG Audi",speaker:"Clifford Chance",type:"workshop",description:"Workshop by Clifford Chance.",kl:["Criminal Procedure"]},
-{id:"d2-e13",time:"16:30",title:"Panel: Law meets Entrepreneurship",location:"Forum",speaker:"Burmeister-Lamp, Hunger, di Prima, Muñoz",type:"panel",description:"Founding perspectives.",kl:["Entrepreneurship"]},
-{id:"d2-e14",time:"18:00",title:"Closing",location:"Forum",speaker:"",type:"other",description:"Official closing.",kl:[]},
-{id:"d2-e15",time:"18:15",title:"Dinner",location:"Foyer",speaker:"",type:"break",description:"Joint dinner.",kl:[]},
-{id:"d2-e16",time:"from 21:30",title:"Afterparty",location:"Alte Schmelze, Wiesbaden",speaker:"",type:"other",description:"Celebration.",kl:[]}
-]}]};
-const spk=[
-{id:1,n:"Dr. Alessandro Bellardita",r:"Richter und Autor",re:"Judge and Author",c:"",li:"https://www.linkedin.com/in/alessandro-bellardita-62805b233/",img:"https://app.trickle.so/storage/public/images/usr_1a6da71af0000001/5acc0298-5c76-434b-86f3-547bb108e297.jpeg"},
-{id:2,n:"Pascal di Prima",r:"Co-Founder und CEO",re:"Co-Founder and CEO",c:"Lexemo",li:"https://www.linkedin.com/in/pascaldiprima/",img:"https://app.trickle.so/storage/public/images/usr_1a6da71af0000001/daecf606-9bfe-42f3-bffe-f2ec47fba39a.jpeg"},
-{id:3,n:"Prof. Dr. Alfred Dierlamm",r:"Selbstständiger Rechtsanwalt",re:"Independent Attorney",c:"Dierlamm RA",li:"https://www.linkedin.com/in/prof-dr-alfred-dierlamm-49787188/",img:"https://app.trickle.so/storage/public/images/usr_1a6da71af0000001/7c2a5f0c-42ac-4c77-af62-b0fea6a6c26c.jpeg"},
-{id:4,n:"Philipp Fernis",r:"Justizminister RLP",re:"Minister of Justice, RLP",c:"",li:"",img:"https://app.trickle.so/storage/public/images/usr_1a6da71af0000001/f475f5fd-69ed-4038-8ea4-e86b89a52d6b.jpeg"},
-{id:5,n:"Kristina Hunger",r:"Partnerin",re:"Partner",c:"BH&W",li:"https://www.linkedin.com/in/kristina-hunger/",img:"https://app.trickle.so/storage/public/images/usr_1a6da71af0000001/5b0606c1-82eb-4d0a-aa83-45aba5db12f8.jpeg"},
-{id:6,n:"Louisa Lippold",r:"Co-Founderin & CPO",re:"Co-Founder & CPO",c:"Regpit",li:"https://www.linkedin.com/in/louisa-marie-lippold-3b601519b/",img:"https://app.trickle.so/storage/public/images/usr_1a6da71af0000001/c4b05c8d-2b5e-4752-8bcc-d4411057479f.jpeg"},
-{id:7,n:"Dr. Jan Claudio Muñoz",r:"Anwalt",re:"Lawyer",c:"Backbone Ventures",li:"",img:"https://app.trickle.so/storage/public/images/usr_1a6da71af0000001/a4739072-8dd0-402e-b48e-bf1523a98e00.jpeg"},
-{id:8,n:"Charlotte Salathé",r:"Counsel Banking & Finance",re:"Counsel Banking & Finance",c:"CMS",li:"https://www.linkedin.com/in/sophie-charlotte-salath%C3%A9-53a47b179/",img:"https://app.trickle.so/storage/public/images/usr_1a6da71af0000001/21b948df-a5f9-4460-a3cc-a3cc9d5acb1d.jpeg"},
-{id:9,n:"Prof. Dr. Darius Schindler",r:"Geschäftsf. Justiziar",re:"Managing Legal Counsel",c:"CITEC",li:"https://www.linkedin.com/in/prof-schindler/",img:"https://app.trickle.so/storage/public/images/usr_1a6da71af0000001/c5188aec-f629-43d2-9939-929f2b6326e3.jpeg"},
-{id:10,n:"Penelope Schneider",r:"Ansprechpartnerin",re:"Contact Person",c:"RP Darmstadt",li:"",img:"https://app.trickle.so/storage/public/images/usr_1a6da71af0000001/15dbb315-525d-472d-ac4e-7dd8fba5bf28.jpeg"},
-{id:11,n:"Dr. Michele Sciurba",r:"Rechtswissenschaftler",re:"Legal Scholar",c:"",li:"",img:"https://app.trickle.so/storage/public/images/usr_1a6da71af0000001/ef3731f6-62f7-423a-b2b0-a2da49ceafc8.jpeg"},
-{id:12,n:"Dr. Ilkin Karakaya",r:"Group General Counsel",re:"Group General Counsel",c:"Siemens Energy",li:"https://www.linkedin.com/in/ilkin-karakaya-70bb3712a/",img:"https://app.trickle.so/storage/public/images/usr_1a6da71af0000001/02f6cef5-661e-4f08-b1d4-a6eeb5cf3b96.jpeg"}
-];
-const spo=[
-{n:"Allen & Overy",u:"https://www.aoshearman.com",l:"https://app.trickle.so/storage/public/images/usr_1a6da71af0000001/c81ab4b1-3e2d-4589-abf4-9b4a529fffef.png"},
-{n:"BCG",u:"https://www.bcg.com/",l:"https://app.trickle.so/storage/public/images/usr_1a6da71af0000001/868c3dfc-e5bc-42f7-8027-246f4fb8a6f4.png"},
-{n:"Clifford Chance",u:"https://www.cliffordchance.com",l:"https://app.trickle.so/storage/public/images/usr_1a6da71af0000001/7efef1a5-7165-4aa9-aeb4-3e533db6e555.png"},
-{n:"DLA Piper",u:"https://www.dlapiper.com",l:"https://app.trickle.so/storage/public/images/usr_1a6da71af0000001/d484a3d1-091a-4f9c-b062-5c3ad2d809d3.png"},
-{n:"EBS Alumni",u:"https://my.ebs-alumni.com/",l:"https://app.trickle.so/storage/public/images/usr_1a6da71af0000001/fc0e57e9-ff3c-46e6-9900-bc4271b6d38b.png"},
-{n:"EBS Universität",u:"https://ebs.edu",l:"https://app.trickle.so/storage/public/images/usr_1a6da71af0000001/a3f68ebb-96e6-439c-86bd-eba7151ef1b6.png"},
-{n:"EU Schirmherrschaft",u:"https://www.europarl.europa.eu",l:"https://app.trickle.so/storage/public/images/usr_1a6da71af0000001/251e4c41-96f1-47b2-8e61-d0508fa61627.png"},
-{n:"FGS",u:"https://www.fgs.de/",l:"https://app.trickle.so/storage/public/images/usr_1a6da71af0000001/ca1932a0-a8e6-40be-8a74-d0d24443b93e.png"},
-{n:"Gleiss Lutz",u:"https://www.gleisslutz.com",l:"https://app.trickle.so/storage/public/images/usr_1a6da71af0000001/70b75f68-d217-4e67-9eee-15253d33b7ee.png"},
-{n:"Heuking",u:"https://www.heuking.de",l:"https://app.trickle.so/storage/public/images/usr_1a6da71af0000001/3209aa6d-cc1a-4c48-9515-feb726ede32f.png"},
-{n:"HMdF",u:"https://finanzen.hessen.de/",l:"https://app.trickle.so/storage/public/images/usr_1a6da71af0000001/7073ce12-1f67-40c6-af87-44d374037b25.png"},
-{n:"Kliemt",u:"https://kliemt.de/",l:"https://app.trickle.so/storage/public/images/usr_1a6da71af0000001/60827d11-9a24-4b0f-815b-bc9023401a18.png"},
-{n:"Linklaters",u:"https://www.linklaters.com",l:"https://app.trickle.so/storage/public/images/usr_1a6da71af0000001/ebb2d832-3f00-4c7d-a2e0-cb11c4fa57be.png"},
-{n:"Siemens Energy",u:"https://www.siemens-energy.com",l:"https://app.trickle.so/storage/public/images/usr_1a6da71af0000001/db32ccfe-ab1e-4c53-a153-3b8525e88213.png"},
-{n:"Skadden",u:"https://www.skadden.com/",l:"https://app.trickle.so/storage/public/images/usr_1a6da71af0000001/8741521d-9cfe-4677-b7e0-114d025a0ce9.png"},
-{n:"SRH",u:"https://www.srh.de",l:"https://app.trickle.so/storage/public/images/usr_1a6da71af0000001/d1f41ab8-dc55-46ff-beb4-acb6ecd2c38f.png"},
-{n:"Staatlich Fachingen",u:"https://www.fachingen.de/",l:"https://app.trickle.so/storage/public/images/usr_1a6da71af0000001/9bd291ea-a93b-4c42-9e0a-072cd504e651.png"},
-{n:"White & Case",u:"https://www.whitecase.com/",l:"https://app.trickle.so/storage/public/images/usr_1a6da71af0000001/35fe644d-6a8f-4b14-b75f-6b2b5c699be2.png"}
-];
+const DATA_URL="data.json";
+const DATA_KEY="lc_data13";
+const SAVED_KEY="lc_sv13";
+const validData=d=>!!(d&&d.schedule&&Array.isArray(d.schedule.de)&&Array.isArray(d.schedule.en)&&Array.isArray(d.speakers)&&Array.isArray(d.sponsors)&&d.event);
+function loadCachedData(){try{const s=localStorage.getItem(DATA_KEY);if(s){const d=JSON.parse(s);if(validData(d))return d;}}catch(e){}return null;}
+
+const LinkedInIcon=({size=18})=>(<svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>);
+
+function SubEvents({items}){if(!items||!items.length)return null;return(<div className="mt-2 pl-3 border-l-2 border-blue-200 space-y-0.5">{items.map((s,i)=><p key={i} className="text-xs text-slate-500"><span className="font-semibold text-slate-700 mr-1">{s.time}</span>– {s.title}</p>)}</div>);}
+
 function EC({event:e,isSaved:sv,onToggleSave:ts,onSelect:os,t}){const lb=gL(e.type,t);const s=gS(e.type);return(
 <div className="animate-fadeUp group relative bg-white rounded-xl border border-slate-200 hover:border-slate-300 hover:shadow-lg transition-all duration-200 overflow-hidden cursor-pointer" onClick={()=>os(e)}>
 <div className="absolute left-0 top-0 bottom-0 w-1 rounded-l-xl" style={{backgroundColor:s.dot}}/>
@@ -266,84 +182,104 @@ function EC({event:e,isSaved:sv,onToggleSave:ts,onSelect:os,t}){const lb=gL(e.ty
 <span className="text-xs text-slate-400 flex items-center gap-1"><I.Clk size={12}/> {e.time}</span></div>
 <h3 className="font-semibold text-slate-900 text-sm leading-snug mb-1">{e.title}</h3>
 {e.speaker&&<p className="text-xs text-slate-500 flex items-center gap-1"><I.Usr size={12}/><span className="truncate">{e.speaker}</span></p>}
-<p className="text-xs text-slate-400 flex items-center gap-1 mt-0.5"><I.Pin size={12}/> {e.location}</p></div>
-<button onClick={ev=>{ev.stopPropagation();ts(e.id);}} className="flex-shrink-0 p-2 rounded-lg transition-all" style={{backgroundColor:sv?'#fef3c7':'#f8fafc',color:sv?'#d97706':'#cbd5e1'}}>
+{e.location&&<p className="text-xs text-slate-400 flex items-center gap-1 mt-0.5"><I.Pin size={12}/> {e.location}</p>}
+<SubEvents items={e.subEvents}/></div>
+<button onClick={ev=>{ev.stopPropagation();ts(e.id);}} aria-label={sv?t.schedule.added:t.schedule.add} className="flex-shrink-0 p-2 rounded-lg transition-all" style={{backgroundColor:sv?'#fef3c7':'#f8fafc',color:sv?'#d97706':'#cbd5e1'}}>
 {sv?<I.BmF size={20}/>:<I.Bm size={20}/>}</button></div></div></div>);}
 
-function ED({event:e,onClose:oc,isSaved:sv,onToggleSave:ts,t}){const lb=gL(e.type,t);const s=gS(e.type);return(
+function ED({event:e,onClose:oc,isSaved:sv,onToggleSave:ts,t,lang:ln,speakers:spk}){const lb=gL(e.type,t);const s=gS(e.type);const ms=matchSpeakers(e,spk);return(
 <div className="fixed inset-0 z-50 bg-black/40 flex items-end sm:items-center justify-center" style={{backdropFilter:'blur(4px)'}} onClick={oc}>
 <div className="animate-slideUp bg-white w-full sm:max-w-lg sm:rounded-2xl rounded-t-2xl max-h-[85vh] overflow-y-auto shadow-2xl" onClick={ev=>ev.stopPropagation()}>
 <div className="h-2 sm:rounded-t-2xl rounded-t-2xl" style={{backgroundColor:s.dot}}/>
 <div className="p-6">
 <div className="flex items-start justify-between mb-4">{lb?<span className="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-semibold" style={{backgroundColor:s.bg,color:s.tx}}>{lb}</span>:<div/>}
-<button onClick={oc} className="p-1 hover:bg-slate-100 rounded-lg"><I.X size={20} className="text-slate-400"/></button></div>
+<button onClick={oc} aria-label={t.gen.close} className="p-1 hover:bg-slate-100 rounded-lg"><I.X size={20} className="text-slate-400"/></button></div>
 <h2 className="font-display text-xl font-bold text-slate-900 mb-3 leading-tight">{e.title}</h2>
 <div className="space-y-2 mb-4">
 <div className="flex items-center gap-2 text-sm text-slate-600"><I.Clk size={16} style={{color:'#3b82f6'}}/> {e.time}</div>
-<div className="flex items-center gap-2 text-sm text-slate-600"><I.Pin size={16} style={{color:'#3b82f6'}}/> {e.location}</div>
+{e.location&&<div className="flex items-center gap-2 text-sm text-slate-600"><I.Pin size={16} style={{color:'#3b82f6'}}/> {e.location}</div>}
 {e.speaker&&<div className="flex items-center gap-2 text-sm text-slate-600"><I.Usr size={16} style={{color:'#3b82f6'}}/> {e.speaker}</div>}</div>
-<p className="text-sm text-slate-600 leading-relaxed mb-4">{e.description}</p>
-{e.kl&&e.kl.length>0&&<div className="mb-5"><h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">{t.schedule.kl}</h4><div className="flex flex-wrap gap-1.5">{e.kl.map((k,i)=><span key={i} className="bg-blue-50 text-blue-700 text-xs px-2.5 py-1 rounded-full font-medium">{k}</span>)}</div></div>}
-<button onClick={()=>ts(e.id)} className="w-full py-3 rounded-xl font-semibold text-sm transition-all" style={sv?{backgroundColor:'#fef3c7',color:'#92400e',border:'2px solid #fde68a'}:{backgroundColor:'#081c74',color:'white'}}>{sv?t.schedule.added:t.schedule.add}</button>
+<SubEvents items={e.subEvents}/>
+{e.description&&<p className="text-sm text-slate-600 leading-relaxed my-4">{e.description}</p>}
+{ms.length>0&&<div className="space-y-2 my-4">{ms.map(p=><div key={p.id} className="flex items-center gap-3 bg-slate-50 rounded-xl p-3">
+<img src={p.img} alt={p.n} style={{width:44,height:44,borderRadius:'50%',objectFit:'cover',flexShrink:0}} onError={ev=>{ev.target.style.display='none'}}/>
+<div className="min-w-0"><p className="text-sm font-semibold text-slate-900">{p.n}</p><p className="text-xs text-slate-500">{ln==="de"?p.r:p.re}{(ln==="de"?p.c:p.ce)?`, ${ln==="de"?p.c:p.ce}`:""}</p></div></div>)}</div>}
+<button onClick={()=>ts(e.id)} className="w-full py-3 mt-2 rounded-xl font-semibold text-sm transition-all" style={sv?{backgroundColor:'#fef3c7',color:'#92400e',border:'2px solid #fde68a'}:{backgroundColor:'#081c74',color:'white'}}>{sv?t.schedule.added:t.schedule.add}</button>
 </div></div></div>);}
 
-function SV({savedIds:si,onToggleSave:ts,lang:ln,t}){const[ad,setAd]=useState(0);const[fi,setFi]=useState("all");const[sel,setSel]=useState(null);const d=SD[ln];
-const fl=useMemo(()=>{const ev=d[ad]?.events||[];if(fi==="all")return ev;if(fi==="v")return ev.filter(e=>e.type==="lecture"||e.type==="keynote"||e.type==="panel");if(fi==="w")return ev.filter(e=>e.type==="workshop");return ev;},[d,ad,fi]);
+function InfoCard({data:d,lang:ln,t,status:st}){const ev=d.event;return(
+<div className="rounded-2xl p-5 mb-5 text-white shadow-md" style={{background:'linear-gradient(135deg,#081c74 0%,#1e69c4 100%)'}}>
+<p className="text-xs font-semibold uppercase tracking-wider opacity-80 mb-1">{ev.name}</p>
+{ev.motto&&ev.motto[ln]&&<h2 className="font-display text-lg font-bold leading-snug mb-3">{ev.motto[ln]}</h2>}
+<div className="space-y-1.5 text-sm opacity-90 mb-4">
+{ev.date&&ev.date[ln]&&<p className="flex items-center gap-2"><I.Cal size={14}/> {ev.date[ln]}</p>}
+{ev.location&&ev.location[ln]&&<p className="flex items-start gap-2"><I.Pin size={14} className="mt-0.5 flex-shrink-0"/> {ev.location[ln]}</p>}</div>
+<div className="flex gap-2 flex-wrap">
+{ev.ticketUrl&&<a href={ev.ticketUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-white text-sm font-semibold" style={{color:'#081c74',textDecoration:'none'}}><I.EL size={14}/>{t.gen.tickets}</a>}
+{ev.website&&<a href={ev.website} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-semibold text-white" style={{backgroundColor:'rgba(255,255,255,0.15)',textDecoration:'none'}}><I.Gl size={14}/>{t.gen.website}</a>}</div>
+<p className="text-[11px] opacity-70 mt-4">{st==="offline"?t.gen.offline:`${t.gen.updated}: ${fmtTs(d.updatedAt,ln)}`}</p>
+</div>);}
+
+function SV({data:d,savedIds:si,onToggleSave:ts,lang:ln,t,status:st}){const[ad,setAd]=useState(0);const[fi,setFi]=useState("all");const[sel,setSel]=useState(null);const days=d.schedule[ln]||d.schedule.de;const di=Math.min(ad,Math.max(days.length-1,0));
+const fl=useMemo(()=>{const ev=days[di]?.events||[];if(fi==="v")return ev.filter(e=>isTalk(e.type));if(fi==="w")return ev.filter(e=>e.type==="workshop");return ev;},[days,di,fi]);
 return(<div className="pb-24">
+<InfoCard data={d} lang={ln} t={t} status={st}/>
 <h1 className="font-display text-2xl font-bold text-slate-900 mb-4 px-1">{t.schedule.title}</h1>
-<div className="flex gap-2 mb-4">{d.map((dy,i)=><button key={i} onClick={()=>setAd(i)} className="flex-1 py-2.5 rounded-xl text-sm font-semibold transition-all" style={ad===i?{backgroundColor:'#081c74',color:'white',boxShadow:'0 4px 6px -1px rgba(8,28,116,0.3)'}:{backgroundColor:'white',color:'#64748b',border:'1px solid #e2e8f0'}}>{dy.day}</button>)}</div>
+<div className="flex gap-2 mb-4">{days.map((dy,i)=><button key={i} onClick={()=>setAd(i)} className="flex-1 py-2.5 rounded-xl text-sm font-semibold transition-all" style={di===i?{backgroundColor:'#081c74',color:'white',boxShadow:'0 4px 6px -1px rgba(8,28,116,0.3)'}:{backgroundColor:'white',color:'#64748b',border:'1px solid #e2e8f0'}}>{dy.day}</button>)}</div>
 <div className="flex gap-1.5 mb-4">{[{id:"all",lb:t.schedule.filterAll},{id:"v",lb:t.schedule.filterV},{id:"w",lb:t.schedule.filterW}].map(f=><button key={f.id} onClick={()=>setFi(f.id)} className="px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all" style={fi===f.id?{backgroundColor:'#dbeafe',color:'#1e40af',border:'1px solid #bfdbfe'}:{backgroundColor:'#f8fafc',color:'#94a3b8',border:'1px solid transparent'}}>{f.lb}</button>)}</div>
 <div className="space-y-3">{fl.length===0?<p className="text-center text-slate-400 py-12 text-sm">{t.schedule.noEv}</p>:fl.map(e=><EC key={e.id} event={e} isSaved={si.has(e.id)} onToggleSave={ts} onSelect={setSel} t={t}/>)}</div>
-{sel&&<ED event={sel} onClose={()=>setSel(null)} isSaved={si.has(sel.id)} onToggleSave={ts} t={t}/>}</div>);}
+{sel&&<ED event={sel} onClose={()=>setSel(null)} isSaved={si.has(sel.id)} onToggleSave={ts} t={t} lang={ln} speakers={d.speakers}/>}</div>);}
 
-function MSV({savedIds:si,onToggleSave:ts,lang:ln,t}){const[sel,setSel]=useState(null);const d=SD[ln];
-const sv=useMemo(()=>d.flatMap(dy=>dy.events.map(e=>({...e,dl:dy.day}))).filter(e=>si.has(e.id)),[d,si]);
+function MSV({data:d,savedIds:si,onToggleSave:ts,lang:ln,t}){const[sel,setSel]=useState(null);const days=d.schedule[ln]||d.schedule.de;
+const sv=useMemo(()=>days.flatMap(dy=>dy.events.map(e=>({...e,dl:dy.day}))).filter(e=>si.has(e.id)),[days,si]);
 const gr=useMemo(()=>{const g={};sv.forEach(e=>{if(!g[e.dl])g[e.dl]=[];g[e.dl].push(e);});return g;},[sv]);
 return(<div className="pb-24">
 <h1 className="font-display text-2xl font-bold text-slate-900 mb-1 px-1">{t.my.title}</h1>
 <p className="text-xs text-slate-400 mb-5 px-1">{sv.length} Sessions</p>
 {sv.length===0?<div className="text-center py-16"><I.Bm size={48} className="text-slate-200 mx-auto mb-4"/><p className="text-slate-500 font-medium mb-1">{t.my.empty}</p><p className="text-slate-400 text-sm">{t.my.hint}</p></div>
 :Object.entries(gr).map(([day,evs])=><div key={day} className="mb-6"><h2 className="text-sm font-bold uppercase tracking-wider mb-3 px-1" style={{color:'#081c74'}}>{day}</h2><div className="space-y-3">{evs.map(e=><EC key={e.id} event={e} isSaved={true} onToggleSave={ts} onSelect={setSel} t={t}/>)}</div></div>)}
-{sel&&<ED event={sel} onClose={()=>setSel(null)} isSaved={si.has(sel.id)} onToggleSave={ts} t={t}/>}</div>);}
+{sel&&<ED event={sel} onClose={()=>setSel(null)} isSaved={si.has(sel.id)} onToggleSave={ts} t={t} lang={ln} speakers={d.speakers}/>}</div>);}
 
-function RPV({t}){const rms=[{id:"forum",nm:t.rp.forum,ds:t.rp.forumD,cl:"#081c74",tc:"white"},{id:"max",nm:t.rp.max,ds:t.rp.maxD,cl:"#1e69c4",tc:"white"},{id:"audi",nm:t.rp.audi,ds:t.rp.audiD,cl:"#3b82f6",tc:"white"},{id:"wk",nm:t.rp.wk,ds:t.rp.wkD,cl:"#fef3c7",tc:"#92400e"},{id:"foyer",nm:t.rp.foyer,ds:t.rp.foyerD,cl:"#d1fae5",tc:"#065f46"}];
-return(<div className="pb-24"><h1 className="font-display text-2xl font-bold text-slate-900 mb-1 px-1">{t.rp.title}</h1><p className="text-xs text-slate-400 mb-6 px-1">EBS Universität, Oestrich-Winkel</p>
+function RPV({data:d,lang:ln,t}){const rn=Object.assign({mainStage:"Main Stage",max:"Max",audi:"Audi",weinkeller:"Weinkeller",catering:"Catering"},(d.rooms&&d.rooms[ln])||{});
+const rms=[{id:"mainStage",ds:t.rp.mainStageD,cl:"#081c74",tc:"white",ic:I.Pr},{id:"max",ds:t.rp.maxD,cl:"#1e69c4",tc:"white",ic:I.Usr},{id:"audi",ds:t.rp.audiD,cl:"#3b82f6",tc:"white",ic:I.Usr},{id:"weinkeller",ds:t.rp.weinkellerD,cl:"#fef3c7",tc:"#92400e",ic:I.Wi},{id:"catering",ds:t.rp.cateringD,cl:"#d1fae5",tc:"#065f46",ic:I.Ut}];
+return(<div className="pb-24"><h1 className="font-display text-2xl font-bold text-slate-900 mb-1 px-1">{t.rp.title}</h1><p className="text-xs text-slate-400 mb-6 px-1">{(d.event.location&&d.event.location[ln])||"EBS Universität, Oestrich-Winkel"}</p>
 <div className="bg-white rounded-2xl border border-slate-200 p-5 mb-6 shadow-sm">
 <div className="text-center mb-4"><span className="inline-flex items-center gap-1.5 bg-slate-100 text-slate-500 text-xs font-semibold px-3 py-1.5 rounded-full"><I.CD size={14}/> {t.rp.ent}</span></div>
 <div style={{display:'grid',gridTemplateColumns:'1fr 1.5fr 1fr',gridTemplateRows:'1fr 1fr 12px 0.8fr',gap:'8px',maxWidth:'340px',margin:'0 auto'}}>
-<div style={{gridArea:'1/1/3/2',backgroundColor:'#fef3c7',border:'2px dashed #fde68a',borderRadius:'12px',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',padding:'12px'}}><I.Wi size={20} style={{color:'#d97706'}}/><span style={{fontSize:'11px',fontWeight:700,color:'#92400e',textAlign:'center',marginTop:4}}>{t.rp.wk}</span></div>
-<div style={{gridArea:'1/2/3/3',backgroundColor:'#081c74',borderRadius:'12px',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',padding:'12px'}}><I.Pr size={24} style={{color:'#93c5fd'}}/><span style={{fontSize:'12px',fontWeight:700,color:'white',marginTop:4}}>{t.rp.forum}</span></div>
-<div style={{gridArea:'1/3/2/4',backgroundColor:'#1e69c4',borderRadius:'12px',display:'flex',alignItems:'center',justifyContent:'center',padding:'8px'}}><span style={{fontSize:'11px',fontWeight:700,color:'white'}}>{t.rp.max}</span></div>
-<div style={{gridArea:'2/3/3/4',backgroundColor:'#3b82f6',borderRadius:'12px',display:'flex',alignItems:'center',justifyContent:'center',padding:'8px'}}><span style={{fontSize:'11px',fontWeight:700,color:'white'}}>{t.rp.audi}</span></div>
+<div style={{gridArea:'1/1/3/2',backgroundColor:'#fef3c7',border:'2px dashed #fde68a',borderRadius:'12px',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',padding:'12px'}}><I.Wi size={20} style={{color:'#d97706'}}/><span style={{fontSize:'11px',fontWeight:700,color:'#92400e',textAlign:'center',marginTop:4}}>{rn.weinkeller}</span></div>
+<div style={{gridArea:'1/2/3/3',backgroundColor:'#081c74',borderRadius:'12px',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',padding:'12px'}}><I.Pr size={24} style={{color:'#93c5fd'}}/><span style={{fontSize:'12px',fontWeight:700,color:'white',marginTop:4,textAlign:'center'}}>{rn.mainStage}</span></div>
+<div style={{gridArea:'1/3/2/4',backgroundColor:'#1e69c4',borderRadius:'12px',display:'flex',alignItems:'center',justifyContent:'center',padding:'8px'}}><span style={{fontSize:'11px',fontWeight:700,color:'white'}}>{rn.max}</span></div>
+<div style={{gridArea:'2/3/3/4',backgroundColor:'#3b82f6',borderRadius:'12px',display:'flex',alignItems:'center',justifyContent:'center',padding:'8px'}}><span style={{fontSize:'11px',fontWeight:700,color:'white'}}>{rn.audi}</span></div>
 <div style={{gridArea:'3/1/4/4',backgroundColor:'#f1f5f9',borderRadius:'6px'}}/>
-<div style={{gridArea:'4/1/5/4',backgroundColor:'#d1fae5',border:'2px dashed #a7f3d0',borderRadius:'12px',display:'flex',alignItems:'center',justifyContent:'center',gap:'8px',padding:'12px'}}><I.Ut size={16} style={{color:'#059669'}}/><span style={{fontSize:'11px',fontWeight:700,color:'#065f46'}}>{t.rp.foyer}</span></div>
+<div style={{gridArea:'4/1/5/4',backgroundColor:'#d1fae5',border:'2px dashed #a7f3d0',borderRadius:'12px',display:'flex',alignItems:'center',justifyContent:'center',gap:'8px',padding:'12px'}}><I.Ut size={16} style={{color:'#059669'}}/><span style={{fontSize:'11px',fontWeight:700,color:'#065f46',textAlign:'center'}}>{rn.catering}</span></div>
 </div></div>
 <div className="space-y-3">{rms.map(r=><div key={r.id} className="bg-white rounded-xl border border-slate-200 p-4 flex items-start gap-3">
-<div className="p-2.5 rounded-lg flex-shrink-0" style={{backgroundColor:r.cl}}>{r.id==='forum'?<I.Pr size={20} style={{color:r.tc}}/>:r.id==='wk'?<I.Wi size={20} style={{color:r.tc}}/>:r.id==='foyer'?<I.Ut size={20} style={{color:r.tc}}/>:<I.Usr size={20} style={{color:r.tc}}/>}</div>
-<div><h3 className="font-semibold text-slate-900 text-sm">{r.nm}</h3><p className="text-xs text-slate-500 mt-0.5">{r.ds}</p></div></div>)}</div></div>);}
+<div className="p-2.5 rounded-lg flex-shrink-0" style={{backgroundColor:r.cl}}><r.ic size={20} style={{color:r.tc}}/></div>
+<div><h3 className="font-semibold text-slate-900 text-sm">{rn[r.id]}</h3><p className="text-xs text-slate-500 mt-0.5">{r.ds}</p></div></div>)}</div></div>);}
 
-function SPV({lang:ln,t}){const[sel,setSel]=useState(null);return(<div className="pb-24">
-<h1 className="font-display text-2xl font-bold text-slate-900 mb-1 px-1">{t.sp.title}</h1><p className="text-xs text-slate-400 mb-5 px-1">12. EBS Law Congress</p>
-<div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'12px'}}>{spk.map(s=><div key={s.id} onClick={()=>setSel(s)} className="bg-white rounded-xl border border-slate-200 p-4 hover:shadow-md transition-all cursor-pointer">
+function SPV({data:d,lang:ln,t}){const[sel,setSel]=useState(null);const org=s=>ln==="de"?s.c:s.ce;return(<div className="pb-24">
+<h1 className="font-display text-2xl font-bold text-slate-900 mb-1 px-1">{t.sp.title}</h1><p className="text-xs text-slate-400 mb-5 px-1">{d.event.name}</p>
+<div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'12px'}}>{d.speakers.map(s=><div key={s.id} onClick={()=>setSel(s)} className="bg-white rounded-xl border border-slate-200 p-4 hover:shadow-md transition-all cursor-pointer">
 <div style={{display:'flex',alignItems:'flex-start',justifyContent:'space-between'}}><img src={s.img} alt={s.n} style={{width:56,height:56,borderRadius:'50%',objectFit:'cover',border:'2px solid #f1f5f9'}} onError={e=>{e.target.style.display='none'}}/>
-{s.li&&<a href={s.li} target="_blank" rel="noopener noreferrer" onClick={e=>e.stopPropagation()} style={{color:'#0a66c2',flexShrink:0,padding:4}}><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>}
+{s.li&&<a href={s.li} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" onClick={e=>e.stopPropagation()} style={{color:'#0a66c2',flexShrink:0,padding:4}}><LinkedInIcon/></a>}
 </div>
 <h3 className="font-semibold text-slate-900 text-sm leading-tight mb-0.5 mt-3">{s.n}</h3><p className="text-xs text-slate-500">{ln==="de"?s.r:s.re}</p>
-{s.c&&<p className="text-xs font-medium mt-0.5" style={{color:'#1e69c4'}}>{s.c}</p>}</div>)}</div>
+{org(s)&&<p className="text-xs font-medium mt-0.5" style={{color:'#1e69c4'}}>{org(s)}</p>}</div>)}</div>
 {sel&&<div className="fixed inset-0 z-50 bg-black/40 flex items-end sm:items-center justify-center" style={{backdropFilter:'blur(4px)'}} onClick={()=>setSel(null)}>
-<div className="animate-slideUp bg-white w-full sm:max-w-md sm:rounded-2xl rounded-t-2xl shadow-2xl" onClick={e=>e.stopPropagation()}>
+<div className="animate-slideUp bg-white w-full sm:max-w-md sm:rounded-2xl rounded-t-2xl shadow-2xl max-h-[85vh] overflow-y-auto" onClick={e=>e.stopPropagation()}>
 <div className="h-2 sm:rounded-t-2xl rounded-t-2xl" style={{backgroundColor:'#081c74'}}/>
 <div className="p-6 text-center">
 <img src={sel.img} alt={sel.n} style={{width:96,height:96,borderRadius:'50%',objectFit:'cover',margin:'0 auto 16px',boxShadow:'0 4px 6px rgba(0,0,0,0.1)'}}/>
 <h2 className="font-display text-xl font-bold text-slate-900 mb-1">{sel.n}</h2><p className="text-sm text-slate-500">{ln==="de"?sel.r:sel.re}</p>
-{sel.c&&<p className="text-sm font-semibold mt-1" style={{color:'#1e69c4'}}>{sel.c}</p>}
-{sel.li&&<a href={sel.li} target="_blank" rel="noopener noreferrer" style={{display:'inline-flex',alignItems:'center',gap:6,marginTop:12,padding:'10px 20px',borderRadius:10,backgroundColor:'#0a66c2',color:'white',fontSize:13,fontWeight:600,textDecoration:'none'}}><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>LinkedIn</a>}
+{org(sel)&&<p className="text-sm font-semibold mt-1" style={{color:'#1e69c4'}}>{org(sel)}</p>}
+{(ln==="de"?sel.bio:sel.bioe)&&<p className="text-sm text-slate-600 leading-relaxed text-left mt-4">{ln==="de"?sel.bio:sel.bioe}</p>}
+{sel.li&&<a href={sel.li} target="_blank" rel="noopener noreferrer" style={{display:'inline-flex',alignItems:'center',gap:6,marginTop:16,padding:'10px 20px',borderRadius:10,backgroundColor:'#0a66c2',color:'white',fontSize:13,fontWeight:600,textDecoration:'none'}}><LinkedInIcon size={16}/>LinkedIn</a>}
 <button onClick={()=>setSel(null)} className="mt-4 w-full py-3 rounded-xl bg-slate-100 text-slate-600 font-semibold text-sm hover:bg-slate-200 transition-colors">{t.gen.close}</button>
 </div></div></div>}</div>);}
 
-function SPOV({t}){const[sel,setSel]=useState(null);return(<div className="pb-24">
-<h1 className="font-display text-2xl font-bold text-slate-900 mb-1 px-1">{t.spo.title}</h1><p className="text-xs text-slate-400 mb-5 px-1">12. EBS Law Congress</p>
-<div className="space-y-2.5">{spo.map((s,i)=><div key={i} onClick={()=>setSel(s)} className="bg-white rounded-xl border border-slate-200 p-3.5 flex items-center justify-between hover:shadow-md transition-all cursor-pointer">
+function SPOV({data:d,t}){const[sel,setSel]=useState(null);return(<div className="pb-24">
+<h1 className="font-display text-2xl font-bold text-slate-900 mb-1 px-1">{t.spo.title}</h1><p className="text-xs text-slate-400 mb-5 px-1">{d.event.name}</p>
+<div className="space-y-2.5">{d.sponsors.map((s,i)=><div key={i} onClick={()=>setSel(s)} className="bg-white rounded-xl border border-slate-200 p-3.5 flex items-center justify-between hover:shadow-md transition-all cursor-pointer">
 <div className="flex items-center gap-3"><div style={{width:48,height:48,borderRadius:10,backgroundColor:'white',border:'1px solid #f1f5f9',display:'flex',alignItems:'center',justifyContent:'center',padding:6,flexShrink:0}}><img src={s.l} alt={s.n} style={{maxWidth:'100%',maxHeight:'100%',objectFit:'contain'}}/></div>
 <span className="font-semibold text-slate-800 text-sm">{s.n}</span></div><I.EL size={16} className="text-slate-300 flex-shrink-0"/></div>)}</div>
 {sel&&<div className="fixed inset-0 z-50 bg-black/40 flex items-end sm:items-center justify-center" style={{backdropFilter:'blur(4px)'}} onClick={()=>setSel(null)}>
@@ -352,30 +288,41 @@ function SPOV({t}){const[sel,setSel]=useState(null);return(<div className="pb-24
 <div className="p-6 text-center">
 <div style={{width:80,height:80,borderRadius:16,backgroundColor:'white',border:'1px solid #e2e8f0',display:'flex',alignItems:'center',justifyContent:'center',padding:12,margin:'0 auto 16px',boxShadow:'0 2px 8px rgba(0,0,0,0.06)'}}><img src={sel.l} alt={sel.n} style={{maxWidth:'100%',maxHeight:'100%',objectFit:'contain'}}/></div>
 <h2 className="font-display text-xl font-bold text-slate-900 mb-4">{sel.n}</h2>
-<a href={sel.u} target="_blank" rel="noopener noreferrer" style={{display:'inline-flex',alignItems:'center',gap:8,padding:'12px 24px',borderRadius:12,backgroundColor:'#081c74',color:'white',fontSize:14,fontWeight:600,textDecoration:'none'}}><I.EL size={16}/>Website besuchen</a>
+{sel.u&&<a href={sel.u} target="_blank" rel="noopener noreferrer" style={{display:'inline-flex',alignItems:'center',gap:8,padding:'12px 24px',borderRadius:12,backgroundColor:'#081c74',color:'white',fontSize:14,fontWeight:600,textDecoration:'none'}}><I.EL size={16}/>{t.spo.visit}</a>}
 <button onClick={()=>setSel(null)} className="mt-4 w-full py-3 rounded-xl bg-slate-100 text-slate-600 font-semibold text-sm hover:bg-slate-200 transition-colors">{t.gen.close}</button>
 </div></div></div>}
 </div>);}
 
-function App(){const[ln,setLn]=useState("de");const[vw,setVw]=useState("schedule");const[si,setSi]=useState(new Set());const t=TT[ln];
-useEffect(()=>{try{const s=localStorage.getItem('lc_sv3');if(s)setSi(new Set(JSON.parse(s)));}catch(e){}},[]);
-const ts=useCallback(id=>{setSi(p=>{const n=new Set(p);if(n.has(id))n.delete(id);else n.add(id);try{localStorage.setItem('lc_sv3',JSON.stringify([...n]));}catch(e){}return n;});},[]);
+// Lädt data.json (wird stündlich per GitHub Action von ebs-lawcongress.com aktualisiert).
+// Reihenfolge: zuletzt gespeicherte Daten sofort anzeigen, dann im Hintergrund aktualisieren.
+function useCongressData(){const[data,setData]=useState(loadCachedData);const[status,setStatus]=useState("loading");
+const sync=useCallback(async()=>{try{const r=await fetch(DATA_URL,{cache:"no-store"});if(!r.ok)throw new Error("HTTP "+r.status);const d=await r.json();if(!validData(d))throw new Error("invalid data");
+setData(p=>p&&p.updatedAt===d.updatedAt?p:d);try{localStorage.setItem(DATA_KEY,JSON.stringify(d));}catch(e){}setStatus(navigator.onLine===false?"offline":"ok");}catch(e){setStatus("offline");}},[]);
+useEffect(()=>{sync();const iv=setInterval(sync,10*60*1000);const onVis=()=>{if(document.visibilityState==="visible")sync();};document.addEventListener("visibilitychange",onVis);window.addEventListener("online",sync);
+return()=>{clearInterval(iv);document.removeEventListener("visibilitychange",onVis);window.removeEventListener("online",sync);};},[sync]);
+return{data,status,sync};}
+
+function App(){const[ln,setLn]=useState("de");const[vw,setVw]=useState("schedule");const[si,setSi]=useState(new Set());const t=TT[ln];const{data:d,status:st,sync}=useCongressData();
+useEffect(()=>{try{const s=localStorage.getItem(SAVED_KEY);if(s)setSi(new Set(JSON.parse(s)));}catch(e){}},[]);
+const ts=useCallback(id=>{setSi(p=>{const n=new Set(p);if(n.has(id))n.delete(id);else n.add(id);try{localStorage.setItem(SAVED_KEY,JSON.stringify([...n]));}catch(e){}return n;});},[]);
+const savedCount=useMemo(()=>d?d.schedule.de.reduce((n,dy)=>n+dy.events.filter(e=>si.has(e.id)).length,0):0,[d,si]);
 const nv=[{id:"schedule",lb:t.nav.schedule,ic:I.Cal},{id:"mySchedule",lb:t.nav.mySchedule,ic:I.Bm},{id:"roomPlan",lb:t.nav.roomPlan,ic:I.Map},{id:"speakers",lb:t.nav.speakers,ic:I.U1},{id:"sponsors",lb:t.nav.sponsors,ic:I.Aw}];
 return(<LC.Provider value={t}><div style={{minHeight:'100vh',backgroundColor:'#f8fafc'}}>
 <header className="sticky top-0 z-40 border-b border-slate-200" style={{backgroundColor:'rgba(255,255,255,0.85)',backdropFilter:'blur(16px)'}}>
 <div style={{height:'env(safe-area-inset-top,0px)',backgroundColor:'rgba(255,255,255,0.85)'}}/>
 <div style={{maxWidth:'100%',width:'100%',margin:'0 auto',boxSizing:'border-box',padding:'0 16px',height:56,display:'flex',alignItems:'center',justifyContent:'space-between'}}>
-<div style={{display:'flex',alignItems:'center',gap:10}}><img src={LOGO} alt="LC" style={{height:32,objectFit:'contain'}}/><div><h1 style={{fontSize:14,fontWeight:700,color:'#0f172a',lineHeight:1.2,margin:0}}>EBS Law Congress</h1></div></div>
+<div style={{display:'flex',alignItems:'center',gap:10,minWidth:0}}><img src={LOGO} alt="LC" style={{height:32,objectFit:'contain'}}/><div style={{minWidth:0}}><h1 style={{fontSize:14,fontWeight:700,color:'#0f172a',lineHeight:1.2,margin:0}}>EBS Law Congress</h1>{d&&d.event.date&&<p style={{fontSize:11,color:'#64748b',margin:0,whiteSpace:'nowrap',overflow:'hidden',textOverflow:'ellipsis'}}>{d.event.date[ln]}</p>}</div></div>
 <div style={{display:'flex',alignItems:'center',gap:8}}>
-{si.size>0&&vw!=="mySchedule"&&<button onClick={()=>setVw("mySchedule")} className="relative" style={{padding:8,borderRadius:8,backgroundColor:'#fef3c7',color:'#d97706',border:'none',cursor:'pointer'}}><I.BmF size={16}/><span style={{position:'absolute',top:-4,right:-4,width:16,height:16,backgroundColor:'#f59e0b',color:'white',fontSize:10,fontWeight:700,borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center'}}>{si.size}</span></button>}
+{savedCount>0&&vw!=="mySchedule"&&<button onClick={()=>setVw("mySchedule")} className="relative" style={{padding:8,borderRadius:8,backgroundColor:'#fef3c7',color:'#d97706',border:'none',cursor:'pointer'}}><I.BmF size={16}/><span style={{position:'absolute',top:-4,right:-4,width:16,height:16,backgroundColor:'#f59e0b',color:'white',fontSize:10,fontWeight:700,borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center'}}>{savedCount}</span></button>}
 <button onClick={()=>setLn(ln==="de"?"en":"de")} style={{display:'flex',alignItems:'center',gap:4,padding:'6px 10px',borderRadius:8,backgroundColor:'#f1f5f9',border:'none',cursor:'pointer'}}><I.Gl size={14} className="text-slate-500"/><span style={{fontSize:12,fontWeight:700,color:'#475569'}}>{ln==="de"?"EN":"DE"}</span></button>
 </div></div></header>
 <main style={{maxWidth:'100%',width:'100%',margin:'0 auto',boxSizing:'border-box',padding:'20px 16px 0'}}>
-{vw==="schedule"&&<SV savedIds={si} onToggleSave={ts} lang={ln} t={t}/>}
-{vw==="mySchedule"&&<MSV savedIds={si} onToggleSave={ts} lang={ln} t={t}/>}
-{vw==="roomPlan"&&<RPV t={t}/>}
-{vw==="speakers"&&<SPV lang={ln} t={t}/>}
-{vw==="sponsors"&&<SPOV t={t}/>}
+{!d?<div className="text-center py-20 px-4">{st==="loading"?<p className="text-slate-400 text-sm">{t.gen.loading}</p>:<><p className="text-slate-500 text-sm mb-4">{t.gen.loadErr}</p><button onClick={sync} className="px-5 py-2.5 rounded-xl text-sm font-semibold text-white" style={{backgroundColor:'#081c74'}}>{t.gen.retry}</button></>}</div>:<>
+{vw==="schedule"&&<SV data={d} savedIds={si} onToggleSave={ts} lang={ln} t={t} status={st}/>}
+{vw==="mySchedule"&&<MSV data={d} savedIds={si} onToggleSave={ts} lang={ln} t={t}/>}
+{vw==="roomPlan"&&<RPV data={d} lang={ln} t={t}/>}
+{vw==="speakers"&&<SPV data={d} lang={ln} t={t}/>}
+{vw==="sponsors"&&<SPOV data={d} t={t}/>}</>}
 </main>
 <nav className="fixed bottom-0 left-0 right-0 z-40 border-t border-slate-200" style={{backgroundColor:'rgba(255,255,255,0.92)',backdropFilter:'blur(16px)'}}>
 <div style={{maxWidth:'100%',width:'100%',margin:'0 auto',boxSizing:'border-box',display:'flex'}}>{nv.map(item=>{const a=vw===item.id;return(<button key={item.id} onClick={()=>setVw(item.id)} style={{flex:1,display:'flex',flexDirection:'column',alignItems:'center',padding:'10px 0 8px',border:'none',background:'none',cursor:'pointer',color:a?'#081c74':'#94a3b8',transition:'color 0.15s'}}>

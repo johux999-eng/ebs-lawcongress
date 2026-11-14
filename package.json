@@ -1,0 +1,12 @@
+{
+  "name": "ebs-lawcongress-app",
+  "private": true,
+  "type": "module",
+  "description": "PWA für den EBS Law Congress mit automatischer Synchronisation der Website-Daten",
+  "scripts": {
+    "sync": "node scripts/sync-data.mjs"
+  },
+  "dependencies": {
+    "acorn": "8.14.0"
+  }
+}
