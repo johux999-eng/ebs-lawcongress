@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-14T13:53:48.537Z",
+  "updatedAt": "2026-11-15T17:42:25.963Z",
   "source": "https://www.ebs-lawcongress.com/",
   "images": {
     "logo": "https://app.trickle.so/storage/public/images/usr_1a6da71af0000001/e5c2fd38-03c9-40e8-a275-becc52e0e3c8.png",
@@ -135,7 +135,7 @@
             "id": "c13-d1-ws-fgs",
             "time": "13:30 – 14:30",
             "title": "Workshop mit FGS: To be determined",
-            "location": "",
+            "location": "HG Audi",
             "speaker": "FGS",
             "type": "workshop",
             "description": "Das Thema wird noch bekannt gegeben."
@@ -153,7 +153,7 @@
             "id": "c13-d1-ws-ao",
             "time": "14:45 – 15:45",
             "title": "Workshop mit A&O Shearman: To be determined",
-            "location": "",
+            "location": "HG Max",
             "speaker": "A&O Shearman",
             "type": "workshop",
             "description": "Das Thema wird noch bekannt gegeben."
@@ -248,7 +248,7 @@
             "location": "HG Audi",
             "speaker": "Heuking",
             "type": "workshop",
-            "description": "Mit Dr. Lutz Keppeler."
+            "description": "KI-Agenten verhandeln, bestellen, schließen Verträge (und hacken Unternehmen) zunehmend selbstständig. Damit stellen sich klassische Fragen des Zivilrechts neu: Wer gibt die Willenserklärung ab, wenn eine Software handelt? Wem sind Fehler zuzurechnen? Wer haftet, wenn der Agent Schäden verursacht? Rechtsanwalt Dr. Lutz Martin Keppeler zeigt im Workshop anhand praktischer Fälle, wie weit die bewährten Grundsätze des BGB tragen, und was das für die Beratung in der Praxis bedeutet."
           },
           {
             "id": "c13-d2-e4",
@@ -386,20 +386,20 @@
           {
             "id": "c13-d1-e4",
             "time": "11:15 – 12:15",
-            "title": "Krise, Haftung, KI: Restrukturierung & Insolvenz in der Praxis",
+            "title": "Crisis, liability, AI: Restructuring & insolvency in practice",
             "location": "HG Audi",
             "speaker": "DLA Piper",
             "type": "workshop",
-            "description": "Was passiert, wenn ein Unternehmen in die Krise gerät? Anhand praxisnaher Fälle beschäftigen wir uns mit einer Restrukturierungstransaktion und der Geschäftsführerhaftung in der Insolvenz. Dabei zeigen wir euch nicht nur, wie Jurist:innen solche Fragestellungen bearbeiten, sondern auch, wie KI-Tools wie Harvey und Microsoft Copilot die tägliche Arbeit unterstützen können."
+            "description": "What happens when a company gets into a crisis? Using practical cases, we look at a restructuring transaction and at managing directors' liability in insolvency. We show you not only how lawyers work on such questions, but also how AI tools such as Harvey and Microsoft Copilot can support daily work."
           },
           {
             "id": "c13-d1-e5",
             "time": "11:15 – 12:15",
-            "title": "Der Wahrheit auf der Spur: Mit KI von der Datenflut zum Durchblick in Internal Investigations",
+            "title": "Tracking down the truth: Using AI to turn a flood of data into clarity in internal investigations",
             "location": "HG Max",
             "speaker": "Gleiss Lutz",
             "type": "workshop",
-            "description": "Mit Marina von Eicke und Helin Wöllstein. Tausende E-Mails, unzählige Dokumente und komplexe Datenstrukturen: Interne Untersuchungen stellen Unternehmen und ihre Berater vor enorme Herausforderungen. Kann künstliche Intelligenz helfen, in der Datenflut die entscheidenden Hinweise zu finden? Anhand der Praxis von Internal Investigations beleuchtet der Workshop, wie KI die Aufklärung von Sachverhalten unterstützen kann, welche neuen Möglichkeiten sich eröffnen und warum menschliche Bewertung und juristische Expertise unverzichtbar bleiben."
+            "description": "With Marina von Eicke and Helin Wöllstein. Thousands of e-mails, countless documents and complex data structures: internal investigations pose enormous challenges for companies and their advisers. Can artificial intelligence help to find the decisive leads in the flood of data? Drawing on the practice of internal investigations, the workshop looks at how AI can support fact-finding, which new possibilities open up and why human assessment and legal expertise remain indispensable."
           },
           {
             "id": "c13-d1-e6",
@@ -423,7 +423,7 @@
             "id": "c13-d1-ws-fgs",
             "time": "13:30 – 14:30",
             "title": "Workshop with FGS: To be determined",
-            "location": "",
+            "location": "HG Audi",
             "speaker": "FGS",
             "type": "workshop",
             "description": "The topic will be announced."
@@ -441,7 +441,7 @@
             "id": "c13-d1-ws-ao",
             "time": "14:45 – 15:45",
             "title": "Workshop with A&O Shearman: To be determined",
-            "location": "",
+            "location": "HG Max",
             "speaker": "A&O Shearman",
             "type": "workshop",
             "description": "The topic will be announced."
@@ -532,20 +532,20 @@
           {
             "id": "c13-d2-e3",
             "time": "11:00 – 12:00",
-            "title": "Haftung für KI-Agenten? Anwendung der BGB-Grundsätze auf neueste Technologie in der Rechtspraxis",
+            "title": "Liability for AI agents? Applying the principles of the German Civil Code (BGB) to the latest technology in legal practice",
             "location": "HG Audi",
             "speaker": "Heuking",
             "type": "workshop",
-            "description": "Mit Dr. Lutz Keppeler."
+            "description": "AI agents increasingly negotiate, place orders, conclude contracts (and hack companies) on their own. This raises classic questions of civil law anew: Who makes the declaration of intent when software acts? To whom are errors attributed? Who is liable when the agent causes damage? Using practical cases, lawyer Dr. Lutz Martin Keppeler shows in the workshop how far the established principles of the German Civil Code (BGB) carry and what that means for advising clients in practice."
           },
           {
             "id": "c13-d2-e4",
             "time": "11:00 – 12:00",
-            "title": "Follow the Money: Mensch gegen KI auf der Spur verdächtiger Zahlungen",
+            "title": "Follow the Money: Human vs. AI on the trail of suspicious payments",
             "location": "HG Max",
             "speaker": "Baker Tilly",
             "type": "workshop",
-            "description": "Mit Jochen Erhardt und Felix Tillmanns. Die Teilnehmenden schlüpfen in die Rolle eines Insolvenzverwalters und prüfen fiktive Kontoauszüge einer GmbH in der Krise auf verdächtige Zahlungen. Danach analysiert eine KI dieselben Auszüge live, und gemeinsam wird verglichen, wo die KI besser ist, wo sie danebenliegt und warum am Ende der Anwalt entscheidet und die Verantwortung trägt."
+            "description": "With Jochen Erhardt and Felix Tillmanns. Participants take on the role of an insolvency administrator and check fictitious bank statements of a limited liability company (GmbH) in crisis for suspicious payments. An AI then analyses the same statements live, and together we compare where the AI is better, where it gets things wrong and why, in the end, the lawyer decides and bears the responsibility."
           },
           {
             "id": "c13-d2-e6",
@@ -559,11 +559,11 @@
           {
             "id": "c13-d2-e7",
             "time": "12:15 – 13:15",
-            "title": "A Closer Look: M&A-Deals, IPOs und Dual-Track-Prozesse",
+            "title": "A Closer Look: M&A deals, IPOs and dual-track processes",
             "location": "HG Max",
             "speaker": "Skadden",
             "type": "workshop",
-            "description": "Mit Georg Stickler und Hanna Wacker."
+            "description": "With Georg Stickler and Hanna Wacker."
           },
           {
             "id": "c13-d2-e8",
