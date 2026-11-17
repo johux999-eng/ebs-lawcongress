@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-15T17:42:25.963Z",
+  "updatedAt": "2026-11-17T22:23:31.187Z",
   "source": "https://www.ebs-lawcongress.com/",
   "images": {
     "logo": "https://app.trickle.so/storage/public/images/usr_1a6da71af0000001/e5c2fd38-03c9-40e8-a275-becc52e0e3c8.png",
@@ -134,11 +134,11 @@
           {
             "id": "c13-d1-ws-fgs",
             "time": "13:30 – 14:30",
-            "title": "Workshop mit FGS: To be determined",
+            "title": "Das Skillset des Anwalts der Zukunft. Was muss der Anwalt können, wenn die KI das Recht kennt?",
             "location": "HG Audi",
             "speaker": "FGS",
             "type": "workshop",
-            "description": "Das Thema wird noch bekannt gegeben."
+            "description": "Mit Herrn Kempelmann und Herrn Josten."
           },
           {
             "id": "c13-d1-e8",
@@ -152,11 +152,11 @@
           {
             "id": "c13-d1-ws-ao",
             "time": "14:45 – 15:45",
-            "title": "Workshop mit A&O Shearman: To be determined",
+            "title": "Legal AI – aber sicher?!",
             "location": "HG Max",
             "speaker": "A&O Shearman",
             "type": "workshop",
-            "description": "Das Thema wird noch bekannt gegeben."
+            "description": "Mit Maja Erbe, Niklas Germayer und Henrik Wehrs. Für den Workshop brauchen alle Teilnehmenden einen Laptop, zur Not geht auch ein Handy."
           },
           {
             "id": "c13-d1-e9",
@@ -285,6 +285,15 @@
             "speaker": "Dr. Dr. Johannes Blassl",
             "type": "lecture",
             "description": ""
+          },
+          {
+            "id": "c13-d2-messe",
+            "time": "13:30 – 16:30",
+            "title": "Karrieremesse",
+            "location": "",
+            "speaker": "",
+            "type": "other",
+            "description": "Auf der Karrieremesse können sich die Teilnehmenden über die Kanzleien, Praktika und Karrierechancen informieren sowie persönliche Ansprechpartner kennenlernen."
           },
           {
             "id": "c13-d2-e9",
@@ -422,11 +431,11 @@
           {
             "id": "c13-d1-ws-fgs",
             "time": "13:30 – 14:30",
-            "title": "Workshop with FGS: To be determined",
+            "title": "The skill set of the lawyer of the future. What must a lawyer be able to do when AI knows the law?",
             "location": "HG Audi",
             "speaker": "FGS",
             "type": "workshop",
-            "description": "The topic will be announced."
+            "description": "With Mr Kempelmann and Mr Josten."
           },
           {
             "id": "c13-d1-e8",
@@ -440,11 +449,11 @@
           {
             "id": "c13-d1-ws-ao",
             "time": "14:45 – 15:45",
-            "title": "Workshop with A&O Shearman: To be determined",
+            "title": "Legal AI – sure, but safe?!",
             "location": "HG Max",
             "speaker": "A&O Shearman",
             "type": "workshop",
-            "description": "The topic will be announced."
+            "description": "With Maja Erbe, Niklas Germayer and Henrik Wehrs. All participants need a laptop for the workshop; a phone will do if necessary."
           },
           {
             "id": "c13-d1-e9",
@@ -573,6 +582,15 @@
             "speaker": "Dr. Dr. Johannes Blassl",
             "type": "lecture",
             "description": ""
+          },
+          {
+            "id": "c13-d2-messe",
+            "time": "13:30 – 16:30",
+            "title": "Career Fair",
+            "location": "",
+            "speaker": "",
+            "type": "other",
+            "description": "At the career fair, participants can find out about the law firms, internships and career opportunities and meet contacts in person."
           },
           {
             "id": "c13-d2-e9",
