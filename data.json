@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-20T20:18:07.922Z",
+  "updatedAt": "2026-11-23T21:23:55.529Z",
   "source": "https://www.ebs-lawcongress.com/",
   "images": {
     "logo": "https://app.trickle.so/storage/public/images/usr_1a6da71af0000001/e5c2fd38-03c9-40e8-a275-becc52e0e3c8.png",
@@ -850,6 +850,11 @@
       "n": "Baker Tilly",
       "u": "https://www.bakertilly.de",
       "l": "https://app.trickle.so/storage/public/images/usr_1a6da71af0000001/e0936cff-d966-483c-ae3e-51da470a575c.png"
+    },
+    {
+      "n": "Carixx",
+      "u": "https://www.carixx.de",
+      "l": "https://app.trickle.so/storage/u/usr_1a6da71af0000001/2026-11/44a514eb-6330-4d1f-b7dc-407eea599232.png"
     }
   ]
 }
