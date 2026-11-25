@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-23T21:23:55.529Z",
+  "updatedAt": "2026-11-25T02:27:37.198Z",
   "source": "https://www.ebs-lawcongress.com/",
   "images": {
     "logo": "https://app.trickle.so/storage/public/images/usr_1a6da71af0000001/e5c2fd38-03c9-40e8-a275-becc52e0e3c8.png",
@@ -62,16 +62,16 @@
           {
             "id": "c13-d1-e1",
             "time": "10:00",
-            "title": "Feierliche Eröffnung",
+            "title": "Feierliche Eröffnung durch die Universität und die Organisatoren",
             "location": "",
-            "speaker": "",
+            "speaker": "Prof. Dr. Henning Werner, Vera Herting",
             "type": "keynote",
             "description": ""
           },
           {
             "id": "c13-d1-e2",
             "time": "10:30",
-            "title": "Coming soon (Speaker und Thema folgen)",
+            "title": "Ein interaktiver Kongressfall: „Die Gläserne Stadt“",
             "location": "",
             "speaker": "",
             "type": "lecture",
@@ -88,7 +88,7 @@
           },
           {
             "id": "c13-d1-e3",
-            "time": "11:15",
+            "time": "11:00",
             "title": "Wie KI die Rechtswelt verändert: Vom Werkzeug zur Transformation",
             "location": "",
             "speaker": "Dr. Michael Dorner",
@@ -220,9 +220,9 @@
           {
             "id": "c13-d2-e1",
             "time": "10:00",
-            "title": "Feierliche Eröffnung",
+            "title": "Feierliche Eröffnung durch die Universität und die Organisatoren",
             "location": "",
-            "speaker": "",
+            "speaker": "Günther H. Oettinger",
             "type": "keynote",
             "description": ""
           },
@@ -332,6 +332,15 @@
             "description": ""
           },
           {
+            "id": "c13-d2-abschluss",
+            "time": "17:30",
+            "title": "Abschließende Worte durch die Organisatoren",
+            "location": "",
+            "speaker": "",
+            "type": "keynote",
+            "description": ""
+          },
+          {
             "id": "c13-d2-e13",
             "time": "18:00",
             "title": "Abendessen",
@@ -359,16 +368,16 @@
           {
             "id": "c13-d1-e1",
             "time": "10:00",
-            "title": "Opening of the Congress",
+            "title": "Opening of the Congress by the university and the organizers",
             "location": "",
-            "speaker": "",
+            "speaker": "Prof. Dr. Henning Werner, Vera Herting",
             "type": "keynote",
             "description": ""
           },
           {
             "id": "c13-d1-e2",
             "time": "10:30",
-            "title": "Coming soon (Speaker and Topic to follow)",
+            "title": "An interactive congress case: “The Transparent City”",
             "location": "",
             "speaker": "",
             "type": "lecture",
@@ -385,7 +394,7 @@
           },
           {
             "id": "c13-d1-e3",
-            "time": "11:15",
+            "time": "11:00",
             "title": "How AI is changing the legal world: From tool to transformation",
             "location": "",
             "speaker": "Dr. Michael Dorner",
@@ -517,9 +526,9 @@
           {
             "id": "c13-d2-e1",
             "time": "10:00",
-            "title": "Opening of the Congress",
+            "title": "Opening of the Congress by the university and the organizers",
             "location": "",
-            "speaker": "",
+            "speaker": "Günther H. Oettinger",
             "type": "keynote",
             "description": ""
           },
@@ -626,6 +635,15 @@
             "location": "",
             "speaker": "Jochen Erhardt",
             "type": "lecture",
+            "description": ""
+          },
+          {
+            "id": "c13-d2-abschluss",
+            "time": "17:30",
+            "title": "Closing remarks by the organizers",
+            "location": "",
+            "speaker": "",
+            "type": "keynote",
             "description": ""
           },
           {
@@ -773,6 +791,18 @@
       "img": "https://app.trickle.so/storage/u/usr_1a6da71af0000001/2026-11/b3ee59ae-61cf-4ef6-972e-866e45f09e3c.jpg",
       "bio": "Jochen Erhardt ist Rechtsanwalt bei Baker Tilly. Seine Expertise erstreckt sich insbesondere auf das Insolvenz- und Restrukturierungsrecht. Neben seiner juristischen Ausbildung absolvierte er ein Bachelorstudium in Business Administration. Zu seinen weiteren beruflichen Stationen zählt unter anderem eine Tätigkeit bei Clifford Chance.",
       "bioe": "Jochen Erhardt is a lawyer at Baker Tilly. His expertise lies in particular in insolvency and restructuring law. In addition to his legal training, he completed a bachelor's degree in business administration. His previous professional experience includes a position at Clifford Chance."
+    },
+    {
+      "id": "claudia-jandek",
+      "n": "Claudia Jandek",
+      "r": "Volljuristin und Legal AI Specialist",
+      "re": "Qualified Lawyer and Legal AI Specialist",
+      "c": "GÖRG",
+      "ce": "GÖRG",
+      "li": "https://www.linkedin.com/in/claudiajandek/",
+      "img": "https://app.trickle.so/storage/u/usr_1a6da71af0000001/2026-11/bb948eb9-9988-4802-8d9b-091ed6510237.jpg",
+      "bio": "Claudia Jandek ist Volljuristin und Legal AI Specialist in der Legal Tech & Digital Transformation Unit von GÖRG. Dort entwickelt sie mit den Service Lines an allen Standorten KI-Anwendungsfälle und begleitet die Teams im Umgang mit den Tools und bei der Prüfung von KI-Ergebnissen. Mit der KI-Verordnung beschäftigt sie sich seit 2024. Beim Legal Hackathon Cologne von Wolters Kluwer entwickelte sie im Team ein KI-gestütztes Compliance-Tool für die Pflichten der Verordnung und belegte damit den ersten Platz, später vertiefte sie das Thema als wissenschaftliche Mitarbeiterin bei Clyde & Co und beim AI Legal Club, der KI-Kompetenz nach Art. 4 KI-VO vermittelt. Sie publiziert in der RDi, schreibt in der JuS die Reihe „Jura studieren mit KI“ und co-hostet den Podcast „Legal Forward“.",
+      "bioe": "Claudia Jandek is a fully qualified lawyer and Legal AI Specialist in the Legal Tech & Digital Transformation Unit at GÖRG. There she develops AI use cases with the service lines at all offices and supports the teams in working with the tools and in reviewing AI-generated results. She has been working on the EU AI Act since 2024. At the Legal Hackathon Cologne hosted by Wolters Kluwer, she and her team developed an AI-supported compliance tool for the obligations under the Act and won first place. She later deepened her work on the topic as a research associate at Clyde & Co and at the AI Legal Club, which teaches AI literacy under Art. 4 of the AI Act. She publishes in the journal RDi, writes the series “Jura studieren mit KI” (studying law with AI) in the journal JuS and co-hosts the podcast “Legal Forward”."
     }
   ],
   "sponsors": [
